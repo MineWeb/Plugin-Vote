@@ -52,7 +52,7 @@ if($execute_06) {
 // 0.7.0
 function switch_table_name($old_table, $new_table) {
 
-  global $db;
+  $db = ConnectionManager::getDataSource('default');
 
   $execute = true;
 
@@ -74,7 +74,7 @@ function switch_table_name($old_table, $new_table) {
 }
 function add_column($table, $name, $sql) {
 
-  global $db;
+  $db = ConnectionManager::getDataSource('default');
 
   $verif = $db->query('SHOW COLUMNS FROM '.$table.';');
   $execute = true;
@@ -90,7 +90,7 @@ function add_column($table, $name, $sql) {
 }
 function remove_column($table, $name) {
 
-  global $db;
+  $db = ConnectionManager::getDataSource('default');
 
   $verif = $db->query('SHOW COLUMNS FROM '.$table.';');
   $execute = false;
@@ -104,11 +104,11 @@ function remove_column($table, $name) {
     @$query = $db->query('ALTER TABLE `'.$table.'` DROP COLUMN `'.$name.'`;');
   }
 }
-$users = array();
+$_SESSION['users'] = array();
 function author_to_userid($table, $column = 'author') {
 
-  global $db;
-  global $users;
+  $db = ConnectionManager::getDataSource('default');
+  
   $verif = $db->query('SHOW COLUMNS FROM '.$table.';');
   $execute = false;
   foreach ($verif as $k => $v) {
@@ -125,15 +125,15 @@ function author_to_userid($table, $column = 'author') {
       $table_author_id = $value[$table]['id'];
       $author_name = $value[$table][$column];
 
-      if(isset($users[$author_name])) {
-        $author_id = $users[$author_name];
+      if(isset($_SESSION['users'][$author_name])) {
+        $author_id = $_SESSION['users'][$author_name];
       } else {
         // on le cherche
         $search_author = $db->query('SELECT id FROM users WHERE pseudo=\''.$author_name.'\'');
         if(!empty($search_author)) {
-          $author_id = $users[$author_name] = $search_author[0]['users']['id'];
+          $author_id = $_SESSION['users'][$author_name] = $search_author[0]['users']['id'];
         } else {
-          $author_id = $users[$author_name] = 0;
+          $author_id = $_SESSION['users'][$author_name] = 0;
         }
       }
 
