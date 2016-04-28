@@ -61,7 +61,7 @@ function switch_table_name($old_table, $new_table) {
   } catch(Exception $e) {
     $execute = false;
   }
-  if(isset($verif) || empty($verif)) {
+  if(!isset($verif) || empty($verif)) {
     $execute = false;
   }
 
@@ -108,7 +108,7 @@ $_SESSION['users'] = array();
 function author_to_userid($table, $column = 'author') {
 
   $db = ConnectionManager::getDataSource('default');
-  
+
   $verif = $db->query('SHOW COLUMNS FROM '.$table.';');
   $execute = false;
   foreach ($verif as $k => $v) {
@@ -159,5 +159,5 @@ function author_to_userid($table, $column = 'author') {
     @$db->query('ALTER TABLE `vote__votes` CHANGE `ip` `ip` varchar(16) NOT NULL');
 
   // Vote_configurations
-    switch_table_name('votes', 'vote__configurations');
+    switch_table_name('vote_configurations', 'vote__configurations');
 ?>
