@@ -230,16 +230,10 @@ class VoterController extends VoteAppController {
                             $this->loadModel('User');
                             $userData = $this->User->find('first', array('conditions' => array('pseudo' => $this->Session->read('vote.pseudo'))));
                             $vote_nbr = $userData['User']['vote'] + 1;
-                            $this->User->read(null, $userData['User']['id']);
-                            $data = array(
-                                'vote' => $vote_nbr
-                            );
 
                             if($when != 'now') {
-                              $data['rewards_waited'] = intval($userData['User']['rewards_waited']) + 1;
+                              $rewards_waited = intval($userData['User']['rewards_waited']) + 1;
                             }
-
-                            $this->User->set($data);
 
                             // on cast l'event
                             $event = new CakeEvent('onVote', $this, array('when' => $when, 'website' => $this->Session->read('vote.website'), 'config' => $config['VoteConfiguration'], 'user' => $userData));
@@ -257,11 +251,17 @@ class VoterController extends VoteAppController {
 																echo json_encode(array('statut' => false, 'msg' => $this->Lang->get($rewardStatus['msg'])));
                                 return;
 															}
-                              $this->User->save(); // on sauvegarde le vote
+
+                              // on sauvegarde le vote
+                              $this->User->setToUser('vote', $vote_nbr, $userData['User']['id']);
+
 															echo json_encode(array('statut' => true, 'msg' => $rewardStatus['msg']));
 
                             } else { // si c'est plus tard
-                              $this->User->save(); // on sauvegarde le vote
+                              // on sauvegarde le vote
+                              $this->User->setToUser('vote', $vote_nbr, $userData['User']['id']);
+                              $this->User->setToUser('rewards_waited', $rewards_waited, $userData['User']['id']);
+
                               echo json_encode(array('statut' => true, 'msg' => $this->Lang->get('VOTE__STEP_4_REWARD_SUCCESS_SAVE')));
                             }
 
@@ -294,9 +294,9 @@ class VoterController extends VoteAppController {
 			 	 ==== */
 			if($config['rewards_type'] == 1) { // toutes les récompenses
 
-				$rewards = unserialize($config['VoteConfiguration']['rewards']); // on récupére la liste
+				$rewards = unserialize($config['rewards']); // on récupére la liste
 
-        $event = new CakeEvent('beforeReceiveRewards', $this, array('rewards' => $id, 'type' => 'all', 'user' => $user));
+        $event = new CakeEvent('beforeReceiveRewards', $this, array('rewards' => $rewards, 'type' => 'all', 'user' => $user));
         $this->getEventManager()->dispatch($event);
         if($event->isStopped()) {
           return $event->result;
@@ -330,7 +330,7 @@ class VoterController extends VoteAppController {
 				}
 
 				$return = $this->Lang->get('VOTE__VOTE_SUCCESS').' ! ';
-			 	if(!empty($success_msg)) {
+			 	if(!empty($rewardsSended)) {
 					$return .= $this->Lang->get('VOTE__REWARDS_TITLE').' : ';
 					$return .= '<b>'.implode('</b>, <b>', $rewardsSended).'</b>.';
 			 }
@@ -408,6 +408,7 @@ class VoterController extends VoteAppController {
 
 					$this->Server->commands($cmd); // on envoie la commande puis enregistre le vote
 				} else {
+          $continue = false;
 					foreach ($config['servers'] as $k2 => $v2) { // on parcours les serveurs
 
             if($reward['need_connect_on_server'] == "true") {
