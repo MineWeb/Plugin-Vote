@@ -155,6 +155,7 @@ function author_to_userid($table, $column = 'author') {
 
   //Votes
     switch_table_name('votes', 'vote__votes');
+    add_column('vote__votes', 'user_id', 'int(20) NOT NULL');
     author_to_userid('vote__votes', 'username');
     @$db->query('ALTER TABLE `vote__votes` CHANGE `ip` `ip` varchar(16) NOT NULL');
 
