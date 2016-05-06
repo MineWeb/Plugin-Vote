@@ -2,123 +2,111 @@
 class VoterController extends VoteAppController {
 
     public function index() {
-        $this->loadModel('Vote.VoteConfiguration');
-        $search = $this->VoteConfiguration->find('all');
-        if(!empty($search)) {
+      $this->loadModel('Vote.VoteConfiguration');
+      $config = $this->VoteConfiguration->getConfig();
 
-            $this->set('websites', unserialize($search[0]['VoteConfiguration']['websites']));
+      $this->set('websites', $config['websites']);
+      $this->set('rewards', $config['rewards']);
 
-            $rewards = $search[0]['VoteConfiguration']['rewards'];
-            $rewards = unserialize($rewards);
-            $this->set(compact('rewards'));
-
-            $this->loadModel('User');
-            $ranking = $this->User->find('all', array('limit' => '10', 'order' => 'vote desc'));
-            $this->set(compact('ranking'));
-        } else {
-            throw new NotFoundException();
-        }
+      $this->loadModel('User');
+      $ranking = $this->User->find('all', array('limit' => '10', 'order' => 'vote desc'));
+      $this->set(compact('ranking'));
     }
 
     public function setWebsite() {
-        $this->autoRender = false;
-        if($this->request->is('ajax')) {
-            if(!empty($this->request->data['website']) OR $this->request->data['website'] == 0) {
-                $this->Session->write('vote.website', $this->request->data['website']);
+      $this->autoRender = false;
+      if($this->request->is('ajax')) {
+        if(!empty($this->request->data['website']) OR $this->request->data['website'] == 0) {
+          $this->Session->write('vote.website', $this->request->data['website']);
 
-                $this->loadModel('Vote.VoteConfiguration');
-                $config = $this->VoteConfiguration->find('first');
-                $websites = unserialize($config['VoteConfiguration']['websites']);
+          $this->loadModel('Vote.VoteConfiguration');
+          $config = $this->VoteConfiguration->getConfig();
+          $websites = $config['websites'];
 
-                if($websites[$this->request->data['website']]['website_type'] == 'rpg') {
-                    echo json_encode(array('page' => 'http://rpg-paradize.com/?page=vote&vote='.@$websites[$this->request->data['website']]['rpg_id'], 'website_type' => @$websites[$this->request->data['website']]['website_type']));
-                } else {
-                    echo json_encode(array('page' => @$websites[$this->request->data['website']]['page_vote'], 'website_type' => @$websites[$this->request->data['website']]['website_type']));
-                }
-            }
+          if($websites[$this->request->data['website']]['website_type'] == 'rpg') {
+              echo json_encode(array('page' => 'http://rpg-paradize.com/?page=vote&vote='.@$websites[$this->request->data['website']]['rpg_id'], 'website_type' => @$websites[$this->request->data['website']]['website_type']));
+          } else {
+              echo json_encode(array('page' => @$websites[$this->request->data['website']]['page_vote'], 'website_type' => @$websites[$this->request->data['website']]['website_type']));
+          }
         }
+      }
     }
 
-    public function setPseudo() {
-        $this->autoRender = false;
-        if($this->request->is('ajax')) {
-            $this->loadModel('User');
-            $user_rank = $this->User->find('first', array('conditions' => array('pseudo' => $this->request->data['pseudo'])));
-            if(!empty($user_rank) && $this->Permissions->have($user_rank['User']['rank'], 'VOTE') == "true") {
-                if(!empty($this->request->data['pseudo'])) {
-                    if($this->User->exist($this->request->data['pseudo'])) {
+  public function setPseudo() {
+    $this->autoRender = false;
+    if($this->request->is('ajax')) {
+      $this->loadModel('User');
+      if(!empty($this->request->data['pseudo'])) {
+        if($this->User->exist($this->request->data['pseudo'])) {
 
-											$user_id = $this->User->getFromUser('id', $this->request->data['pseudo']);
+					$user_id = $this->User->getFromUser('id', $this->request->data['pseudo']);
 
-                        $this->loadModel('Vote.Vote');
-                        $get_last_vote = $this->Vote->find('first',
-													array('conditions' =>
-														array(
-															'OR' => array(
-																	'user_id' => $user_id,
-																	'ip' => $this->Util->getIP()
-																),
-															'website' => $this->Session->read('vote.website')
-															)
-														)
-													);
+          $this->loadModel('Vote.Vote');
+          $get_last_vote = $this->Vote->find('first',
+						array('conditions' =>
+							array(
+								'OR' => array(
+										'user_id' => $user_id,
+										'ip' => $this->Util->getIP()
+									),
+								'website' => $this->Session->read('vote.website')
+								)
+							)
+						);
 
-                        if(!empty($get_last_vote['Vote']['created'])) {
-                            $now = time();
-                            $last_vote = ($now - strtotime($get_last_vote['Vote']['created']))/60;
-                        } else {
-                            $last_vote = null;
-                        }
-
-                        $this->loadModel('Vote.VoteConfiguration');
-                        $config = $this->VoteConfiguration->find('first');
-
-
-                        $websites = unserialize($config['VoteConfiguration']['websites']);
-                        if(isset($websites[$this->Session->read('vote.website')])) {
-                            $time_vote = $websites[$this->Session->read('vote.website')]['time_vote'];
-
-                            if(empty($last_vote) OR $last_vote > $time_vote) {
-
-                                $this->Session->write('vote.pseudo', $this->request->data['pseudo']);
-                                echo json_encode(array('statut' => true , 'msg' => $this->Lang->get('VOTE__STEP_1_SUCCESS')));
-
-                            } else {
-
-                              $calcul_wait_time = ($time_vote - $last_vote)*60;
-                              $calcul_wait_time = $this->Util->secondsToTime($calcul_wait_time); //On le sort en jolie
-
-                              $wait_time = array();
-                              if($calcul_wait_time['d'] > 0) {
-                                $wait_time[] = $calcul_wait_time['d'].' '.$this->Lang->get('GLOBAL__DATE_R_DAYS');
-                              }
-                              if($calcul_wait_time['h'] > 0) {
-                                $wait_time[] = $calcul_wait_time['h'].' '.$this->Lang->get('GLOBAL__DATE_R_HOURS');
-                              }
-                              if($calcul_wait_time['m'] > 0) {
-                                $wait_time[] = $calcul_wait_time['m'].' '.$this->Lang->get('GLOBAL__DATE_R_MINUTES');
-                              }
-                              if($calcul_wait_time['s'] > 0) {
-                                $wait_time[] = $calcul_wait_time['s'].' '.$this->Lang->get('GLOBAL__DATE_R_SECONDS');
-                              }
-
-                              $wait_time = implode(', ', $wait_time);
-
-                              echo json_encode(array('statut' => false , 'msg' => $this->Lang->get('VOTE__VOTE_ERROR_WAIT', array('{WAIT_TIME}' => $wait_time))));
-                            }
-                        } else {
-                            echo json_encode(array('statut' => false , 'msg' => $this->Lang->get('VOTE__VOTE_ERROR_UNKNOWN_WEBSITE')));
-                        }
-                    } else {
-                        echo json_encode(array('statut' => false , 'msg' =>$this->Lang->get('VOTE__VOTE_ERROR_USER_UNKNOWN')));
-                    }
-                }
+            if(!empty($get_last_vote['Vote']['created'])) {
+                $now = time();
+                $last_vote = ($now - strtotime($get_last_vote['Vote']['created']))/60;
             } else {
-                echo json_encode(array('statut' => false , 'msg' =>$this->Lang->get('VOTE__VOTE_ERROR_USER_UNKNOWN')));
+                $last_vote = null;
             }
-        } else {
-            throw new InternalErrorException();
+
+            $this->loadModel('Vote.VoteConfiguration');
+            $config = $this->VoteConfiguration->getConfig();
+
+
+            $websites = $config['websites'];
+            if(isset($websites[$this->Session->read('vote.website')])) {
+              $time_vote = $websites[$this->Session->read('vote.website')]['time_vote'];
+
+              if(empty($last_vote) OR $last_vote > $time_vote) {
+
+                $this->Session->write('vote.pseudo', $this->request->data['pseudo']);
+                echo json_encode(array('statut' => true , 'msg' => $this->Lang->get('VOTE__STEP_1_SUCCESS')));
+
+              } else {
+
+                $calcul_wait_time = ($time_vote - $last_vote)*60;
+                $calcul_wait_time = $this->Util->secondsToTime($calcul_wait_time); //On le sort en jolie
+
+                $wait_time = array();
+                if($calcul_wait_time['d'] > 0) {
+                  $wait_time[] = $calcul_wait_time['d'].' '.$this->Lang->get('GLOBAL__DATE_R_DAYS');
+                }
+                if($calcul_wait_time['h'] > 0) {
+                  $wait_time[] = $calcul_wait_time['h'].' '.$this->Lang->get('GLOBAL__DATE_R_HOURS');
+                }
+                if($calcul_wait_time['m'] > 0) {
+                  $wait_time[] = $calcul_wait_time['m'].' '.$this->Lang->get('GLOBAL__DATE_R_MINUTES');
+                }
+                if($calcul_wait_time['s'] > 0) {
+                  $wait_time[] = $calcul_wait_time['s'].' '.$this->Lang->get('GLOBAL__DATE_R_SECONDS');
+                }
+
+                $wait_time = implode(', ', $wait_time);
+
+                echo json_encode(array('statut' => false , 'msg' => $this->Lang->get('VOTE__VOTE_ERROR_WAIT', array('{WAIT_TIME}' => $wait_time))));
+              }
+            } else {
+                echo json_encode(array('statut' => false , 'msg' => $this->Lang->get('VOTE__VOTE_ERROR_UNKNOWN_WEBSITE')));
+            }
+          } else {
+            echo json_encode(array('statut' => false , 'msg' =>$this->Lang->get('VOTE__VOTE_ERROR_USER_UNKNOWN')));
+          }
         }
+      } else {
+        throw new InternalErrorException();
+      }
     }
 
     public function checkOut() {
@@ -127,8 +115,8 @@ class VoterController extends VoteAppController {
         if(!empty($this->request->data['out']) && $this->Session->check('vote.website') && $this->Session->check('vote.pseudo')) {
 
           $this->loadModel('Vote.VoteConfiguration');
-          $config = $this->VoteConfiguration->find('first');
-          $websites = unserialize($config['VoteConfiguration']['websites']);
+          $config = $this->VoteConfiguration->getConfig();
+          $websites = $config['websites'];
           $url = $websites[$this->Session->read('vote.website')]['page_vote'];
           // exemple : http://rpg-paradize.com/site-+FR+++RESET++ObsiFight+Serveur+PvP+Faction+2424+1.8-44835
 
@@ -179,12 +167,12 @@ class VoterController extends VoteAppController {
     public function getRewards() {
         $when = (isset($this->request->data['when'])) ? $this->request->data['when'] : 'now';
         $this->autoRender = false;
-        $this->response->type('json');
+        //$this->response->type('json');
         if($this->request->is('ajax')) {
             if($this->Session->check('vote.website') && $this->Session->check('vote.pseudo')) {
                 $this->loadModel('Vote.VoteConfiguration');
-                $config = $this->VoteConfiguration->find('first');
-                $websites = unserialize($config['VoteConfiguration']['websites']);
+                $config = $this->VoteConfiguration->getConfig();
+                $websites = $config['websites'];
                 $website = $websites[$this->Session->read('vote.website')];
                 if($this->Session->check('vote.out') || $website['website_type'] == "other") {
 
@@ -200,9 +188,6 @@ class VoterController extends VoteAppController {
                         $last_vote = null;
                     }
 
-                    $this->loadModel('Vote.VoteConfiguration');
-                    $config = $this->VoteConfiguration->find('first');
-                    $websites = unserialize($config['VoteConfiguration']['websites']);
                     if(isset($websites[$this->Session->read('vote.website')])) {
                         $time_vote = $websites[$this->Session->read('vote.website')]['time_vote'];
 
@@ -210,22 +195,20 @@ class VoterController extends VoteAppController {
 
                             // on incrémente le vote
                             if(empty($get_last_vote)) {
-                                $this->Vote->read(null, null);
-                                $this->Vote->set(array(
-                                    'user_id' => $user_id,
-                                    'ip' => $this->Util->getIP(),
-                                    'website' => $this->Session->read('vote.website')
-                                ));
-                                $this->Vote->save();
+                              $this->Vote->read(null, null);
+                              $this->Vote->set(array(
+                                  'user_id' => $user_id,
+                                  'ip' => $this->Util->getIP(),
+                                  'website' => $this->Session->read('vote.website')
+                              ));
                             } else {
-                                $this->Vote->read(null, $get_last_vote['Vote']['id']);
-                                $this->Vote->set(array(
-                                    'user_id' => $user_id,
-                                    'ip' => $this->Util->getIP(),
-                                    'website' => $this->Session->read('vote.website'),
-                                    'created' => date('Y-m-d H:i:s')
-                                ));
-                                $this->Vote->save();
+                              $this->Vote->read(null, $get_last_vote['Vote']['id']);
+                              $this->Vote->set(array(
+                                  'user_id' => $user_id,
+                                  'ip' => $this->Util->getIP(),
+                                  'website' => $this->Session->read('vote.website'),
+                                  'created' => date('Y-m-d H:i:s')
+                              ));
                             }
                             $this->loadModel('User');
                             $userData = $this->User->find('first', array('conditions' => array('pseudo' => $this->Session->read('vote.pseudo'))));
@@ -236,7 +219,7 @@ class VoterController extends VoteAppController {
                             }
 
                             // on cast l'event
-                            $event = new CakeEvent('onVote', $this, array('when' => $when, 'website' => $this->Session->read('vote.website'), 'config' => $config['VoteConfiguration'], 'user' => $userData));
+                            $event = new CakeEvent('onVote', $this, array('when' => $when, 'website' => $this->Session->read('vote.website'), 'config' => $config, 'user' => $userData));
                   					$this->getEventManager()->dispatch($event);
                   					if($event->isStopped()) {
                   						return $event->result;
@@ -245,7 +228,7 @@ class VoterController extends VoteAppController {
 
                             if($when == 'now') { // si c'est maintenant
 
-															$rewardStatus = $this->processRewards($config['VoteConfiguration'], $userData['User']);
+															$rewardStatus = $this->processRewards($config, $userData['User']);
 
 															if(!$rewardStatus['status']) {
 																echo json_encode(array('statut' => false, 'msg' => $this->Lang->get($rewardStatus['msg'])));
@@ -254,6 +237,7 @@ class VoterController extends VoteAppController {
 
                               // on sauvegarde le vote
                               $this->User->setToUser('vote', $vote_nbr, $userData['User']['id']);
+                              $this->Vote->save();
 
 															echo json_encode(array('statut' => true, 'msg' => $rewardStatus['msg']));
 
@@ -261,6 +245,7 @@ class VoterController extends VoteAppController {
                               // on sauvegarde le vote
                               $this->User->setToUser('vote', $vote_nbr, $userData['User']['id']);
                               $this->User->setToUser('rewards_waited', $rewards_waited, $userData['User']['id']);
+                              $this->Vote->save();
 
                               echo json_encode(array('statut' => true, 'msg' => $this->Lang->get('VOTE__STEP_4_REWARD_SUCCESS_SAVE')));
                             }
@@ -268,12 +253,32 @@ class VoterController extends VoteAppController {
                             $this->Session->delete('vote');
 
                         } else {
-                          echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('VOTE__VOTE_ERROR_WAIT')));
+
+                          $calcul_wait_time = ($time_vote - $last_vote)*60;
+                          $calcul_wait_time = $this->Util->secondsToTime($calcul_wait_time); //On le sort en jolie
+
+                          $wait_time = array();
+                          if($calcul_wait_time['d'] > 0) {
+                            $wait_time[] = $calcul_wait_time['d'].' '.$this->Lang->get('GLOBAL__DATE_R_DAYS');
+                          }
+                          if($calcul_wait_time['h'] > 0) {
+                            $wait_time[] = $calcul_wait_time['h'].' '.$this->Lang->get('GLOBAL__DATE_R_HOURS');
+                          }
+                          if($calcul_wait_time['m'] > 0) {
+                            $wait_time[] = $calcul_wait_time['m'].' '.$this->Lang->get('GLOBAL__DATE_R_MINUTES');
+                          }
+                          if($calcul_wait_time['s'] > 0) {
+                            $wait_time[] = $calcul_wait_time['s'].' '.$this->Lang->get('GLOBAL__DATE_R_SECONDS');
+                          }
+
+                          $wait_time = implode(', ', $wait_time);
+
+                          echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('VOTE__VOTE_ERROR_WAIT', array('{WAIT_TIME}' => $wait_time))));
 
                           $this->Session->delete('vote');
                         }
                     } else {
-                        echo json_encode(array('statut' => false, 'msg' => $this->Lang->get('VOTE__VOTE_ERROR_WAIT')));
+                      throw new NotFoundException();
                     }
 
                 } else {
@@ -294,7 +299,7 @@ class VoterController extends VoteAppController {
 			 	 ==== */
 			if($config['rewards_type'] == 1) { // toutes les récompenses
 
-				$rewards = unserialize($config['rewards']); // on récupére la liste
+				$rewards = $config['rewards']; // on récupére la liste
 
         $event = new CakeEvent('beforeReceiveRewards', $this, array('rewards' => $rewards, 'type' => 'all', 'user' => $user));
         $this->getEventManager()->dispatch($event);
@@ -339,7 +344,7 @@ class VoterController extends VoteAppController {
 
 		} else { // récompenses aléatoire selon probabilité
 
-			$rewards = unserialize($config['rewards']); // on récupère la liste des récompenses
+			$rewards = $config['rewards']; // on récupère la liste des récompenses
 			$probability_all = 0; // on met la probabilité totale à 0 de base
 		 	foreach ($rewards as $key => $value) {
 				$probability_all = $probability_all + $value['proba'];   // Puis on la calcule
@@ -382,7 +387,7 @@ class VoterController extends VoteAppController {
 		}
 
 		private function executeServerReward($config, $user, $reward) { // execute la commande d'une récompense si les serveurs de la config sont ouverts
-			$config['servers'] = unserialize($config['servers']); // on récupére la liste des serveurs configurés
+			$config['servers'] = $config['servers']; // on récupére la liste des serveurs configurés
 			if(!empty($config['servers'])) { // si la liste n'est pas vide
 				foreach ($config['servers'] as $k => $v) { //on parcours les serveurs pour voir si ils sont tous allumés
 					$servers_online[] = $this->Server->online($v);
@@ -409,17 +414,19 @@ class VoterController extends VoteAppController {
 					$this->Server->commands($cmd); // on envoie la commande puis enregistre le vote
 				} else {
           $continue = false;
-					foreach ($config['servers'] as $k2 => $v2) { // on parcours les serveurs
+          if($reward['need_connect_on_server'] == "true") {
+  					foreach ($config['servers'] as $k2 => $v2) { // on parcours les serveurs
 
-            if($reward['need_connect_on_server'] == "true") {
               $call = $this->Server->call(array('isConnected' => $user['pseudo']), true, $v2);
               if($call['isConnected'] == 'true') {
                 $continue = true;
                 break;
               }
-            }
 
-					}
+  					}
+          } else {
+            $continue = true;
+          }
           if($continue) {
             unset($k2);
             unset($v2);
@@ -440,7 +447,7 @@ class VoterController extends VoteAppController {
         $this->autoRender = false;
         if($this->isConnected && $this->User->getKey('rewards_waited') > 0) {
             $this->loadModel('Vote.VoteConfiguration');
-            $config = $this->VoteConfiguration->find('first');
+            $config = $this->VoteConfiguration->getConfig();
 
             $event = new CakeEvent('beforeGetWaitingReward', $this, array('user' => $this->User->getAllFromCurrentUser()));
             $this->getEventManager()->dispatch($event);
@@ -448,7 +455,7 @@ class VoterController extends VoteAppController {
               return $event->result;
             }
 
-						$rewardStatus = $this->processRewards($config['VoteConfiguration'], $this->User->getAllFromCurrentUser());
+						$rewardStatus = $this->processRewards($config, $this->User->getAllFromCurrentUser());
 
 						if(!$rewardStatus['status']) {
 							$this->Session->setFlash($this->Lang->get($rewardStatus['msg']), 'default.error');
@@ -469,11 +476,10 @@ class VoterController extends VoteAppController {
             $this->layout = "admin";
 
             $this->loadModel('Vote.VoteConfiguration');
-            $vote = $this->VoteConfiguration->find('first');
+            $vote = $config = $this->VoteConfiguration->getConfig();
             if(!empty($vote)) {
-                $vote = $vote['VoteConfiguration'];
-                $vote['rewards'] = unserialize($vote['rewards']);
-                $vote['websites'] = unserialize($vote['websites']);
+                $vote['rewards'] = $vote['rewards'];
+                $vote['websites'] = $vote['websites'];
             } else {
                 $vote = array();
             }
@@ -485,7 +491,7 @@ class VoterController extends VoteAppController {
             $servers = $this->Server->findSelectableServers(true);
 						$this->set(compact('servers'));
 
-						$vote['servers'] = (isset($vote['servers'])) ? unserialize($vote['servers']) : array();
+						$vote['servers'] = (isset($vote['servers'])) ? $vote['servers'] : array();
             if(!empty($vote['servers'])) {
                 $selected_server = array();
                 foreach ($vote['servers'] as $key => $value) {
@@ -563,7 +569,7 @@ class VoterController extends VoteAppController {
 
                         $rewards = serialize($this->request->data['rewards']);
 
-                        $vote = $this->VoteConfiguration->find('first');
+                        $vote = $this->VoteConfiguration->getConfig();
                         if(!empty($vote)) {
                             $this->VoteConfiguration->read(null, 1);
                         } else {

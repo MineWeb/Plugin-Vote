@@ -170,6 +170,14 @@
 			  	<div class="response_step4"></div>
 			</div>
 		</div>
+		<div class="col-md-3">
+			<?php if($Permissions->can('VOTE_SHOW_REWARDS')) { ?>
+				<button data-toggle="modal" data-target="#rewards" class="btn btn-primary btn-block"><?= $Lang->get('VOTE__REWARDS_TITLE') ?></button>
+			<?php } ?>
+			<?php if($Permissions->can('VOTE_SHOW_RANKING')) { ?>
+				<button data-toggle="modal" data-target="#ranking" class="btn btn-primary btn-block"><?= $Lang->get('VOTE__RANKING_TITLE') ?></button>
+			<?php } ?>
+		</div>
 	</div>
 	<?php if($Permissions->can('VOTE_SHOW_REWARDS')) { ?>
 		<div class="modal fade" id="rewards" tabindex="-1" role="dialog" aria-labelledby="rewardsLabel" aria-hidden="false">
@@ -257,17 +265,94 @@
 			inputs['when'] = $(this).attr('id');
 			inputs["data[_Token][key]"] = '<?= $csrfToken ?>'
 			$.post("<?= $this->Html->url(array('plugin' => 'vote', 'controller' => 'voter', 'action' => 'getRewards')) ?>", inputs, function(data) {
-			    if(data.statut) {
-			    	$('#icon_step4').css("display", "");
-			    	$('.step4').css("opacity", "0.7");
-			    	$('.step4 .response_step4').css("opacity", "");
-			    	$('.btn-step4').addClass('disabled');
-			        $('.response_step4').html('<div class="panel-footer"><div class="alert alert-success" style="margin-bottom:0px;"><b><?= $Lang->get('GLOBAL__SUCCESS') ?> : </b>'+data.msg+'</div></div>');
-			        $('#script_step4').remove();
-			    } else {
-			    	$('.response_step4').html('<div class="panel-footer"><div class="alert alert-danger" style="margin-bottom:0px;"><b><?= $Lang->get('GLOBAL__ERROR') ?> : </b>'+data.msg+'</div></div>');
-			    }
+				data = JSON.parse(data);
+		    if(data.statut) {
+		    	$('#icon_step4').css("display", "");
+		    	$('.step4').css("opacity", "0.7");
+		    	$('.step4 .response_step4').css("opacity", "");
+		    	$('.btn-step4').addClass('disabled');
+	        $('.response_step4').html('<div class="panel-footer"><div class="alert alert-success" style="margin-bottom:0px;"><b><?= $Lang->get('GLOBAL__SUCCESS') ?> : </b>'+data.msg+'</div></div>');
+	        $('#script_step4').remove();
+		    } else {
+		    	$('.response_step4').html('<div class="panel-footer"><div class="alert alert-danger" style="margin-bottom:0px;"><b><?= $Lang->get('GLOBAL__ERROR') ?> : </b>'+data.msg+'</div></div>');
+		    }
 			});
 	  });
 	</script>
 </div>
+<?php if($Permissions->can('VOTE_SHOW_REWARDS')) { ?>
+	<div class="modal fade" id="rewards" tabindex="-1" role="dialog" aria-labelledby="rewardsLabel" aria-hidden="false">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="<?= $Lang->get('GLOBAL__CLOSE') ?>"><span aria-hidden="true">×</span></button>
+							<h4 class="modal-title" id="myModalLabel"><?= $Lang->get('VOTE__REWARDS_TITLE') ?></h4>
+						</div>
+						<div class="modal-body">
+							<table class="table table-striped">
+									<thead>
+										<tr>
+												<th>Nom</th>
+												<th><?= $Lang->get('VOTE__CONFIG_REWARD_PROBABILITY') ?></th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+											foreach ($rewards as $key => $value) {
+												echo '<tr>';
+													echo '<td>';
+														echo ($value['type'] == "money") ? $value['how'].' '.$Configuration->getMoneyName() : $value['name'];
+													echo '</td>';
+													echo '<td>'.$value['proba'].'%</td>';
+												echo '</tr>';
+											}
+										?>
+								</tbody>
+							</table>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal"><?= $Lang->get('GLOBAL__CLOSE') ?></button>
+					</div>
+				</div>
+			</div>
+	</div>
+<?php } ?>
+<?php if($Permissions->can('VOTE_SHOW_RANKING')) { ?>
+	<div class="modal fade" id="ranking" tabindex="-1" role="dialog" aria-labelledby="rankingLabel" aria-hidden="false">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="<?= $Lang->get('GLOBAL__CLOSE') ?>"><span aria-hidden="true">×</span></button>
+							<h4 class="modal-title" id="myModalLabel"><?= $Lang->get('VOTE__RANKING_TITLE') ?></h4>
+						</div>
+						<div class="modal-body">
+							<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>#</th>
+												<th>Nom</th>
+												<th>Nbr. vote</th>
+										</tr>
+									</thead>
+									<tbody>
+											<?php
+											$i = 0;
+											foreach ($ranking as $key => $value) {
+											$i++;
+											?>
+												<tr>
+													<td><?= $i ?></td>
+													<td><?= $value['User']['pseudo'] ?></td>
+													<td><?= $value['User']['vote'] ?></td>
+												</tr>
+							<?php } ?>
+						</tbody>
+							</table>
+							</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal"><?= $Lang->get('GLOBAL__CLOSE') ?></button>
+					</div>
+				</div>
+			</div>
+	</div>
+<?php } ?>
