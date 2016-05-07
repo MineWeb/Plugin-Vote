@@ -1,7 +1,7 @@
 <?php
 // Ajout des tables pour la MAJ
 $db = ConnectionManager::getDataSource('default');
-
+/*
 // 0.3
 $verif_03 = $db->query('SHOW COLUMNS FROM vote_configurations;');
 $execute_03 = true;
@@ -48,7 +48,7 @@ foreach ($verif_06 as $k => $v) {
 if($execute_06) {
 	$db->query('ALTER TABLE `users` ADD  `rewards_waited` int NULL DEFAULT NULL ;');
 }
-
+*/
 // 0.7.0
 function switch_table_name($old_table, $new_table) {
 
