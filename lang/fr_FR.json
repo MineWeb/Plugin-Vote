@@ -22,6 +22,12 @@
   "VOTE__RANKING_TITLE": "Classement",
   "VOTE__ERROR_NEED_CONNECT_ON_SERVER":"Vous devez être connecté sur le serveur pour recevoir cette récompense",
 
+  "VOTE__NOTIFICATION_NOW_IN_TOP":"Vous êtes maintenant dans le TOP 3 des voteurs !",
+  "VOTE__NOTIFICATION_NOT_NOW_IN_TOP":"Vous n'êtes maintenant plus dans le TOP 3 des voteurs !",
+  "VOTE__NOTIFICATION_NOW_FIRST":"Vous êtes maintenant 1er voteur !",
+  "VOTE__NOTIFICATION_NOT_NOW_FIRST":"Vous n'êtes maintenant plus 1er voteur !",
+  "VOTE__NOTIFICATION_RESET_VOTES":"Les votes ont été rénitialisé, votez pour être à la première place du classement !",
+
   "VOTE__VOTE_ERROR_WAIT": "Vous avez d\u00e9j\u00e0 vot\u00e9 ! Revenez dans {WAIT_TIME}.",
   "VOTE__VOTE_ERROR_USER_UNKNOWN": "Utilisateur inconnu",
   "VOTE__VOTE_ERROR_UNKNOWN_WEBSITE":"Le site choisi est inconnu.",
@@ -33,7 +39,7 @@
   "VOTE__CONFIG_WEBSITES":"Configurer les sites de vote",
   "VOTE__CONFIG_REWARDS":"Configurer les récompenses",
   "VOTE__CONFIG_TIME_VOTE": "Temps d'\u00e9cart entre les votes",
-  "VOTE__CONFIG_PAGE_VOTE": "Page de vote",
+  "VOTE__CONFIG_PAGE_VOTE": "Page de vote <small><em>ou là où est afficher l'OUT (pour les sites de type RPG-Paradize)</em></small>",
   "VOTE__CONFIG_ID_RPG": "ID RPG-Paradize",
   "VOTE__CONFIG_REWARDS_TYPE": "Type de r\u00e9compenses",
   "VOTE__CONFIG_REWARD_TYPE": "Type de la r\u00e9compense",

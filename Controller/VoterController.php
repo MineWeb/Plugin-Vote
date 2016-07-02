@@ -133,7 +133,7 @@ class VoterController extends VoteAppController {
           $ch = curl_init();
           curl_setopt($ch, CURLOPT_URL, $url); // l'url visité
           curl_setopt($ch, CURLOPT_FAILONERROR, 1);// Gestion d'erreur
-          //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // autorise la redirection
+          curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // autorise la redirection
           curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); // stock la response dans une variable
           curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
           curl_setopt($ch, CURLOPT_PORT, 80); // set port 80
@@ -143,8 +143,12 @@ class VoterController extends VoteAppController {
 
 
           $result=curl_exec($ch);
-          $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+          $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
           curl_close($ch);
+
+          if($code != 200) {
+            $this->log('RPG-Paradize unavailable (CODE: '.$code.')');
+          }
 
           $str = substr($result, strpos($result, 'Clic Sortant'), 20);
           $out = filter_var($str, FILTER_SANITIZE_NUMBER_INT);
@@ -235,6 +239,42 @@ class VoterController extends VoteAppController {
                                 return;
 															}
 
+                              /*
+                                  On vérifie sa position pour le notifier
+                              */
+                                // On récupère le top 3
+                                $getTOP = $this->User->find('all', array('fields' => array('User.id', 'User.vote'), 'order' => 'vote DESC', 'limit' => 3));
+                                //Si il en fait partie
+                                if(in_array($userData['User']['id'], $getTOP)) {
+
+                                  // Si il est deuxième
+                                  if($getTOP[1]['User']['id'] == $userData['User']['id']) {
+                                    // Si il va être premier
+                                    if($vote_nbr > $getTOP[1]['User']['vote']) {
+
+                                      //On notifie qu'il est 1er
+                                      $this->loadModel('Notification');
+                                      $this->Notification->setToUser($this->Lang->get('VOTE__NOTIFICATION_NOW_FIRST'), $userData['User']['id']);
+                                      //On notifie l'autre qu'il n'est plus 1er
+                                      $this->Notification->setToUser($this->Lang->get('VOTE__NOTIFICATION_NOT_NOW_FIRST'), $getTOP[0]['User']['id']);
+
+                                    }
+                                  }
+
+                                } else {
+                                  // Si il en fait pas partie, mais que dans 1 vote, il y sera
+                                  $top3Votes = $getTOP[2]['User']['vote'];
+                                  if($vote_nbr > $top3Votes) {
+
+                                    //On notifie qu'il est dans le top 3
+                                    $this->loadModel('Notification');
+                                    $this->Notification->setToUser($this->Lang->get('VOTE__NOTIFICATION_NOW_IN_TOP'), $userData['User']['id']);
+                                    //On notifie l'autre qu'il n'est plus dans le top 3
+                                    $this->Notification->setToUser($this->Lang->get('VOTE__NOTIFICATION_NOT_NOW_IN_TOP'), $getTOP[2]['User']['id']);
+
+                                  }
+                                }
+
                               // on sauvegarde le vote
                               $this->User->setToUser('vote', $vote_nbr, $userData['User']['id']);
                               $this->Vote->save();
@@ -242,6 +282,44 @@ class VoterController extends VoteAppController {
 															echo json_encode(array('statut' => true, 'msg' => $rewardStatus['msg']));
 
                             } else { // si c'est plus tard
+
+                              /*
+                                  On vérifie sa position pour le notifier
+                              */
+                                // On récupère le top 3
+                                $getTOP = $this->User->find('all', array('fields' => array('User.id', 'User.pseudo', 'User.vote'), 'order' => 'vote DESC', 'limit' => 3));
+
+                                //Si il en fait partie
+                                if($getTOP[0]['User']['id'] == $userData['User']['id'] || $getTOP[1]['User']['id'] == $userData['User']['id'] || $getTOP[2]['User']['id'] == $userData['User']['id']) {
+
+                                  // Si il est deuxième
+                                  if($getTOP[1]['User']['id'] == $userData['User']['id']) {
+                                    // Si il va être premier
+                                    if($vote_nbr > $getTOP[0]['User']['vote']) {
+
+                                      //On notifie qu'il est 1er
+                                      $this->loadModel('Notification');
+                                      $this->Notification->setToUser($this->Lang->get('VOTE__NOTIFICATION_NOW_FIRST'), $userData['User']['id']);
+                                      //On notifie l'autre qu'il n'est plus 1er
+                                      $this->Notification->setToUser($this->Lang->get('VOTE__NOTIFICATION_NOT_NOW_FIRST'), $getTOP[0]['User']['id']);
+
+                                    }
+                                  }
+
+                                } else {
+                                  // Si il en fait pas partie, mais que dans 1 vote, il y sera
+                                  $top3Votes = $getTOP[2]['User']['vote'];
+                                  if($vote_nbr > $top3Votes) {
+
+                                    //On notifie qu'il est dans le top 3
+                                    $this->loadModel('Notification');
+                                    $this->Notification->setToUser($this->Lang->get('VOTE__NOTIFICATION_NOW_IN_TOP'), $userData['User']['id']);
+                                    //On notifie l'autre qu'il n'est plus dans le top 3
+                                    $this->Notification->setToUser($this->Lang->get('VOTE__NOTIFICATION_NOT_NOW_IN_TOP'), $getTOP[2]['User']['id']);
+
+                                  }
+                                }
+
                               // on sauvegarde le vote
                               $this->User->setToUser('vote', $vote_nbr, $userData['User']['id']);
                               $this->User->setToUser('rewards_waited', $rewards_waited, $userData['User']['id']);
@@ -523,6 +601,9 @@ class VoterController extends VoteAppController {
           if($event->isStopped()) {
             return $event->result;
           }
+
+          $this->loadModel('Notification');
+          $this->Notification->setToAll($this->Lang->get('VOTE__NOTIFICATION_RESET_VOTES'));
 
           $this->loadModel('Vote.Vote');
           $this->Vote->deleteAll(array('1' => '1'));

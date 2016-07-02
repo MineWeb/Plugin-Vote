@@ -13,7 +13,7 @@
 				  <div class="panel-body">
 				  	<?php foreach ($websites as $key => $value) { ?>
 				  		<div class="col-md-4">
-							<button class="btn btn-success choose_website btn-block" id="<?= $key ?>"><?= $value['website_name'] ?></button>
+							<button style="margin-bottom:5px;" class="btn btn-success choose_website btn-block" id="<?= $key ?>"><?= $value['website_name'] ?></button>
 						</div>
 					<?php } ?>
 				  </div>
