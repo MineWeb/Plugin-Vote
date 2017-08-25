@@ -8,7 +8,7 @@
 	"admin_icon":"external-link",
 	"admin_route": "/admin/vote/voter",
 	"author":"Eywek",
-	"version":"0.7.2",
+	"version":"1.0.0",
 	"apiID":3,
 	"useEvents":true,
 	"permissions" : {
@@ -19,6 +19,6 @@
 		}
 	},
 	"requirements" : {
-		"CMS" : ">= 1.0.0"
+		"CMS" : "^1.3.0"
 	}
 }
