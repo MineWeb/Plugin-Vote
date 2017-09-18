@@ -3,7 +3,8 @@ class VoteController extends VoteAppController {
 
     public function index()
     {
-
+        $this->set('title_for_layout', $this->Lang->get('VOTE__TITLE'));
+        $this->set('config', $this->__getConfig());
     }
 
     public function setUser()

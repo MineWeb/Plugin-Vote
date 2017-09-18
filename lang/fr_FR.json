@@ -1,4 +1,5 @@
 {
+  "VOTE__TITLE": "Voter",
   "VOTE__SET_USER_SUCCESS": "Vous avez bien été connecté !",
   "VOTE__SET_USER_ERROR_USER_NOT_FOUND": "Vous n'avez pas été trouvé dans notre base de données",
   "VOTE__SET_WEBSITE_ERROR_NEED_WAIT": "Vous avez déjà voté pour ce site, vous devez encore attendre {TIME}.",
