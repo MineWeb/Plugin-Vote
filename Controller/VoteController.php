@@ -46,19 +46,19 @@ class VoteController extends VoteAppController {
             throw new ForbiddenException();
 
         // Find website
-        $this->loadModel('Vote.Website');
+        $this->loadModel('Vote.Website.php');
         $website = $this->Website->find('first', ['conditions' => ['id' => $this->request->data['website_id']]]);
         if (empty($website))
             throw new NotFoundException();
 
         // Check if has already vote and if time isn't enough
         $this->loadModel('Vote.Vote');
-        if (!$this->Vote->can($this->Session->read('vote.user.username'), $website))
-            return $this->sendJSON(['status' => false, 'error' => $this->Lang->getKey('VOTE__SET_WEBSITE_ERROR_NEED_WAIT', ['{TIME}' => $this->Vote->getNextVoteTime($this->Session->read('vote.user.username'), $website)])]);
+        if (!$this->Vote->can($this->Session->read('vote.user'), $this->Util->getIP(), $website))
+            return $this->sendJSON(['status' => false, 'error' => $this->Lang->getKey('VOTE__SET_WEBSITE_ERROR_NEED_WAIT', ['{TIME}' => $this->Util->generateStringFromTime($this->Vote->getNextVoteTime($this->Session->read('vote.user'), $this->Util->getIP(), $website))])]);
 
         // Store it
         $this->Session->write('vote.website.id', $this->request->data['website_id']);
-        $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__SET_WEBSITE_SUCCESS'), 'data' => ['website' => ['url' => $website['Website']['url']]]]);
+        $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__SET_WEBSITE_SUCCESS'), 'data' => ['website' => ['url' => $website['Website.php']['url']]]]);
     }
 
     public function checkVote()
@@ -76,11 +76,12 @@ class VoteController extends VoteAppController {
             throw new ForbiddenException();
 
         // Check if website type need verification
-        $this->loadModel('Vote.Website');
+        $this->loadModel('Vote.Website.php');
         $website = $this->Website->find('first', ['conditions' => ['id' => $this->Session->read('vote.website.id']]);
         if (empty($website))
             throw new NotFoundException();
-        if (!$this->Website->valid($website, $this->Session->read('vote.user.username')))
+        $this->loadModel('Vote.Vote');
+        if (!$this->Website->valid($this->Session->read('vote.user'), $this->Util->getIP(), $website))
             return $this->sendJSON(['status' => false]);
 
         // Store it
@@ -110,15 +111,15 @@ class VoteController extends VoteAppController {
             throw new ForbiddenException();
 
         // Get website
-        $this->loadModel('Vote.Website');
+        $this->loadModel('Vote.Website.php');
         $website = $this->Website->find('first', ['conditions' => ['id' => $this->Session->read('vote.website.id']]);
         if (empty($website))
             throw new NotFoundException();
 
         // Check if user can vote
         $this->loadModel('Vote.Vote');
-        if (!$this->Vote->can($this->Session->read('vote.user.username'), $website))
-            return $this->sendJSON(['status' => false, 'error' => $this->Lang->getKey('VOTE__SET_WEBSITE_ERROR_NEED_WAIT', ['{TIME}' => $this->Vote->getNextVoteTime($this->Session->read('vote.user.username'), $website)])]);
+        if (!$this->Vote->can($this->Session->read('vote.user'), $this->Util->getIP(), $website))
+            return $this->sendJSON(['status' => false, 'error' => $this->Lang->getKey('VOTE__SET_WEBSITE_ERROR_NEED_WAIT', ['{TIME}' => $this->Util->generateStringFromTime($this->Vote->getNextVoteTime($this->Session->read('vote.user'), $this->Util->getIP(), $website))])]);
 
         // Generate random reward
         $this->loadModel('Vote.Reward');
@@ -132,7 +133,8 @@ class VoteController extends VoteAppController {
             'user_id' => ($this->__getConfig()->needRegister && isset($user['id'])) ? $user['id'] : null,
             'reward_id' => $reward['id'],
             'collected' => 0,
-            'website_id' => $website['id']
+            'website_id' => $website['id'],
+            'ip' => $this->Util->getIP()
         ]);
         $this->Vote->save();
 
