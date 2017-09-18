@@ -1,24 +1,44 @@
 {
 	"name":"Voter",
-	"slug":"vote",
-	"nav":true,
-	"admin":true,
-	"admin_group_menu":"customisation",
-	"admin_name":"Vote",
-	"admin_icon":"external-link",
-	"admin_route": "/admin/vote/voter",
+	"admin_menus": {
+		"GLOBAL__CUSTOMIZE": {
+			"Voter": {
+				"icon": "external-link",
+				"menu": {
+					"Configuration": {
+						"icon": "cog",
+						"permission": "VOTE__ADMIN_MANAGE",
+						"route": "/admin/vote/configuration"
+					},
+					"Gérer les récompenses": {
+						"icon": "gift",
+						"permission": "VOTE__ADMIN_MANAGE_REWARDS",
+						"route": "/admin/vote/rewards"
+					},
+					"Gérer les sites de votes": {
+						"icon": "sitemap",
+						"permission": "VOTE__ADMIN_MANAGE_WEBSITES",
+						"route": "/admin/vote/websites"
+					}
+				}
+			}
+		}
+	},
+	"navbar_routes": {
+		"Voter": "/vote"
+	},
 	"author":"Eywek",
-	"version":"1.0.0",
+	"version":"2.0.0",
 	"apiID":3,
 	"useEvents":true,
 	"permissions" : {
-		"available" : ["VOTE_SHOW_REWARDS", "VOTE_SHOW_RANKING", "VOTE"],
+		"available" : ["VOTE", "VOTE__ADMIN_MANAGE_REWARDS", "VOTE__ADMIN_MANAGE_WEBSITES", "VOTE__ADMIN_MANAGE"],
 		"default" : {
-			"0" : ["VOTE_SHOW_RANKING", "VOTE_SHOW_REWARDS", "VOTE"],
-			"2" : ["VOTE_SHOW_RANKING", "VOTE_SHOW_REWARDS", "VOTE"]
+			"0" : ["VOTE"],
+			"2" : ["VOTE"]
 		}
 	},
 	"requirements" : {
-		"CMS" : "^1.3.0"
+		"CMS" : "^1.2.0"
 	}
 }

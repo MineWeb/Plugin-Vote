@@ -5,19 +5,18 @@ class VoteRewardsEventListener implements CakeEventListener {
 
     public function implementedEvents() {
         return array(
-            'requestPage' => 'checkRewardsWaiting'
+            'onLoadPage' => 'checkRewardsWaiting'
         );
     }
 
     public function checkRewardsWaiting($event) {
         if($event->subject()->request->params['controller'] == "user" && $event->subject()->request->params['action'] == "profile") {
 
-            // On récupére le modal
-            $UserModel = ClassRegistry::init('User');
-
-            $rewards_waiting = ($UserModel->getKey('rewards_waited') && $UserModel->getKey('rewards_waited') > 0) ? $UserModel->getKey('rewards_waited') : false;
-
-            ModuleComponent::$vars['rewards_waiting'] = $rewards_waiting;
+            // Add vote
+            $user = $event->subject()->viewVars['user'];
+            $user['votes_count'] = 0;
+            $event->subject()->viewVars['user'] = $user;
+            ModuleComponent::$vars['rewards_waiting'] = 0;
         }
     }
 }
