@@ -27,6 +27,18 @@
   "VOTE__ADMIN_REWARD_AMOUNT": "Montant de {MONEY_NAME} a donner (optionnel)",
   "VOTE__ADMIN_REWARD_PROBABILITY": "Probabilité d'obtenir la récompense (pourcentage)",
 
+  "VOTE__ADMIN_MANAGE_WEBSITES": "Gérer les sites de vote",
+  "VOTE__ADMIN_WEBSITE_NAME": "Nom du site",
+  "VOTE__ADMIN_WEBSITE_URL": "URL de vote",
+  "VOTE__ADMIN_WEBSITE_CREATED": "Date de création",
+  "VOTE__ADMIN_WEBSITE_TIME": "Temps entre chaque votes (en minutes)",
+  "VOTE__ADMIN_DELETE_WEBSITE_SUCCESS": "Le site de vote a bien été supprimé !",
+  "VOTE__ADMIN_EDIT_WEBSITE_SUCCESS": "Le site de vote a bien été édité !",
+  "VOTE__ADMIN_WEBSITE_SERVER_ID": "Serveur sur lequel est donné la récompense",
+  "VOTE__ADMIN_WEBSITE_REWARDS": "Liste des récompenses",
+  "VOTE__ADMIN_WEBSITE_TYPE": "Type de site de vote",
+  "VOTE__ADMIN_WEBSITE_TYPE_DEFAULT": "Par défaut (aucune vérification)",
+
   "PERMISSIONS__VOTE__ADMIN_MANAGE_REWARDS": "Gérer les récompenses du vote",
   "PERMISSIONS__VOTE__ADMIN_MANAGE_WEBSITES": "Gérer les sites de vote",
   "PERMISSIONS__VOTE__ADMIN_MANAGE": "Gérer les votes",

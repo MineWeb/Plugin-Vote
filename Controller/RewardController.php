@@ -58,7 +58,7 @@ class RewardController extends VoteAppController {
             $this->Reward->save();
 
             $this->History->set('ADD_EDIT_REWARD', 'vote');
-            $this->Session->setFlash($this->Lang->get('VOTE__ADMIN_EDIT_CONFIG_SUCCESS'), 'default.success');
+            $this->Session->setFlash($this->Lang->get('VOTE__ADMIN_EDIT_REWARD_SUCCESS'), 'default.success');
             return $this->sendJSON(['statut' => true, 'msg' => $this->Lang->get('VOTE__ADMIN_EDIT_REWARD_SUCCESS')]);
         }
     }
