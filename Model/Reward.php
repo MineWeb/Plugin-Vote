@@ -22,4 +22,19 @@ class Reward extends VoteAppModel
         $reward['commands'] = json_decode($reward['commands'], true);
         return $reward;
     }
+
+    public function collect($reward, $username, ServerComponent $server, $additionalsCommands = [])
+    {
+        // Check if logged
+        if ($reward['need_online'] && !$server->userIsConnected($username, $reward['server_id']))
+            return false;
+        // Replace vars
+        $commands = [];
+        foreach (array_merge($reward['commands'], $additionalsCommands) as $command) {
+            $commands[] = str_replace('{PLAYER}', $username, str_replace('{REWARD_NAME}', $reward['name'], $command));
+        }
+
+        // Send commands
+        $server->commands($commands, $reward['server_id']);
+    }
 }

@@ -18,7 +18,7 @@ class VoteController extends VoteAppController {
 
         if ($this->User->isConnected()) { // If already logged
             $user = ['username' => $this->User->getKey('pseudo'), 'id' => $this->User->getKey('id')];
-        } else if ($this->__getConfig()->needRegister) { // If need register, check if username is valid
+        } else if ($this->__getConfig()->need_register) { // If need register, check if username is valid
             $searchUser = $this->User->find('first', ['fields' => ['pseudo'], 'conditions' => ['pseudo' => $this->request->data['username']]]);
             if (empty($searchUser))
                 return $this->sendJSON(['status' => false, 'error' => $this->Lang->get('VOTE__SET_USER_ERROR_USER_NOT_FOUND')]);
@@ -77,7 +77,7 @@ class VoteController extends VoteAppController {
 
         // Check if website type need verification
         $this->loadModel('Vote.Website.php');
-        $website = $this->Website->find('first', ['conditions' => ['id' => $this->Session->read('vote.website.id']]);
+        $website = $this->Website->find('first', ['conditions' => ['id' => $this->Session->read('vote.website.id')]]);
         if (empty($website))
             throw new NotFoundException();
         $this->loadModel('Vote.Vote');
@@ -95,7 +95,7 @@ class VoteController extends VoteAppController {
             throw new NotFoundException();
         if (empty($this->request->data) || empty($this->request->data['reward_time']) || !in_array($this->request->data['reward_time'], ['NOW', 'LATER']))
             throw new BadRequestException();
-        if ($this->request->data['reward_time'] === 'LATER' && !$this->__getConfig()->needRegister)
+        if ($this->request->data['reward_time'] === 'LATER' && !$this->__getConfig()->need_register)
             throw new BadRequestException();
         $this->autoRender = false;
         $this->response->type('json');
@@ -112,7 +112,7 @@ class VoteController extends VoteAppController {
 
         // Get website
         $this->loadModel('Vote.Website.php');
-        $website = $this->Website->find('first', ['conditions' => ['id' => $this->Session->read('vote.website.id']]);
+        $website = $this->Website->find('first', ['conditions' => ['id' => $this->Session->read('vote.website.id')]]);
         if (empty($website))
             throw new NotFoundException();
 
@@ -130,7 +130,7 @@ class VoteController extends VoteAppController {
         $this->Vote->create();
         $this->Vote->set([
             'username' => $user['username'],
-            'user_id' => ($this->__getConfig()->needRegister && isset($user['id'])) ? $user['id'] : null,
+            'user_id' => ($this->__getConfig()->need_register && isset($user['id'])) ? $user['id'] : null,
             'reward_id' => $reward['id'],
             'collected' => 0,
             'website_id' => $website['id'],
@@ -144,17 +144,10 @@ class VoteController extends VoteAppController {
         // If he want reward now, try to give it
         if ($this->request->data['reward_time'] === 'LATER')
             return $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__GET_REWARDS_LATER_SUCCESS')]);
-        // Check if logged
-        // Replace vars
-        $commands = [];
-        foreach ($reward['commands'] as $command) {
-            $commands[] = str_replace('{PLAYER}', $user['username'], $command);
-        }
-        // Add global command
-        $commands[] = str_replace('{PLAYER}', $user['username'], str_replace('{REWARD_NAME}', $reward['name'], $this->__getConfig()->global_command));
-
-        // Send commands
-        $this->Server->commands($commands, $reward['server_id']);
+        if (!$this->Reward->collect($reward, $user['username'], $this->Server, [$this->__getConfig()->global_command]))
+            return $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__GET_REWARDS_NOW_ERROR')]);
+        if ($reward['amount'] > 0 && isset($user['id']))
+            $this->User->setToUser('money', (floatval($this->User->getFromUser('money', $user['id'])) + floatval($reward['amount'])), $user['id']);
 
         // Set as collected
         $this->Vote->read(null, $this->Vote->getLastInsertId());
@@ -165,10 +158,64 @@ class VoteController extends VoteAppController {
         $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__GET_REWARDS_NOW_SUCCESS')]);
     }
 
+    public function getNotCollectedReward()
+    {
+        if (!$this->Permissions->can('VOTE__COLLECT_REWARD'))
+            throw new ForbiddenException();
+        $this->loadModel('Vote.Vote');
+        $findVote = $this->Vote->find('first', ['conditions' => ['user_id' => $this->User->getKey('id'), 'collected' => 0], 'recursive' => 1]);
+        if (empty($findVote))
+            throw new NotFoundException();
+        // Give it
+        $this->loadModel('Vote.Reward');
+        $reward = $findVote['Reward'];
+        if (!$this->Reward->collect($reward, $this->User->getKey('User'), $this->Server, [$this->__getConfig()->global_command])) {
+            $this->Session->setFlash($this->Lang->getKey('VOTE__COLLECT_REWARD_ERROR'), 'default.error');
+            $this->redirect($this->referer());
+            return;
+        }
+        // Add money
+        if ($reward['amount'] > 0)
+            $this->User->setKey('money', (floatval($this->User->getKey('money')) + floatval($reward['amount'])));
+        // Set as collected
+        $this->Vote->read(null, $findVote['Vote']['id']);
+        $this->Vote->set(['collected' => 1]);
+        $this->Vote->save();
+
+        // Redirect
+        $this->Session->setFlash($this->Lang->getKey('VOTE__COLLECT_REWARD_SUCCESS'), 'default.error');
+        $this->redirect($this->referer());
+    }
+
     private function __getConfig()
     {
         $this->loadModel('Vote.VoteConfiguration');
         return (object)$this->VoteConfiguration->getConfig();
     }
 
+    public function admin_configuration()
+    {
+        if (!$this->Permissions->can('VOTE__ADMIN_MANAGE'))
+            throw new ForbiddenException();
+        $this->set('title_for_layout', $this->Lang->get('VOTE__ADMIN_VOTE_CONFIGURATION_TITLE'));
+        $this->loadModel('Vote.VoteConfiguration');
+        $this->set('configuration', $this->VoteConfiguration->getConfig());
+        $this->layout = 'admin';
+
+        if ($this->request->is('ajax')) {
+            $this->autoRender = false;
+            $this->response->type('json');
+            if (!isset($this->request->data['need_register']) || !isset($this->request->data['global_command']))
+                return $this->sendJSON(['statut' => false, 'msg' => $this->Lang->get('ERROR__FILL_ALL_FIELDS')]);
+            $this->VoteConfiguration->read(null, 1);
+            $this->VoteConfiguration->set([
+                'need_register' => $this->request->data['need_register'],
+                'global_command' => $this->request->data['global_command']
+            ]);
+            $this->VoteConfiguration->save();
+
+            $this->History->set('EDIT_VOTE_CONFIGURATION', 'vote');
+            return $this->sendJSON(['statut' => true, 'msg' => $this->Lang->get('VOTE__ADMIN_EDIT_CONFIG_SUCCESS')]);
+        }
+    }
 }

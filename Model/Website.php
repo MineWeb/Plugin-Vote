@@ -34,6 +34,24 @@ class Website extends VoteAppModel
                 if (strtotime($result['reqVote']['date']) - strtotime($result['lastVote']['date']) < (3 * 60 * 60)) // 3 minutes between vote and check
                     return true;
                 break;
+            case 'TOPG-ORG':
+                // Check with API
+                $result = @file_get_contents("http://topg.org/check_ip.php?siteid={$website['data']['server_id']}&userip=$ip");
+                if ($result === false || $result == "1")
+                    return true;
+                break;
+            case 'TOP-SERVEUR-NET':
+                // Check with API
+                $result = @file_get_contents("https://api.top-serveurs.net/v1/votes/check?server_token={$website['data']['server_token']}&steam_id={$user['username']}");
+                if ($result)
+                    return true;
+                break;
+            case 'LISTE-SRV-MC-FR':
+                // Check with API
+                $result = @file_get_contents("https://liste-serv-minecraft.fr/api/check?server={$website['data']['server_id']}&ip=$ip");
+                if ($result === false || ($result = json_decode($result)) === false || $result['id_vote'])
+                    return true;
+                break;
 
             default:
                 return true;

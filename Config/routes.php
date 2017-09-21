@@ -1,5 +1,6 @@
 <?php
 Router::connect('/vote', array('controller' => 'vote', 'action' => 'index', 'plugin' => 'vote'));
+Router::connect('/admin/vote/configuration', array('controller' => 'vote', 'action' => 'configuration', 'plugin' => 'vote', 'admin' => true));
 Router::connect('/admin/vote/rewards', array('controller' => 'reward', 'action' => 'index', 'plugin' => 'vote', 'admin' => true));
 Router::connect('/admin/vote/rewards/add', array('controller' => 'reward', 'action' => 'add', 'plugin' => 'vote', 'admin' => true));
 Router::connect('/admin/vote/rewards/edit/:id', array('controller' => 'reward', 'action' => 'edit', 'plugin' => 'vote', 'admin' => true));

@@ -5,8 +5,19 @@
   "VOTE__SET_WEBSITE_ERROR_NEED_WAIT": "Vous avez déjà voté pour ce site, vous devez encore attendre {TIME}.",
   "VOTE__SET_WEBSITE_SUCCESS": "Vous avez bien validé ce site.",
   "VOTE__VOTE_SUCCESS": "Vous avez bien voté !",
-  "VOTE__GET_REWARDS_LATER_SUCCESS": "Vous avez bien voté et votre récompense a bien été sauvegardé pour plus tard",
+  "VOTE__GET_REWARDS_LATER_SUCCESS": "Vous avez bien voté et votre récompense a bien été sauvegardé pour plus tard.",
   "VOTE__GET_REWARDS_NOW_SUCCESS": "Vous avez bien voté et reçu votre récompense en jeu !",
+  "VOTE__GET_REWARDS_NOW_ERROR": "Une erreur s'est produite, votre récompense a bien été sauvegardé pour plus tard.",
+  "VOTE__COLLECT_REWARD_ERROR": "Une erreur s'est produite, vous ne deviez pas être connecté en jeu ou le serveur est éteint.",
+  "VOTE__COLLECT_REWARD_SUCCESS": "Vous avez bien reçu votre récompense !",
 
-  "PERMISSIONS__VOTE": "Voter"
+  "VOTE__ADMIN_VOTE_CONFIGURATION_TITLE": "Configuration générale des votes",
+  "VOTE__ADMIN_VOTE_CONFIGURATION_NEED_REGISTER": "Est-ce que le joueur doit être inscrit sur le site pour voter ?",
+  "VOTE__ADMIN_VOTE_CONFIGURATION_GLOBAL_COMMAND": "Commande globale envoyé lors de chaque vote",
+  "VOTE__ADMIN_EDIT_CONFIG_SUCCESS": "La configuration a bien été éditée !",
+
+  "PERMISSIONS__VOTE__ADMIN_MANAGE_REWARDS": "Gérer les récompenses du vote",
+  "PERMISSIONS__VOTE__ADMIN_MANAGE_WEBSITES": "Gérer les sites de vote",
+  "PERMISSIONS__VOTE__ADMIN_MANAGE": "Gérer les votes",
+  "PERMISSIONS__VOTE__COLLECT_REWARD": "Récupérer une récompense stockée"
 }

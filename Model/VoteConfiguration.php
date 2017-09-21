@@ -5,8 +5,8 @@ class VoteConfiguration extends VoteAppModel
     public $useTable = 'configurations';
 
     private $defaultConfig = [
-        'needRegister' => true,
-        'global_command' => '{PLAYER} vient de voter et de recevoir {REWARD_NAME} !'
+        'need_register' => true,
+        'global_command' => 'say {PLAYER} vient de voter et de recevoir {REWARD_NAME} !'
     ];
 
     public function getConfig()

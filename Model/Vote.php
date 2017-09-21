@@ -1,6 +1,21 @@
 <?php
 class Vote extends VoteAppModel
 {
+    public $belongsTo = array(
+        'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id'
+        ),
+        'Reward' => array(
+            'className' => 'Reward',
+            'foreignKey' => 'reward_id'
+        ),
+        'Website' => array(
+            'className' => 'Website',
+            'foreignKey' => 'website_id'
+        )
+    );
+
     // Check if user can vote
     public function can($user, $ip, $website)
     {
