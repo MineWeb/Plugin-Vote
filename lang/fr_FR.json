@@ -16,6 +16,17 @@
   "VOTE__ADMIN_VOTE_CONFIGURATION_GLOBAL_COMMAND": "Commande globale envoyé lors de chaque vote",
   "VOTE__ADMIN_EDIT_CONFIG_SUCCESS": "La configuration a bien été éditée !",
 
+  "VOTE__ADMIN_MANAGE_REWARDS": "Gérer les récompenses",
+  "VOTE__ADMIN_DELETE_REWARD_SUCCESS": "La récompense a bien été supprimée",
+  "VOTE__ADMIN_EDIT_REWARD_SUCCESS": "Vous avez bien édité une récompense !",
+  "VOTE__ADMIN_REWARD_NAME": "Nom de la récompense",
+  "VOTE__ADMIN_REWARD_CREATED": "Date de création",
+  "VOTE__ADMIN_REWARD_NEED_ONLINE": "Est-ce que le joueur doit être connecté sur le serveur ?",
+  "VOTE__ADMIN_REWARD_COMMANDS": "Les commandes a exécuter sur le serveur (optionnel)",
+  "VOTE__ADMIN_REWARD_ADD_COMMAND": "Ajouter une commande",
+  "VOTE__ADMIN_REWARD_AMOUNT": "Montant de {MONEY_NAME} a donner (optionnel)",
+  "VOTE__ADMIN_REWARD_PROBABILITY": "Probabilité d'obtenir la récompense (pourcentage)",
+
   "PERMISSIONS__VOTE__ADMIN_MANAGE_REWARDS": "Gérer les récompenses du vote",
   "PERMISSIONS__VOTE__ADMIN_MANAGE_WEBSITES": "Gérer les sites de vote",
   "PERMISSIONS__VOTE__ADMIN_MANAGE": "Gérer les votes",
