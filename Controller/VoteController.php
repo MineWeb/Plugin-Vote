@@ -23,13 +23,14 @@ class VoteController extends VoteAppController {
 
     public function setUser()
     {
+        $this->Session->delete('voted');
         if (!$this->request->is('post'))
             throw new NotFoundException();
-        if (empty($this->request->data) || !isset($this->request->data['username']))
+        if ((empty($this->request->data) || !isset($this->request->data['username'])) && !$this->User->isConnected())
             throw new BadRequestException();
         $this->autoRender = false;
         $this->response->type('json');
-        if (empty($this->request->data['username']))
+        if (empty($this->request->data['username']) && !$this->User->isConnected())
             return $this->sendJSON(['statut' => false, 'msg' => $this->Lang->get('ERROR__FILL_ALL_FIELDS')]);
 
         if ($this->User->isConnected()) { // If already logged
@@ -40,7 +41,11 @@ class VoteController extends VoteAppController {
                 return $this->sendJSON(['statut' => false, 'msg' => $this->Lang->get('VOTE__SET_USER_ERROR_USER_NOT_FOUND')]);
             $user = ['username' => $searchUser['User']['pseudo'], 'id' => $searchUser['User']['id']];
         } else {
-            $user = ['username' => $this->request->data['username']];
+            $searchUser = $this->User->find('first', ['fields' => ['id'], 'conditions' => ['pseudo' => $this->request->data['username']]]);
+            if (empty($searchUser))
+                $user = ['username' => $this->request->data['username']];
+            else
+                $user = ['username' => $this->request->data['username'], 'id' => $searchUser['User']['id']];
         }
 
         // Store it
@@ -50,6 +55,7 @@ class VoteController extends VoteAppController {
 
     public function setWebsite()
     {
+        $this->Session->delete('voted');
         if (!$this->request->is('post'))
             throw new NotFoundException();
         if (empty($this->request->data) || empty($this->request->data['website_id']))
@@ -79,6 +85,7 @@ class VoteController extends VoteAppController {
 
     public function checkVote()
     {
+        $this->Session->delete('voted');
         if (!$this->request->is('ajax'))
             throw new NotFoundException();
         $this->autoRender = false;
@@ -102,7 +109,7 @@ class VoteController extends VoteAppController {
 
         // Store it
         $this->Session->write('vote.check', true);
-        $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__VOTE_SUCCESS')]);
+        $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__VOTE_SUCCESS'), 'reward_later' => $this->Session->check('vote.user.id')]);
     }
 
     public function getReward()
@@ -111,7 +118,7 @@ class VoteController extends VoteAppController {
             throw new NotFoundException();
         if (empty($this->request->data) || empty($this->request->data['reward_time']) || !in_array($this->request->data['reward_time'], ['NOW', 'LATER']))
             throw new BadRequestException();
-        if ($this->request->data['reward_time'] === 'LATER' && !$this->__getConfig()->need_register)
+        if ($this->request->data['reward_time'] === 'LATER' && !$this->Session->check('vote.user.id'))
             throw new BadRequestException();
         $this->autoRender = false;
         $this->response->type('json');
@@ -130,7 +137,7 @@ class VoteController extends VoteAppController {
             $this->Vote->save();
 
             $this->Session->delete('voted');
-            $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__GET_REWARDS_NOW_SUCCESS')]);
+            return $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__GET_REWARDS_NOW_SUCCESS')]);
         }
 
         // Check if user is stored
@@ -163,7 +170,7 @@ class VoteController extends VoteAppController {
         $this->Vote->create();
         $this->Vote->set([
             'username' => $user['username'],
-            'user_id' => ($this->__getConfig()->need_register && isset($user['id'])) ? $user['id'] : null,
+            'user_id' => (isset($user['id'])) ? $user['id'] : null,
             'reward_id' => $reward['id'],
             'collected' => 0,
             'website_id' => $website['Website']['id'],
@@ -173,14 +180,15 @@ class VoteController extends VoteAppController {
 
         // Destroy session
         $this->Session->delete('vote');
+        $this->Session->delete('voted');
 
         // If he want reward now, try to give it
         if ($this->request->data['reward_time'] === 'LATER')
             return $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__GET_REWARDS_LATER_SUCCESS')]);
         // Try to collect
-        if (!($collect = $this->Reward->collect($reward, $website['Website']['id'], $user['username'], $this->Server, [$this->__getConfig()->global_command])) && $this->__getConfig()->need_register)
+        if (!($collect = $this->Reward->collect($reward, $website['Website']['id'], $user['username'], $this->Server, [$this->__getConfig()->global_command])) && isset($user['id']))
             return $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__GET_REWARDS_NOW_ERROR')]);
-        else if (!$collect && !$this->__getConfig()->need_register) {
+        else if (!$collect && !isset($user['id'])) {
             $this->Session->write('voted', $user['username']);
             return $this->sendJSON(['status' => false, 'error' => $this->Lang->get('VOTE__GET_REWARDS_NOW_ERROR_RETRY')]);
         }

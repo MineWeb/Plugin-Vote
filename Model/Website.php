@@ -9,7 +9,7 @@ class Website extends VoteAppModel
         // Check
         switch ($website['type']) {
             case 'RPG-PARADIZE':
-                // Check OUT
+                // TODO: Check OUT
                 break;
             case 'SRV-MC-ORG':
                 // Check with API

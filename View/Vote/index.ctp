@@ -87,9 +87,7 @@
                             <div class="col-md-4 col-md-offset-4">
                                 <div id="reward-msg"></div>
                                 <button class="btn btn-success btn-block get-reward" data-reward="now"><?= $Lang->get('VOTE__GET_REWARD_NOW') ?></button>
-                                <?php if ($config->need_register): ?>
-                                    <button class="btn btn-success btn-block get-reward" data-reward="later">' . $Lang->get('VOTE__GET_REWARD_LATER') . '</button>
-                                <?php endif; ?>
+                                <button class="btn btn-success btn-block get-reward" data-reward="later"><?= $Lang->get('VOTE__GET_REWARD_LATER') ?></button>
                             </div>
                         </div>
 
@@ -176,9 +174,11 @@
     function checkVote()
     {
         $.get('<?= $this->Html->url(['action' => 'checkVote']) ?>', function (data) {
-            if (data.status)
+            if (data.status) {
+                if (!data.reward_later)
+                    $('.get-reward[data-reward="later"]').remove()
                 next(3)
-            else
+            } else
                 setTimeout(checkVote, 2500);
         }).fail(function () {
             setTimeout(checkVote, 2500);
@@ -188,19 +188,19 @@
     $('.get-reward').on('click', function (e) {
         var btn = $(this)
         var type = btn.attr('data-reward')
-        btn.addClass('disabled')
+        $('.get-reward').addClass('disabled')
         $.post('<?= $this->Html->url(['action' => 'getReward']) ?>', {'data[_Token][key]': '<?= $csrfToken ?>', 'reward_time': type.toUpperCase()}, function (data) {
             if (data.status) {
                 $('#reward-msg').html('<div class="alert alert-success"><b><?= $Lang->get('GLOBAL__SUCCESS') ?>:</b> ' + data.success + '</div>')
             } else if (!data.status) {
-                btn.removeClass('disabled')
+                $('.get-reward').removeClass('disabled')
                 $('#reward-msg').html('<div class="alert alert-danger"><b><?= $Lang->get('GLOBAL__ERROR') ?>:</b> ' + data.error + '</div>')
             } else {
-                btn.removeClass('disabled')
+                $('.get-reward').removeClass('disabled')
                 $('#reward-msg').html('<div class="alert alert-danger"><b><?= $Lang->get('GLOBAL__ERROR') ?>:</b> ' + data.msg + '</div>')
             }
         }).fail(function () {
-            btn.removeClass('disabled')
+            $('.get-reward').removeClass('disabled')
             $('#reward-msg').html('<div class="alert alert-danger"><b><?= $Lang->get('GLOBAL__ERROR') ?>:</b> <?= $Lang->get('VOTE__ERROR_REWARD') ?></div>')
         })
     })
