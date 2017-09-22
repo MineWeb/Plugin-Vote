@@ -39,6 +39,8 @@
   "VOTE__ADMIN_WEBSITE_TYPE": "Type de site de vote",
   "VOTE__ADMIN_WEBSITE_TYPE_DEFAULT": "Par défaut (aucune vérification)",
 
+  "VOTE__TITLE_ACTION": "Votes",
+
   "PERMISSIONS__VOTE__ADMIN_MANAGE_REWARDS": "Gérer les récompenses du vote",
   "PERMISSIONS__VOTE__ADMIN_MANAGE_WEBSITES": "Gérer les sites de vote",
   "PERMISSIONS__VOTE__ADMIN_MANAGE": "Gérer les votes",
