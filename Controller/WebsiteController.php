@@ -30,7 +30,7 @@ class WebsiteController extends VoteAppController {
             throw new ForbiddenException();
         if (isset($this->request->params['id'])) {
             $id = $this->request->params['id'];
-            $website = $this->Website->find('first', array(['id' => $id]));
+            $website = $this->Website->find('first', ['conditions' => ['id' => $id]]);
             if (empty($website))
                 throw new NotFoundException();
             $this->set('website', $website['Website']);
@@ -59,7 +59,8 @@ class WebsiteController extends VoteAppController {
                 'url' => $this->request->data['url'],
                 'server_id' => intval($this->request->data['server_id']),
                 'type' => $this->request->data['type'],
-                'rewards' => json_encode($this->request->data['rewards'])
+                'rewards' => json_encode($this->request->data['rewards']),
+                'data' => (isset($this->request->data['datas']) && is_array($this->request->data['datas'])) ? json_encode($this->request->data['datas']) : NULL
             ]);
             $this->Website->save();
 

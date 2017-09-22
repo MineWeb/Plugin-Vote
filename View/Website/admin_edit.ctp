@@ -17,14 +17,26 @@
                             <label><?= $Lang->get('VOTE__ADMIN_WEBSITE_TYPE') ?></label>
                             <select class="form-control" name="type">
                                 <option value="default"><?= $Lang->get('VOTE__ADMIN_WEBSITE_TYPE_DEFAULT') ?></option>
-                                <option value="RPG-PARADIZE">RPG-Paradize (OUT)</option>
-                                <option value="SRV-MC-ORG">http://www.serveurs-minecraft.org</option>
-                                <option value="RVMC-ORG">https://www.serveursminecraft.org</option>
-                                <option value="SRV-MC-COM">https://serveurs-minecraft.com</option>
-                                <option value="TOPG-ORG">http://topg.org</option>
-                                <option value="TOP-SERVEUR-NET">https://minecraft.top-serveurs.net</option>
-                                <option value="LISTE-SRV-MC-FR">https://liste-serv-minecraft.fr</option>
+                                <option data-inputs="server_id" value="SRV-MC-ORG" <?= (isset($website) && $website['type'] == 'SRV-MC-ORG') ? 'selected' : '' ?>>http://www.serveurs-minecraft.org</option>
+                                <option data-inputs="server_id" value="RVMC-ORG" <?= (isset($website) && $website['type'] == 'RVMC-ORG') ? 'selected' : '' ?>>https://www.serveursminecraft.org</option>
+                                <option data-inputs="server_id" value="SRV-MC-COM" <?= (isset($website) && $website['type'] == 'SRV-MC-COM') ? 'selected' : '' ?>>https://serveurs-minecraft.com</option>
+                                <option data-inputs="server_id" value="TOPG-ORG" <?= (isset($website) && $website['type'] == 'TOPG-ORG') ? 'selected' : '' ?>>http://topg.org</option>
+                                <option data-inputs="server_token" value="TOP-SERVEUR-NET" <?= (isset($website) && $website['type'] == 'TOP-SERVEUR-NET') ? 'selected' : '' ?>>https://minecraft.top-serveurs.net</option>
+                                <option data-inputs="server_id" value="LISTE-SRV-MC-FR" <?= (isset($website) && $website['type'] == 'LISTE-SRV-MC-FR') ? 'selected' : '' ?>>https://liste-serv-minecraft.fr</option>
                             </select>
+                        </div>
+
+                        <div id="data">
+                            <?php
+                            if ($data = @json_decode($website['data'])) {
+                                foreach ($data as $key => $value) {
+                                    echo '<div class="form-group">';
+                                        echo '<label>' . $key . '</label>';
+                                        echo '<input name="datas[' . $key . ']" class="form-control" value="' . $value . '" type="text">';
+                                    echo '</div>';
+                                }
+                            }
+                            ?>
                         </div>
 
                         <div class="form-group">
@@ -75,3 +87,23 @@
         </div>
     </div>
 </section>
+<script type="text/javascript">
+    $('select[name="type"]').on('change', function () {
+        var value = $(this).val()
+        var option = $('option[value="' + value + '"]')
+        var inputs = option.attr('data-inputs')
+        if (inputs !== undefined)
+            inputs = inputs.split(',')
+        else
+            inputs = []
+
+        var html = ''
+        for (i = 0; i < inputs.length; i++) {
+            html += '<div class="form-group">\n' +
+                '<label>' + inputs[i] + '</label>\n'+
+                '<input name="datas[' + inputs[i] + ']" class="form-control" type="text">\n' +
+            '</div>'
+        }
+        $('#data').html(html)
+    })
+</script>

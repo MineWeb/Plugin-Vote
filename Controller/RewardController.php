@@ -30,7 +30,7 @@ class RewardController extends VoteAppController {
             throw new ForbiddenException();
         if (isset($this->request->params['id'])) {
             $id = $this->request->params['id'];
-            $reward = $this->Reward->find('first', array(['id' => $id]));
+            $reward = $this->Reward->find('first', ['conditions' => ['id' => $id]]);
             if (empty($reward))
                 throw new NotFoundException();
             $this->set('reward', $reward['Reward']);
