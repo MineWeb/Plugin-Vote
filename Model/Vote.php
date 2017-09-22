@@ -7,11 +7,11 @@ class Vote extends VoteAppModel
             'foreignKey' => 'user_id'
         ),
         'Reward' => array(
-            'className' => 'Reward',
+            'className' => 'Vote.Reward',
             'foreignKey' => 'reward_id'
         ),
         'Website' => array(
-            'className' => 'Website',
+            'className' => 'Vote.Website',
             'foreignKey' => 'website_id'
         )
     );
@@ -25,13 +25,13 @@ class Vote extends VoteAppModel
     // Return a string time or false
     public function getNextVoteTime($user, $ip, $website)
     {
-        $conditions = ['website_id' => $website['id'], 'OR' => []];
+        $conditions = ['website_id' => $website['id'], 'OR' => [['ip' => $ip]]];
         if (isset($user['id']))
             $conditions['OR'][] = ['user_id' => $user['id']];
         else
             $conditions['OR'][] = ['username' => $user['username']];
         $conditions['OR'][] = ['ip' => $ip];
-        $lastVote = $this->find('first', ['conditions' => $conditions]);
+        $lastVote = $this->find('first', ['conditions' => $conditions, 'order' => 'id desc']);
         if (empty($lastVote))
             return false;
         if (strtotime("+{$website['time']} minutes", strtotime($lastVote['Vote']['created'])) <= time())

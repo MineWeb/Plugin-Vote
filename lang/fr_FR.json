@@ -8,6 +8,7 @@
   "VOTE__GET_REWARDS_LATER_SUCCESS": "Vous avez bien voté et votre récompense a bien été sauvegardé pour plus tard.",
   "VOTE__GET_REWARDS_NOW_SUCCESS": "Vous avez bien voté et reçu votre récompense en jeu !",
   "VOTE__GET_REWARDS_NOW_ERROR": "Une erreur s'est produite, votre récompense a bien été sauvegardé pour plus tard.",
+  "VOTE__GET_REWARDS_NOW_ERROR_RETRY": "Une erreur s'est produite pendant le traitement de votre récompense (serveur éteint ou joueur déconnecté), veuillez réessayer.",
   "VOTE__COLLECT_REWARD_ERROR": "Une erreur s'est produite, vous ne deviez pas être connecté en jeu ou le serveur est éteint.",
   "VOTE__COLLECT_REWARD_SUCCESS": "Vous avez bien reçu votre récompense !",
 
@@ -40,6 +41,17 @@
   "VOTE__ADMIN_WEBSITE_TYPE_DEFAULT": "Par défaut (aucune vérification)",
 
   "VOTE__TITLE_ACTION": "Votes",
+
+  "VOTE__STEP_TITLE": "Étape",
+  "VOTE__STEP_SET_USER": "Identifiez-vous",
+  "VOTE__STEP_SET_WEBSITE": "Votez",
+  "VOTE__STEP_GET_REWARDS": "Récupérez votre récompense",
+  "VOTE__ERROR_WEBSITE": "Une erreur est survenue quand vous avez choisi le site, veuillez réessayer.",
+  "VOTE__MODAL_DESC": "Clique sur le bouton ci-dessous, vote sur l'onglet qui va s'ouvrir puis une fois le vote vérifié reviens sur cette page pour récupérer ta récompense !",
+  "VOTE__MODAL_BTN": "Cliquez pour être redirigé sur la page de vote",
+  "VOTE__GET_REWARD_NOW": "Récupérer mes récompenses dès maintenant",
+  "VOTE__GET_REWARD_LATER": "Récupérer mes récompenses plus tard",
+  "VOTE__ERROR_REWARD": "Une erreur est survenue pendant le traitement de votre récompense, veuillez réessayer.",
 
   "PERMISSIONS__VOTE__ADMIN_MANAGE_REWARDS": "Gérer les récompenses du vote",
   "PERMISSIONS__VOTE__ADMIN_MANAGE_WEBSITES": "Gérer les sites de vote",

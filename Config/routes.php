@@ -1,5 +1,12 @@
 <?php
 Router::connect('/vote', array('controller' => 'vote', 'action' => 'index', 'plugin' => 'vote'));
+Router::connect('/vote/step/user', array('controller' => 'vote', 'action' => 'setUser', 'plugin' => 'vote'));
+Router::connect('/vote/step/website', array('controller' => 'vote', 'action' => 'setWebsite', 'plugin' => 'vote'));
+Router::connect('/vote/step/check', array('controller' => 'vote', 'action' => 'checkVote', 'plugin' => 'vote'));
+Router::connect('/vote/step/reward', array('controller' => 'vote', 'action' => 'getReward', 'plugin' => 'vote'));
+
+Router::connect('/vote/collect', array('controller' => 'vote', 'action' => 'getNotCollectedReward', 'plugin' => 'vote'));
+
 Router::connect('/admin/vote/configuration', array('controller' => 'vote', 'action' => 'configuration', 'plugin' => 'vote', 'admin' => true));
 Router::connect('/admin/vote/rewards', array('controller' => 'reward', 'action' => 'index', 'plugin' => 'vote', 'admin' => true));
 Router::connect('/admin/vote/rewards/add', array('controller' => 'reward', 'action' => 'edit', 'plugin' => 'vote', 'admin' => true));
