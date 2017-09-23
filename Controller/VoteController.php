@@ -227,7 +227,7 @@ class VoteController extends VoteAppController {
         $this->loadModel('Vote.Reward');
         $reward = $findVote['Reward'];
         if (!$this->Reward->collect($reward, $findVote['Website']['server_id'], $this->User->getKey('User'), $this->Server, [$this->__getConfig()->global_command])) {
-            $this->Session->setFlash($this->Lang->getKey('VOTE__COLLECT_REWARD_ERROR'), 'default.error');
+            $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_ERROR'), 'default.error');
             $this->redirect($this->referer());
             return;
         }
@@ -240,7 +240,7 @@ class VoteController extends VoteAppController {
         $this->Vote->save();
 
         // Redirect
-        $this->Session->setFlash($this->Lang->getKey('VOTE__COLLECT_REWARD_SUCCESS'), 'default.error');
+        $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_SUCCESS'), 'default.success');
         $this->redirect($this->referer());
     }
 

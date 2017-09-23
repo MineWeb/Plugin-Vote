@@ -41,6 +41,8 @@
   "VOTE__ADMIN_WEBSITE_TYPE_DEFAULT": "Par défaut (aucune vérification)",
 
   "VOTE__TITLE_ACTION": "Votes",
+  "VOTE__USER_GET_REWARD": "Récupérer ma récompense",
+  "VOTE__USER_MSG_REWARDS_WAITING": "Vous avez {NBR_REWARDS} récompenses en attente !",
 
   "VOTE__STEP_TITLE": "Étape",
   "VOTE__STEP_SET_USER": "Identifiez-vous",
