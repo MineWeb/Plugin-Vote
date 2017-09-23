@@ -15,7 +15,9 @@ class VoteRewardsEventListener implements CakeEventListener {
 
         // Add vote
         $user = $event->subject()->viewVars['user'];
-        $user['votes_count'] = ClassRegistry::init('Vote.Vote')->find('count', ['user_id' => $user['id']]);
+        $user['votes_count'] = ClassRegistry::init('Vote.Vote')->find('count', [
+            'conditions' => ['vote.created LIKE' => date('Y') . '-' . date('m') . '-%', 'user_id' => $user['id']]
+        ]);
         $user['votes_not_collected_count'] = ClassRegistry::init('Vote.Vote')->find('count', ['user_id' => $user['id'], 'collected' => 0]);
         $event->subject()->viewVars['user'] = $user;
         ModuleComponent::$vars['rewards_waiting'] = $user['votes_not_collected_count'];

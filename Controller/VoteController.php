@@ -19,6 +19,15 @@ class VoteController extends VoteAppController {
             $websitesByServers[$servers[$website['Website']['server_id']]][] = $website;
         }
         $this->set(compact('websitesByServers'));
+        $this->set('users', array_map(function ($row) {
+            return ['username' => $row['Vote']['username'], 'count' => $row[0]['count']];
+        }, $this->Vote->find('all', [
+            'fields' => ['username', 'COUNT(vote.id) AS count'],
+            'conditions' => ['vote.created LIKE' => date('Y') . '-' . date('m') . '-%'],
+            'order' => 'count DESC',
+            'group' => 'username',
+            'limit' => 15
+        ])));
     }
 
     public function setUser()

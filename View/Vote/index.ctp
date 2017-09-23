@@ -96,6 +96,45 @@
             </div>
 
         </div>
+        <div class="col-md-12">
+
+            <hr>
+
+            <div class="well">
+
+                <h2 class="text-center">
+                    <i class="fa fa-table"></i>
+                    Classement
+                </h2>
+                
+                <div class="table-responsive">
+                    <table class="table text-muted">
+                        <tbody>
+                            <?php
+                            $i = 0;
+                            foreach ($users as $user) {
+                                ++$i;
+                                echo '<tr>';
+                                    echo "<td>#$i";
+                                        if ($i === 1)
+                                            echo '&nbsp;<i style="color:rgb(255, 215, 0);" class="fa fa-trophy"></i>';
+                                        else if ($i === 2)
+                                            echo '&nbsp;<i style="color:rgb(192, 192, 192);" class="fa fa-trophy"></i>';
+                                        else if ($i === 3)
+                                            echo '&nbsp;<i style="color:rgb(176, 0, 14);" class="fa fa-trophy"></i>';
+                                    echo "</td>";
+                                    echo "<td><img src='{$this->Html->url(['controller' => 'API', 'action' => 'get_head_skin', 'plugin' => false, $user['username'], 25])}' class='img-rounded' alt=''> &nbsp;{$user['username']}</td>";
+                                    echo "<td>{$user['count']} " . strtolower($Lang->get('VOTE__TITLE_ACTION')) . "</td>";
+                                echo '</tr>';
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
     </div>
 </div>
 <style>
