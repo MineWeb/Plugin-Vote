@@ -22,7 +22,7 @@ class VoteController extends VoteAppController {
         $this->set('users', array_map(function ($row) {
             return ['username' => $row['Vote']['username'], 'count' => $row[0]['count']];
         }, $this->Vote->find('all', [
-            'fields' => ['username', 'COUNT(vote.id) AS count'],
+            'fields' => ['username', 'COUNT(id) AS count'],
             'conditions' => ['vote.created LIKE' => date('Y') . '-' . date('m') . '-%'],
             'order' => 'count DESC',
             'group' => 'username',
