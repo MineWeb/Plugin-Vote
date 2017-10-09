@@ -16,3 +16,5 @@ Router::connect('/admin/vote/websites', array('controller' => 'website', 'action
 Router::connect('/admin/vote/websites/add', array('controller' => 'website', 'action' => 'edit', 'plugin' => 'vote', 'admin' => true));
 Router::connect('/admin/vote/websites/edit/:id', array('controller' => 'website', 'action' => 'edit', 'plugin' => 'vote', 'admin' => true));
 Router::connect('/admin/vote/websites/delete/:id', array('controller' => 'website', 'action' => 'delete', 'plugin' => 'vote', 'admin' => true));
+
+Router::connect('/api/vote/check/:username', array('controller' => 'vote', 'action' => 'apiCheck', 'plugin' => 'vote'));

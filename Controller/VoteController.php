@@ -275,4 +275,15 @@ class VoteController extends VoteAppController {
             return $this->sendJSON(['statut' => true, 'msg' => $this->Lang->get('VOTE__ADMIN_EDIT_CONFIG_SUCCESS')]);
         }
     }
+
+    public function apiCheck()
+    {
+        $this->loadModel('Vote.Vote');
+        $this->loadModel('Vote.Website');
+        $username = $this->request->params['username'];
+        return $this->sendJSON([
+            'status' => true,
+            'can_vote' => $this->Vote->canInAll(['username' => $username], '0.0.0.0', $this->Website->find('all'))
+        ]);
+    }
 }

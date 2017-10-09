@@ -41,4 +41,14 @@ class Vote extends VoteAppModel
         $waitTime = ($website['time'] - ((time() - strtotime($lastVote['Vote']['created'])) / 60)) * 60;
         return $waitTime;
     }
+
+    // Check if user can vote in a website
+    public function canInAll($user, $ip, $websites)
+    {
+        foreach ($websites as $website) {
+            if ($this->getNextVoteTime($user, $ip, $website['Website']) === false)
+                return true;
+        }
+        return false;
+    }
 }
