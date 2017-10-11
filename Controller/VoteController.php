@@ -226,7 +226,7 @@ class VoteController extends VoteAppController {
         // Give it
         $this->loadModel('Vote.Reward');
         $reward = $findVote['Reward'];
-        if (!$this->Reward->collect($reward, $findVote['Website']['server_id'], $this->User->getKey('User'), $this->Server, [$this->__getConfig()->global_command])) {
+        if (!$this->Reward->collect($reward, $findVote['Website']['server_id'], $this->User->getKey('pseudo'), $this->Server, [$this->__getConfig()->global_command])) {
             $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_ERROR'), 'default.error');
             $this->redirect($this->referer());
             return;

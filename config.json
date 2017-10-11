@@ -28,7 +28,7 @@
 		"Voter": "/vote"
 	},
 	"author":"Eywek",
-	"version":"2.0.1",
+	"version":"2.0.2",
 	"apiID":3,
 	"useEvents":true,
 	"permissions" : {
