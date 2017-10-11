@@ -195,7 +195,7 @@ class VoteController extends VoteAppController {
         if ($this->request->data['reward_time'] === 'LATER')
             return $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__GET_REWARDS_LATER_SUCCESS')]);
         // Try to collect
-        if (!($collect = $this->Reward->collect($reward, $website['Website']['id'], $user['username'], $this->Server, [$this->__getConfig()->global_command])) && isset($user['id']))
+        if (!($collect = $this->Reward->collect($reward, $website['Website']['server_id'], $user['username'], $this->Server, [$this->__getConfig()->global_command])) && isset($user['id']))
             return $this->sendJSON(['status' => true, 'success' => $this->Lang->get('VOTE__GET_REWARDS_NOW_ERROR')]);
         else if (!$collect && !isset($user['id'])) {
             $this->Session->write('voted', $user['username']);
