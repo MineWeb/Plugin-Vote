@@ -49,7 +49,7 @@ class Website extends VoteAppModel
             case 'LISTE-SRV-MC-FR':
                 // Check with API
                 $result = @file_get_contents("https://liste-serv-minecraft.fr/api/check?server={$website['data']['server_id']}&ip=$ip");
-                if ($result === false || ($result = json_decode($result)) === false || $result['id_vote'])
+                if ($result === false || ($result = json_decode($result, true)) === false || $result['id_vote'])
                     return true;
                 break;
 
