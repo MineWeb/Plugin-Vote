@@ -14,7 +14,7 @@ class Website extends VoteAppModel
             case 'SRV-MC-ORG':
                 // Check with API
                 $result = @file_get_contents("http://www.serveurs-minecraft.org/api/is_valid_vote.php?id={$website['data']['server_id']}&ip=$ip&duration=3");
-                if ($result === false || $result > 0)
+                if ($result === false || intval($result) > 0)
                     return true;
                 break;
             case 'SRVMC-ORG':
