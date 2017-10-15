@@ -31,7 +31,7 @@ class Website extends VoteAppModel
                 $result = @json_decode($result, true);
                 if ($result === false)
                     return true;
-                if (strtotime($result['reqVote']['date']) - strtotime($result['lastVote']['date']) < (3 * 60 * 60)) // 3 minutes between vote and check
+                if (time() - strtotime($result['lastVote']['date']) < (3 * 60 * 60)) // 3 minutes between vote and check
                     return true;
                 break;
             case 'TOPG-ORG':
