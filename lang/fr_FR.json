@@ -51,8 +51,8 @@
   "VOTE__ERROR_WEBSITE": "Une erreur est survenue quand vous avez choisi le site, veuillez réessayer.",
   "VOTE__MODAL_DESC": "Clique sur le bouton ci-dessous, vote sur l'onglet qui va s'ouvrir puis une fois le vote vérifié reviens sur cette page pour récupérer ta récompense !",
   "VOTE__MODAL_BTN": "Cliquez pour être redirigé sur la page de vote",
-  "VOTE__GET_REWARD_NOW": "Récupérer mes récompenses dès maintenant",
-  "VOTE__GET_REWARD_LATER": "Récupérer mes récompenses plus tard",
+  "VOTE__GET_REWARD_NOW": "Récupérer dès maintenant",
+  "VOTE__GET_REWARD_LATER": "Récupérer plus tard",
   "VOTE__ERROR_REWARD": "Une erreur est survenue pendant le traitement de votre récompense, veuillez réessayer.",
 
   "PERMISSIONS__VOTE__ADMIN_MANAGE_REWARDS": "Gérer les récompenses du vote",
