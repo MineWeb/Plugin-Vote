@@ -18,3 +18,4 @@ Router::connect('/admin/vote/websites/edit/:id', array('controller' => 'website'
 Router::connect('/admin/vote/websites/delete/:id', array('controller' => 'website', 'action' => 'delete', 'plugin' => 'vote', 'admin' => true));
 
 Router::connect('/api/vote/check/:username', array('controller' => 'vote', 'action' => 'apiCheck', 'plugin' => 'vote'));
+Router::connect('/admin/vote/top', array('controller' => 'top', 'action' => 'index', 'plugin' => 'vote', 'admin' => true));
