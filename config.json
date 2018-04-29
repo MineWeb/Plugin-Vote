@@ -19,6 +19,11 @@
 						"icon": "sitemap",
 						"permission": "VOTE__ADMIN_MANAGE_WEBSITES",
 						"route": "/admin/vote/websites"
+					},
+					"Meilleurs voteurs": {
+					"icon": "trophy",
+					"permission": "VOTE__ADMIN_VIEW_TOP",
+					"route": "/admin/vote/top"
 					}
 				}
 			}
