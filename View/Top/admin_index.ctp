@@ -35,6 +35,7 @@
                                 </thead>
                                 <tbody>
                                     <?php $itop = 0; foreach($this_year[$im] as $value) { $itop++; ?>
+                                    <?php if($itop > 25) { break; } ?>
                                     <tr>
                                         <td>#<?= $itop ?></td>
                                         <td><?= $value['Vote']['username'] ?></td>
@@ -80,6 +81,7 @@
                                 </thead>
                                 <tbody>
                                     <?php $itop = 0; foreach($last_year[$im] as $value) { $itop++; ?>
+                                    <php if($itop > 25) { break; } ?>
                                     <tr>
                                         <td>#<?= $itop ?></td>
                                         <td><?= $value['Vote']['username'] ?></td>
