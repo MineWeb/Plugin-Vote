@@ -58,5 +58,7 @@
   "PERMISSIONS__VOTE__ADMIN_MANAGE_REWARDS": "Gérer les récompenses du vote",
   "PERMISSIONS__VOTE__ADMIN_MANAGE_WEBSITES": "Gérer les sites de vote",
   "PERMISSIONS__VOTE__ADMIN_MANAGE": "Gérer les votes",
-  "PERMISSIONS__VOTE__COLLECT_REWARD": "Récupérer une récompense stockée"
+  "PERMISSIONS__VOTE__COLLECT_REWARD": "Récupérer une récompense stockée",
+  
+  "VOTE__ADMIN_VIEW_TOP": "Meilleurs voteurs"
 }

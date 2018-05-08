@@ -58,5 +58,7 @@
 		"PERMISSIONS__VOTE__ADMIN_MANAGE_REWARDS": "Manage the rewards of the vote",
 		"PERMISSIONS__VOTE__ADMIN_MANAGE_WEBSITES": "Manage the voting sites",
 		"PERMISSIONS__VOTE__ADMIN_MANAGE": "Manage the votes",
-		"PERMISSIONS__VOTE__COLLECT_REWARD": "Recover a stored reward"
+		"PERMISSIONS__VOTE__COLLECT_REWARD": "Recover a stored reward",
+	
+		"VOTE__ADMIN_VIEW_TOP": "Best Voters"
 }
