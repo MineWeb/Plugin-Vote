@@ -63,7 +63,7 @@
 
                         <div class="form-group">
                             <div class="checkbox">
-                                <input name="need_online" type="checkbox" <?= (isset($reward) && $reward['need_online']) ? 'checked' : '' ?>>
+                                <input name="need_online" type="checkbox" <?= (isset($reward) && $reward['need_online']) ? 'checked' : 'checked' ?>>
                                 <label><?= $Lang->get('VOTE__ADMIN_REWARD_NEED_ONLINE') ?></label>
                             </div>
                         </div>
