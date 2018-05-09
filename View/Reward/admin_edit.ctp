@@ -1,7 +1,7 @@
 <section class="content">
     <div class="row">
         <div class="col-md-12">
-            <div class="callout callout-danger" style="border: none;">Afin d'éviter un bug qui permet d'avoir des recompense précise si vous êtes lier via le plugin, veuillez cocher l'option "Est-ce que le joueur doit être connecté sur le serveur ?" sur chaques recompenses.</div>
+            <div class="callout callout-danger" style="border: none;"><?= $Lang->get('VOTE__WARNING_REWARD') ?></div>
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title"><?= $Lang->get('VOTE__ADMIN_MANAGE_REWARDS') ?></h3>
