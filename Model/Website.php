@@ -17,6 +17,12 @@ class Website extends VoteAppModel
                 if ($result === false || intval($result) > 0)
                     return true;
                 break;
+                 case 'SRV-PRIV':
+                    // Check with API
+                    $result = @file_get_contents("https://serveur-prive.net/api/vote/{$website['data']['server_id']}/$ip");
+                    if ($result === false || intval($result) > 0)
+                        return true;
+                    break;
             case 'SRVMC-ORG':
                 // Check with API
                 $result = @file_get_contents("https://www.serveursminecraft.org/sm_api/peutVoter.php?id={$website['data']['server_id']}&ip=$ip");
