@@ -23,6 +23,7 @@
                                 <option data-inputs="server_id" value="TOPG-ORG" <?= (isset($website) && $website['type'] == 'TOPG-ORG') ? 'selected' : '' ?>>http://topg.org</option>
                                 <option data-inputs="server_token" value="TOP-SERVEUR-NET" <?= (isset($website) && $website['type'] == 'TOP-SERVEUR-NET') ? 'selected' : '' ?>>https://minecraft.top-serveurs.net</option>
                                 <option data-inputs="server_id" value="LISTE-SRV-MC-FR" <?= (isset($website) && $website['type'] == 'LISTE-SRV-MC-FR') ? 'selected' : '' ?>>https://liste-serv-minecraft.fr</option>
+								<option data-inputs="server_id" value="SRV-PRIV" <?= (isset($website) && $website['type'] == 'SRV-PRIV') ? 'selected' : '' ?>>https://serveur-prive.net</option>
                             </select>
                         </div>
 
