@@ -1,6 +1,7 @@
 <section class="content">
     <div class="row">
         <div class="col-md-12">
+            <div class="callout callout-danger" style="border: none;"><?= $Lang->get('VOTE__WARNING_REWARD') ?></div>
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title"><?= $Lang->get('VOTE__ADMIN_MANAGE_REWARDS') ?></h3>

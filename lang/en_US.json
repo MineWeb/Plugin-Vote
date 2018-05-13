@@ -60,5 +60,6 @@
 		"PERMISSIONS__VOTE__ADMIN_MANAGE": "Manage the votes",
 		"PERMISSIONS__VOTE__COLLECT_REWARD": "Recover a stored reward",
 	
-		"VOTE__ADMIN_VIEW_TOP": "Best Voters"
+		"VOTE__ADMIN_VIEW_TOP": "Best Voters",
+		"VOTE__WARNING_REWARD": "In order to avoid a technique that allows you to have accurate rewards if you are linking via the plugin, please check the option (Does the player have to be connected to the server?) On each reward."
 }
