@@ -86,8 +86,14 @@ class TopController extends VoteAppController
         $maxvoteur_last_year = array_sum($nbr_last_year);
         for($i = 0; $i < 12; $i++)
         {
-            $percent_this_year[$i] = $nbr_this_year[$i]/$maxvoteur_this_year * 100;
-            $percent_last_year[$i] = $nbr_last_year[$i]/$maxvoteur_last_year * 100;
+			if($maxvoteur_last_year != 0){		
+				$percent_this_year[$i] = $nbr_this_year[$i]/$maxvoteur_this_year * 100;
+				$percent_last_year[$i] = $nbr_last_year[$i]/$maxvoteur_last_year * 100;
+			}
+			else {
+				$percent_this_year[$i] = $nbr_this_year[$i]/1 * 100;
+				$percent_last_year[$i] = $nbr_last_year[$i]/1 * 100;
+			}
         }
         
         $this->set("percent_this_year", $percent_this_year);

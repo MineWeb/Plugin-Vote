@@ -2,7 +2,7 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <div class="container-fluid">
-    <h3 style="text-align: center">Meilleurs voteurs de cette année (<?= date(Y) ?>)</h3>
+    <h3 style="text-align: center">Meilleurs voteurs de cette année (<?= date('Y') ?>)</h3>
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
             <?php $i = 0; foreach($months as $var) { $i++; ?>
@@ -18,9 +18,9 @@
                 <div class="tab-pane <?php if($im == $thism): echo "active"; endif; ?>" id="<?= $var ?>">
                     <?php if(empty($this_year[$im])) { ?>
                         <?php if($im > $thism) { ?>
-                            <h3 style="text-align: center; padding: 30px">Nous ne sommes pas encore en <?= $var ?> <?= date(Y) ?>.</h3>
+                            <h3 style="text-align: center; padding: 30px">Nous ne sommes pas encore en <?= $var ?> <?= date('Y') ?>.</h3>
                         <?php } else { ?>
-                            <h3 style="text-align: center; padding: 30px">Il n'y a pas eu de voteur en <?= $var ?> <?= date(Y) ?>.</h3>
+                            <h3 style="text-align: center; padding: 30px">Il n'y a pas eu de voteur en <?= $var ?> <?= date('Y') ?>.</h3>
                         <?php } ?>
                     <?php } else { ?>
                         <div class="table-responsive">
@@ -52,7 +52,7 @@
         </div>
     </div>
     <br>
-    <h3 style="text-align: center">Meilleurs voteurs de l'année dernière (<?= date(Y) - 1 ?>)</h3>
+    <h3 style="text-align: center">Meilleurs voteurs de l'année dernière (<?= date('Y') - 1 ?>)</h3>
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
             <?php $i = 0; foreach($months as $var) { $i++; ?>
@@ -67,7 +67,7 @@
             <?php $im = 0; foreach($months as $var) { $im++; ?>
                 <div class="tab-pane <?php if($im == "1"): echo "active"; endif; ?>" id="last-<?= $var ?>">
                     <?php if(empty($last_year[$im])) { ?>
-                        <h3 style="text-align: center; padding: 30px">Il n'y a pas eu de voteur en <?= $var ?> <?= date(Y)-1 ?>.</h3>
+                        <h3 style="text-align: center; padding: 30px">Il n'y a pas eu de voteur en <?= $var ?> <?= date('Y') - 1 ?>.</h3>
                     <?php } else { ?>
                         <div class="table-responsive">
                             <table class="table no-margin">
