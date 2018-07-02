@@ -60,7 +60,7 @@
                                 <?php
                                 foreach ($servers as $id => $name) {
                                     echo '<option value="'.$id.'"';
-                                    echo (isset($website) && $website['server_id'] === $id) ? ' selected' : '';
+                                    echo (isset($website) && $website['server_id'] == $id) ? ' selected' : '';
                                     echo '>'.$name.'</option>';
                                 }
                                 ?>
