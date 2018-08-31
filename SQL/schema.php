@@ -36,6 +36,7 @@ class VoteAppSchema extends CakeSchema {
 
 	public $vote__votes = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => true, 'key' => 'primary'),
+		'closed' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => true),
 		'username' => array('type' => 'string', 'null' => false, 'length' => 16, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'user_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'reward_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),

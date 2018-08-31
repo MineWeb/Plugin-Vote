@@ -23,7 +23,7 @@ class VoteController extends VoteAppController {
             return ['username' => $row['Vote']['username'], 'count' => $row[0]['count']];
         }, $this->Vote->find('all', [
             'fields' => ['username', 'COUNT(id) AS count'],
-            'conditions' => ['created LIKE' => date('Y') . '-' . date('m') . '-%'],
+            'conditions' => ['created LIKE' =>  date('Y') . '-' . date('m') . '-%', 'closed' => 0],
             'order' => 'count DESC',
             'group' => 'username',
             'limit' => 15
