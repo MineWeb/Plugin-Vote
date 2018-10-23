@@ -71,7 +71,7 @@ class Website extends VoteAppModel
             case 'SRV-MULTIGAMES':
                 // Check with API
                 $result = @file_get_contents("https://serveur-multigames.net/api/{$website['data']['server_id']}/?ip=$ip");
-                if ($result == 'true' || intval($result) > 0)
+                if ($result || intval($result) > 0)
                     return true;
                 break;
             default:
