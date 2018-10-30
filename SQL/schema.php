@@ -43,6 +43,7 @@ class VoteAppSchema extends CakeSchema {
 		'website_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
 		'ip' => array('type' => 'string', 'null' => false, 'length' => 50, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+        'deletedAt' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),

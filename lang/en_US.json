@@ -61,5 +61,19 @@
 		"PERMISSIONS__VOTE__COLLECT_REWARD": "Recover a stored reward",
 	
 		"VOTE__ADMIN_VIEW_TOP": "Best Voters",
-		"VOTE__WARNING_REWARD": "In order to avoid a technique that allows you to have accurate rewards if you are linking via the plugin, please check the option (Does the player have to be connected to the server?) On each reward."
+		"VOTE__WARNING_REWARD": "In order to avoid a technique that allows you to have accurate rewards if you are linking via the plugin, please check the option (Does the player have to be connected to the server?) On each reward.",
+		"VOTE__ADMIN_VOTE_TOP": "Best Voters of this Year",
+		"VOTE__ADMIN_NO_TOP": "We are not yet in",
+		"VOTE__ADMIN_NUMBER_TOP": "Number of votes",
+		"VOTE__ADMIN_NUMBER_MEMBER_TOP": "Number of voters",
+		"VOTE__ADMIN_VOTE_LAST_TOP": "Best voters of last year",
+		"VOTE__ADMIN_NO_VOTE_TOP": "There was no voter in",
+		"VOTE__ADMIN_1_TOP": "There have been",
+		"VOTE__ADMIN_2_TOP": "this month",
+		"VOTE__ADMIN_IN_TOP": "in",
+		"VOTE__ADMIN_AND_TOP": "and",
+		"VOTE__ADMIN_STATS_TOP": "Statistics",
+		"VOTE__ADMIN_VOTE_NUMBER_GRAPH_TOP": "Comparison of the number of votes",
+		"VOTE__ADMIN_VOTE_MEMBER_NUMBER_GRAPH_TOP": "Comparison of the number of voters",
+		"VOTE__ADMIN_DEL_VOTE": "Clear visually the votes of the month"
 }
