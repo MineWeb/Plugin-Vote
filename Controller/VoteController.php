@@ -24,7 +24,7 @@ class VoteController extends VoteAppController {
             return ['username' => $row['Vote']['username'], 'count' => $row[0]['count']];
         }, $this->Vote->find('all', [
             'fields' => ['username', 'COUNT(id) AS count'],
-            'conditions' => ['created LIKE' =>  date('Y') . '-' . date('m') . '-%', 'Vote.deletedAt >=' => $date],
+            'conditions' => ['created LIKE' =>  date('Y') . '-' . date('m') . '-%', 'Vote.deleted_at >=' => $date],
             'order' => 'count DESC',
             'group' => 'username',
             'limit' => 15
@@ -186,7 +186,7 @@ class VoteController extends VoteAppController {
             'collected' => 0,
             'website_id' => $website['Website']['id'],
             'ip' => $this->Util->getIP(),
-            'deletedAt' => "$date"
+            'deleted_at' => "$date"
         ]);
         $this->Vote->save();
 

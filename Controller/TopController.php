@@ -25,13 +25,13 @@ class TopController extends VoteAppController
             };
             $this_year[$i] = $this->Vote->find('all', [
                 'fields' => ['username', 'COUNT(id) AS count'],
-                'conditions' => ['created LIKE' => date('Y') . '-' . $month . '-%', 'Vote.deletedAt >=' => $date],
+                'conditions' => ['created LIKE' => date('Y') . '-' . $month . '-%', 'Vote.deleted_at >=' => $date],
                 'order' => 'count DESC',
                 'group' => 'username'
             ]);
             $last_year[$i] = $this->Vote->find('all', [
                 'fields' => ['username', 'COUNT(id) AS count'],
-                'conditions' => ['created LIKE' => date('Y') - 1 . '-' . $month . '-%', 'Vote.deletedAt >=' => $date],
+                'conditions' => ['created LIKE' => date('Y') - 1 . '-' . $month . '-%', 'Vote.deleted_at >=' => $date],
                 'order' => 'count DESC',
                 'group' => 'username'
             ]);
@@ -44,12 +44,12 @@ class TopController extends VoteAppController
             };
             $vote_this_year[$i] = $this->Vote->find('all', [
                 'fields' => ['COUNT(id) AS count'],
-                'conditions' => ['created LIKE' => date('Y') . '-' . $month . '-%', 'Vote.deletedAt >=' => $date],
+                'conditions' => ['created LIKE' => date('Y') . '-' . $month . '-%', 'Vote.deleted_at >=' => $date],
                 'order' => 'count DESC'
             ]);
             $vote_last_year[$i] = $this->Vote->find('all', [
                 'fields' => ['COUNT(id) AS count'],
-                'conditions' => ['created LIKE' => date('Y') - 1 . '-' . $month . '-%', 'Vote.deletedAt >=' => $date],
+                'conditions' => ['created LIKE' => date('Y') - 1 . '-' . $month . '-%', 'Vote.deleted_at >=' => $date],
                 'order' => 'count DESC'
             ]);
         }
@@ -110,8 +110,8 @@ class TopController extends VoteAppController
 				$this->loadModel('Vote.Vote');
 				$date = date('Y-m-d h:i:s');
 				$this->Vote->updateAll(
-					array('Vote.deletedAt' => "'$date'"),
-					array(['Vote.created LIKE' =>  date('Y') . '-' . date('m') . '-%', 'Vote.deletedAt >=' => $date])
+					array('Vote.deleted_at' => "'$date'"),
+					array(['Vote.created LIKE' =>  date('Y') . '-' . date('m') . '-%', 'Vote.deleted_at >=' => $date])
 				);
 				$this->response->body(json_encode(array('statut' => true, 'msg' => $this->Lang->get('GLOBAL__SUCCESS'))));
 			} else {
