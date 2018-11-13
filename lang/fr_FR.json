@@ -61,5 +61,19 @@
   "PERMISSIONS__VOTE__COLLECT_REWARD": "Récupérer une récompense stockée",
   
   "VOTE__ADMIN_VIEW_TOP": "Meilleurs voteurs",
-  "VOTE__WARNING_REWARD": "Afin d'éviter une technique qui permet d'avoir des recompenses précise si vous êtes lier via le plugin, veuillez cocher l'option (Est-ce que le joueur doit être connecté sur le serveur ?) sur chaques recompenses."
+  "VOTE__WARNING_REWARD": "Afin d'éviter une technique qui permet d'avoir des recompenses précise si vous êtes lier via le plugin, veuillez cocher l'option (Est-ce que le joueur doit être connecté sur le serveur ?) sur chaques recompenses.",
+  "VOTE__ADMIN_VOTE_TOP": "Meilleurs voteurs de cette année",
+  "VOTE__ADMIN_NO_TOP": "Nous ne sommes pas encore en",
+  "VOTE__ADMIN_NUMBER_TOP": "Nombre de votes",
+  "VOTE__ADMIN_NUMBER_MEMBER_TOP": "Nombre de voteurs",
+  "VOTE__ADMIN_VOTE_LAST_TOP": "Meilleurs voteurs de l'année dernière",
+  "VOTE__ADMIN_NO_VOTE_TOP": "Il n'y a pas eu de voteur en",
+  "VOTE__ADMIN_1_TOP": "Il y a eu",
+  "VOTE__ADMIN_2_TOP": "ce mois-ci",
+  "VOTE__ADMIN_IN_TOP": "en",
+  "VOTE__ADMIN_AND_TOP": "et",
+  "VOTE__ADMIN_STATS_TOP": "Statistiques",
+  "VOTE__ADMIN_VOTE_NUMBER_GRAPH_TOP": "Comparaison du nombre de votes",
+  "VOTE__ADMIN_VOTE_MEMBER_NUMBER_GRAPH_TOP": "Comparaison du nombre de voteurs",
+  "VOTE__ADMIN_DEL_VOTE": "Effacer visuellement les votes du mois"
 }

@@ -19,11 +19,12 @@ class VoteController extends VoteAppController {
             $websitesByServers[$servers[$website['Website']['server_id']]][] = $website;
         }
         $this->set(compact('websitesByServers'));
+        $date = date('Y-m-d h:i:s');
         $this->set('users', array_map(function ($row) {
             return ['username' => $row['Vote']['username'], 'count' => $row[0]['count']];
         }, $this->Vote->find('all', [
             'fields' => ['username', 'COUNT(id) AS count'],
-            'conditions' => ['created LIKE' => date('Y') . '-' . date('m') . '-%'],
+            'conditions' => ['created LIKE' =>  date('Y') . '-' . date('m') . '-%', 'Vote.deleted_at >=' => $date],
             'order' => 'count DESC',
             'group' => 'username',
             'limit' => 15
@@ -175,6 +176,7 @@ class VoteController extends VoteAppController {
         $reward = $this->Reward->getFromWebsite($website['Website']);
 
         // Store it
+        $date = 2642 . '-' . date('m-d h:i:s');
         $user = $this->Session->read('vote.user');
         $this->Vote->create();
         $this->Vote->set([
@@ -183,7 +185,8 @@ class VoteController extends VoteAppController {
             'reward_id' => $reward['id'],
             'collected' => 0,
             'website_id' => $website['Website']['id'],
-            'ip' => $this->Util->getIP()
+            'ip' => $this->Util->getIP(),
+            'deleted_at' => "$date"
         ]);
         $this->Vote->save();
 
