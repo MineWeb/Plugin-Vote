@@ -1,7 +1,7 @@
 {
     "VOTE__TITLE": "Vote",
 		"VOTE__SET_USER_SUCCESS": "You have been connected!",
-		"VOTE__SET_USER_ERROR_USER_NOT_FOUND": "You have not been found in our database",
+		"VOTE__SET_USER_ERROR_USER_NOT_FOUND": "You have not been found in our database, please register yourself and try again.",
 		"VOTE__SET_WEBSITE_ERROR_NEED_WAIT": "You have already voted for this site, you still have to wait for {TIME}.",
 		"VOTE__SET_WEBSITE_SUCCESS": "You have validated this site.",
 		"VOTE__VOTE_SUCCESS": "You voted well!",
