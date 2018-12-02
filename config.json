@@ -32,7 +32,7 @@
 		"Voter": "/vote"
 	},
 	"author":"Eywek",
-	"version":"2.2.4",
+	"version":"2.2.5",
 	"useEvents":true,
 	"permissions" : {
 		"available" : ["VOTE__ADMIN_MANAGE_REWARDS", "VOTE__ADMIN_MANAGE_WEBSITES", "VOTE__ADMIN_MANAGE", "VOTE__COLLECT_REWARD", "VOTE__ADMIN_VIEW_TOP"],
