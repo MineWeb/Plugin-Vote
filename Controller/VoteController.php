@@ -227,23 +227,28 @@ class VoteController extends VoteAppController {
         if (empty($findVote))
             throw new NotFoundException();
         // Give it
-        $server_id = $findVote[0]['Website']['server_id'];
         $this->loadModel('Vote.Reward');
+        $this->loadModel('Vote.Website');
+        $server_id = $findVote[0]['Website']['server_id'];
         $vote_id = array();
+        $vote_number = 0;
         foreach ($findVote as $v) {
-            $reward = $v['Reward'];
-            $vote_id[] =  $v['Vote']['id'];
-            if (!$this->Reward->collect($reward, $server_id, $this->User->getKey('pseudo'), $this->Server)) {
-                $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_ERROR'), 'default.error');
-                $this->redirect($this->referer());
-                return;
+            if($server_id == $v['Website']['server_id']) {
+                $reward = $v['Reward'];
+                $vote_number++;
+                $vote_id[] = $v['Vote']['id'];
+                if (!$this->Reward->collect($reward, $v['Website']['server_id'], $this->User->getKey('pseudo'), $this->Server)) {
+                    $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_ERROR'), 'default.error');
+                    $this->redirect($this->referer());
+                    return;
+                }
+                // Add money
+                if ($reward['amount'] > 0)
+                    $this->User->setKey('money', (floatval($this->User->getKey('money')) + floatval($reward['amount'])));
             }
-            // Add money
-            if ($reward['amount'] > 0)
-                $this->User->setKey('money', (floatval($this->User->getKey('money')) + floatval($reward['amount'])));
         }
         if (count($findVote) > 1) {
-            $command = str_replace('{REWARD_NUMBER}',count($findVote), $this->__getConfig()->global_command_plural);
+            $command = str_replace('{REWARD_NUMBER}',$vote_number, $this->__getConfig()->global_command_plural);
             $this->Server->commands($command, $server_id);
         }
         else {
