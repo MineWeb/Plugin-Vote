@@ -15,6 +15,7 @@
 		"VOTE__ADMIN_VOTE_CONFIGURATION_TITLE": "General configuration of the votes",
 		"VOTE__ADMIN_VOTE_CONFIGURATION_NEED_REGISTER": "Should the player be registered on the site to vote?",
 		"VOTE__ADMIN_VOTE_CONFIGURATION_GLOBAL_COMMAND": "Global order sent during each vote",
+		"VOTE__ADMIN_VOTE_CONFIGURATION_GLOBAL_COMMAND_PLURAL": "Global order sent when collecting several votes in expectation",
 		"VOTE__ADMIN_EDIT_CONFIG_SUCCESS": "The configuration has been edited!",
 
 		"VOTE__ADMIN_MANAGE_REWARDS": "Manage rewards",
@@ -42,6 +43,7 @@
 
 		"VOTE__TITLE_ACTION": "Votes",
 		"VOTE__USER_GET_REWARD": "Get my reward",
+		"VOTE__USER_GET_REWARD_PLURAL": "Collect my rewards",
 		"VOTE__USER_MSG_REWARDS_WAITING": "You have {NBR_REWARDS} rewards waiting!",
 
 		"VOTE__STEP_TITLE": "Step",
@@ -59,7 +61,7 @@
 		"PERMISSIONS__VOTE__ADMIN_MANAGE_WEBSITES": "Manage the voting sites",
 		"PERMISSIONS__VOTE__ADMIN_MANAGE": "Manage the votes",
 		"PERMISSIONS__VOTE__COLLECT_REWARD": "Recover a stored reward",
-	
+
 		"VOTE__ADMIN_VIEW_TOP": "Best Voters",
 		"VOTE__WARNING_REWARD": "In order to avoid a technique that allows you to have accurate rewards if you are linking via the plugin, please check the option (Does the player have to be connected to the server?) On each reward.",
 		"VOTE__ADMIN_VOTE_TOP": "Best Voters of this Year",
