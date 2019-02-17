@@ -42,13 +42,9 @@ class Website extends VoteAppModel
                 break;
             case 'TOP-SERVEUR-NET':
                 // Check with API
-                $result = @file_get_contents("https://api.top-serveurs.net/v1/votes/last?server_token={$website['data']['server_token']}");
-                if ($result && ($result = json_decode($result, true))) {
-                    if (in_array($ip, array_map(function ($vote) {
-                        return $vote['ip'];
-                    }, $result['votes'])))
-                        return true;
-                }
+                $result = @file_get_contents("https://api.top-serveurs.net/v1/votes/check-ip?server_token={$website['data']['server_token']}&ip=$ip");
+                if ($result && ($result = json_decode($result, true)))
+                    return true;
                 break;
             case 'LISTE-SRV-MC-FR':
                 // Check with API
