@@ -23,7 +23,7 @@ class Reward extends VoteAppModel
         return $reward;
     }
 
-    public function collect($reward, $server_id, $username, ServerComponent $server)
+    public function collect($reward, $server_id, $username, ServerComponent $server, $additionalsCommands = [])
     {
         // Check if logged
         if ($reward['need_online'] && !$server->userIsConnected($username, $server_id))
@@ -32,13 +32,11 @@ class Reward extends VoteAppModel
         $commands = [];
         if (!is_array($reward['commands']))
             $reward['commands'] = json_decode($reward['commands'], true);
-        foreach ($reward['commands'] as $command) {
+        foreach (array_merge($reward['commands'], $additionalsCommands) as $command) {
             $commands[] = str_replace('{PLAYER}', $username, str_replace('{REWARD_NAME}', $reward['name'], $command));
         }
-
         // Send commands
         $server->commands($commands, $server_id);
-
         return true;
     }
 }
