@@ -7,9 +7,11 @@ class VoteController extends VoteAppController {
         $this->set('config', $this->__getConfig());
 
         $this->loadModel('Vote.Website');
+        $this->loadModel('Vote.Reward');        
         $this->loadModel('Server');
         $websites = $this->Website->find('all');
         $servers = $this->Server->findSelectableServers();
+        $rewards = $this->Reward->find('all');
         $websitesByServers = [];
         foreach ($websites as $website) {
             if (!isset($servers[$website['Website']['server_id']]))
@@ -18,7 +20,7 @@ class VoteController extends VoteAppController {
                 $websitesByServers[$servers[$website['Website']['server_id']]] = [];
             $websitesByServers[$servers[$website['Website']['server_id']]][] = $website;
         }
-        $this->set(compact('websitesByServers'));
+        $this->set(compact('websitesByServers', 'rewards'));
         $this->set('users', array_map(function ($row) {
             return ['username' => $row['Vote']['username'], 'count' => $row[0]['count']];
         }, $this->Vote->find('all', [

@@ -43,6 +43,8 @@
 		"VOTE__TITLE_ACTION": "Votes",
 		"VOTE__USER_GET_REWARD": "Get my reward",
 		"VOTE__USER_MSG_REWARDS_WAITING": "You have {NBR_REWARDS} rewards waiting!",
+		"VOTE__REWARDS": "Rewards",
+		"VOTE__DSIPLAY_REWARDS": "Display rewards",
 
 		"VOTE__STEP_TITLE": "Step",
 		"VOTE__STEP_SET_USER": "Identify yourself",
