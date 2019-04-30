@@ -58,10 +58,10 @@ class Website extends VoteAppModel
                 if ($result === false || intval($result) > 0)
                     return true;
                 break;
-	        case 'LIST-SRV-MC-ORG':
+            case 'LIST-SRV-MC-ORG':
                 // Check with API
-                $result = @file_get_contents("http://www.liste-serveurs-minecraft.org/get_ip.php/{$website['data']['server_id']}/$ip");
-                if ($result === false || intval($result) > 0)
+                $result = @file_get_contents("https://api.liste-serveurs-minecraft.org/vote/vote_verification.php?server_id={$website['data']['server_id']}&ip=$ip&duration=180");
+                if ($result === false || intval($result) == 1)
                     return true;
                 break;
             case 'SRV-MULTIGAMES':
