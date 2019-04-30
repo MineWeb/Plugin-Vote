@@ -52,11 +52,13 @@ class Website extends VoteAppModel
                 if ($result === false || ($result = json_decode($result, true)) === false || $result['id_vote'])
                     return true;
                 break;
-			case 'SRV-PRIV':
+            case 'SRV-PRIV':
                 // Check with API
-                $result = @file_get_contents("https://serveur-prive.net/api/vote/{$website['data']['server_id']}/$ip");
-                if ($result === false || intval($result) > 0)
-                    return true;
+                $result = @file_get_contents("https://serveur-prive.net/api/vote/json/{$website['data']['server_id']}/$ip");
+                if ($result && ($result = json_decode($result, true))) {
+			if ($result === false || intval($result['status']) == 1)
+                    		return true;
+		}
                 break;
             case 'LIST-SRV-MC-ORG':
                 // Check with API
