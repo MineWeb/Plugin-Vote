@@ -21,6 +21,7 @@
                                 <option data-inputs="server_id" value="SRVMC-ORG" <?= (isset($website) && $website['type'] == 'SRVMC-ORG') ? 'selected' : '' ?>>https://www.serveursminecraft.org</option>
                                 <option data-inputs="server_id" value="SRV-MC-COM" <?= (isset($website) && $website['type'] == 'SRV-MC-COM') ? 'selected' : '' ?>>https://serveurs-minecraft.com</option>
                                 <option data-inputs="server_id" value="TOPG-ORG" <?= (isset($website) && $website['type'] == 'TOPG-ORG') ? 'selected' : '' ?>>http://topg.org</option>
+				<option data-inputs="server_id" value="SRV-MINECRAFT-FR" <?= (isset($website) && $website['type'] == 'SRV-MINECRAFT-FR') ? 'selected' : '' ?>>https://serveur-minecraft.fr</option>
                                 <option data-inputs="server_token" value="TOP-SERVEUR-NET" <?= (isset($website) && $website['type'] == 'TOP-SERVEUR-NET') ? 'selected' : '' ?>>https://minecraft.top-serveurs.net</option>
                                 <option data-inputs="server_id" value="LISTE-SRV-MC-FR" <?= (isset($website) && $website['type'] == 'LISTE-SRV-MC-FR') ? 'selected' : '' ?>>https://liste-serv-minecraft.fr</option>
 				                <option data-inputs="server_id" value="SRV-PRIV" <?= (isset($website) && $website['type'] == 'SRV-PRIV') ? 'selected' : '' ?>>https://serveur-prive.net</option>
