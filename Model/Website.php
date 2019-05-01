@@ -60,16 +60,18 @@ class Website extends VoteAppModel
                 if ($result === false || ($result = json_decode($result, true)) === false || $result['id_vote'])
                     return true;
                 break;
-			case 'SRV-PRIV':
+            case 'SRV-PRIV':
                 // Check with API
-                $result = @file_get_contents("https://serveur-prive.net/api/vote/{$website['data']['server_id']}/$ip");
-                if ($result === false || intval($result) > 0)
-                    return true;
+                $result = @file_get_contents("https://serveur-prive.net/api/vote/json/{$website['data']['server_id']}/$ip");
+                if ($result && ($result = json_decode($result, true))) {
+			if ($result === false || intval($result['status']) == 1)
+                    		return true;
+		}
                 break;
-	        case 'LIST-SRV-MC-ORG':
+            case 'LIST-SRV-MC-ORG':
                 // Check with API
-                $result = @file_get_contents("http://www.liste-serveurs-minecraft.org/get_ip.php/{$website['data']['server_id']}/$ip");
-                if ($result === false || intval($result) > 0)
+                $result = @file_get_contents("https://api.liste-serveurs-minecraft.org/vote/vote_verification.php?server_id={$website['data']['server_id']}&ip=$ip&duration=180");
+                if ($result === false || intval($result) == 1)
                     return true;
                 break;
             case 'SRV-MULTIGAMES':
