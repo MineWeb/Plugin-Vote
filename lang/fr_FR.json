@@ -43,6 +43,8 @@
   "VOTE__TITLE_ACTION": "Votes",
   "VOTE__USER_GET_REWARD": "Récupérer ma récompense",
   "VOTE__USER_MSG_REWARDS_WAITING": "Vous avez {NBR_REWARDS} récompenses en attente !",
+  "VOTE__REWARDS": "Récompenses",
+  "VOTE__DISPLAY_REWARDS": "Afficher les récompenses",
 
   "VOTE__STEP_TITLE": "Étape",
   "VOTE__STEP_SET_USER": "Identifiez-vous",

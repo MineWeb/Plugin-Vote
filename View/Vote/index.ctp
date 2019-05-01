@@ -38,6 +38,7 @@
                             </div>
                             <br><br>
                             <button class="btn btn-success" type="submit">Passer a l'étape suivante</button>
+                            <a class="btn btn-success" id="display-rewards" data-toggle="modal" data-target="#rewards"><?= $Lang->get('VOTE__DISPLAY_REWARDS'); ?></a>
                         </form>
 
                     </div>
@@ -96,6 +97,7 @@
             </div>
 
         </div>
+
         <div class="col-md-12">
 
             <hr>
@@ -204,7 +206,14 @@
             $('#website-error').html('<div class="alert alert-danger"><b><?= $Lang->get('GLOBAL__ERROR') ?>:</b> <?= $Lang->get('VOTE__ERROR_WEBSITE') ?></div>')
             $('.loader').css('display', 'none')
         })
-    })
+    });
+
+    $('#display-rewards').on('click', function () {
+        $('#rewards').show();
+    });
+    $('#rewards').on('click', '.close', function () {
+        $('#rewards').hide();
+    });
 
     function startTimerCheckVote()
     {
@@ -254,6 +263,42 @@
             <div class="modal-body text-center">
                 <div class="alert alert-info"><?= $Lang->get('VOTE__MODAL_DESC') ?></div>
                 <a href="#" id="voteBtn" target="_blank" onclick="$('#redirectModal').modal('hide');startTimerCheckVote()" class="btn btn-info btn-block"><?= $Lang->get('VOTE__MODAL_BTN') ?></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="rewards" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title"><?= $Lang->get('VOTE__REWARDS') ?></h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table text-muted">
+                        <thead>
+                            <tr>
+                                <th>Récompense</th>
+                                <th>Probabilité d'obtention</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $i = 0;
+                            foreach ($rewards as $reward) {
+                            ?>
+                                <tr>
+                                    <td><?= $reward['Reward']['name']; ?></td>
+                                    <td><?= $reward['Reward']['probability']; ?>%</td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
