@@ -21,18 +21,41 @@ class VoteController extends VoteAppController {
             $websitesByServers[$servers[$website['Website']['server_id']]][] = $website;
         }
         $this->set(compact('websitesByServers', 'rewards'));
+        $this->loadModel('User');
         $this->set('users', array_map(function ($row) {
-            return ['username' => $row['Vote']['username'], 'count' => $row[0]['count']];
+            return ['username' => $this->User->getUsernameByID($row['Vote']['user_id']), 'count' => $row[0]['count']];
         }, $this->Vote->find('all', [
-            'fields' => ['username', 'COUNT(id) AS count'],
+            'fields' => ['user_id', 'COUNT(id) AS count'],
             'conditions' => [
-              'created LIKE' =>  date('Y') . '-' . date('m') . '-%',
-              'Vote.deleted_at' => null
+                'created LIKE' =>  date('Y') . '-' . date('m') . '-%',
+                'Vote.deleted_at' => null
             ],
             'order' => 'count DESC',
-            'group' => 'username',
+            'group' => 'user_id',
             'limit' => 15
         ])));
+        if ($this->User->isConnected()) {
+            $users_info = $this->Vote->find('all', [
+                'fields' => ['user_id', 'COUNT(id) AS count'],
+                'conditions' => [
+                    'created LIKE' => date('Y') . '-' . date('m') . '-%',
+                    'Vote.deleted_at' => null,
+                ],
+                'order' => 'count DESC',
+                'group' => 'user_id',
+            ]);
+            $i = 0;
+            foreach ($users_info as $v) {
+                $i++;
+                if ($this->User->getKey('id') == $v['Vote']['user_id']) {
+                    $user_info = $v;
+                    $user_info['username'] = $this->User->getUsernameByID($v['Vote']['user_id']);
+                    $user_info['place'] = "#".$i;
+                }
+
+            }
+        }
+        $this->set(compact('websitesByServers', 'user_info'));
     }
 
     public function setUser()
