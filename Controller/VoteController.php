@@ -20,7 +20,6 @@ class VoteController extends VoteAppController {
                 $websitesByServers[$servers[$website['Website']['server_id']]] = [];
             $websitesByServers[$servers[$website['Website']['server_id']]][] = $website;
         }
-        $this->set(compact('websitesByServers', 'rewards'));
         $this->loadModel('User');
         $this->set('users', array_map(function ($row) {
             return ['username' => $this->User->getUsernameByID($row['Vote']['user_id']), 'count' => $row[0]['count']];
@@ -55,7 +54,7 @@ class VoteController extends VoteAppController {
 
             }
         }
-        $this->set(compact('websitesByServers', 'user_info'));
+        $this->set(compact('websitesByServers', 'user_info', 'rewards'));
     }
 
     public function setUser()
