@@ -80,6 +80,13 @@ class Website extends VoteAppModel
                 if ($result || intval($result) > 0)
                     return true;
                 break;
+            case 'MGS':
+                // Check with API
+                $result = json_decode(@file_get_contents("http://localhost:8000/api/checkvote/{$website['data']['server_id']}/$ip"));
+
+                if ($result->success && $result->data->vote)
+                    return true;
+                break;
             default:
                 return true;
         }

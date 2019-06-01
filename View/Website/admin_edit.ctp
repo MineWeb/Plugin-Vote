@@ -27,6 +27,7 @@
 				                <option data-inputs="server_id" value="SRV-PRIV" <?= (isset($website) && $website['type'] == 'SRV-PRIV') ? 'selected' : '' ?>>https://serveur-prive.net</option>
                             	<option data-inputs="server_id" value="LIST-SRV-MC-ORG" <?= (isset($website) && $website['type'] == 'LIST-SRV-MC-ORG') ? 'selected' : '' ?>>https://www.liste-serveurs-minecraft.org</option>
                             	<option data-inputs="server_id" value="SRV-MULTIGAMES" <?= (isset($website) && $website['type'] == 'SRV-MULTIGAMES') ? 'selected' : '' ?>>https://serveur-multigames.net</option>
+                            	<option data-inputs="server_id" value="MGS" <?= (isset($website) && $website['type'] == 'MGS') ? 'selected' : '' ?>>https://mygreatserver.fr</option>
 				            </select>
                         </div>
 
