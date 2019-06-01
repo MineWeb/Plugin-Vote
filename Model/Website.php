@@ -82,7 +82,7 @@ class Website extends VoteAppModel
                 break;
             case 'MGS':
                 // Check with API
-                $result = json_decode(@file_get_contents("http://localhost:8000/api/checkvote/{$website['data']['server_id']}/$ip"));
+                $result = json_decode(@file_get_contents("https://mygreatserver.fr/api/checkvote/{$website['data']['server_id']}/$ip"));
 
                 if ($result->success && $result->data->vote)
                     return true;
