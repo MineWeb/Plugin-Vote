@@ -222,47 +222,60 @@ class VoteController extends VoteAppController {
     {
         if (!$this->Permissions->can('VOTE__COLLECT_REWARD'))
             throw new ForbiddenException();
+
         $this->loadModel('Vote.Vote');
-        $findVote = $this->Vote->find('all', ['conditions' => ['user_id' => $this->User->getKey('id'), 'collected' => 0], 'recursive' => 1]);
+        $votesList = $this->Vote->find('all', [
+          'conditions' => [
+            'user_id' => $this->User->getKey('id'),
+            'collected' => 0
+          ],
+          'recursive' => 1
+        ]);
         if (empty($findVote))
             throw new NotFoundException();
+
         // Give it
         $this->loadModel('Vote.Reward');
         $this->loadModel('Vote.Website');
-        $server_id = $findVote[0]['Website']['server_id'];
-        $vote_id = array();
-        $vote_number = 0;
-        foreach ($findVote as $v) {
-            if($server_id == $v['Website']['server_id']) {
-                $reward = $v['Reward'];
-                $vote_number++;
-                $vote_id[] = $v['Vote']['id'];
-                if (!$this->Reward->collect($reward, $v['Website']['server_id'], $this->User->getKey('pseudo'), $this->Server)) {
-                    $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_ERROR'), 'default.error');
-                    $this->redirect($this->referer());
-                    return;
-                }
-                // Add money
-                if ($reward['amount'] > 0)
-                    $this->User->setKey('money', (floatval($this->User->getKey('money')) + floatval($reward['amount'])));
-            }
+        $collectedVotesByServer = [];
+        foreach ($votesList as $vote) {
+            $reward = $vote['Reward'];
+            if (!$this->Reward->collect($reward, $vote['Website']['server_id'], $this->User->getKey('pseudo'), $this->Server))
+                continue;
+            if (!$collectedVotesByServer[$vote['Website']['server_id']])
+              $collectedVotesByServer[$vote['Website']['server_id']] = [];
+            $collectedVotesByServer[$vote['Website']['server_id']][] = $vote;
+            // Add money
+            if ($reward['amount'] > 0)
+                $this->User->setKey('money', (floatval($this->User->getKey('money')) + floatval($reward['amount'])));
         }
-        if (count($findVote) > 1) {
-            $command = str_replace('{REWARD_NUMBER}',$vote_number, $this->__getConfig()->global_command_plural);
-            $this->Server->commands($command, $server_id);
+
+        // Send 1 command per server only
+        foreach ($collectedVotesByServer as $serverId => $votes) {
+          if (count($votes) === 1) {
+            $command = str_replace('{REWARD_NAME}', $votes[0]['Reward']['name'], $this->__getConfig()->global_command);
+            $this->Server->commands($command, $serverId);
+            continue;
+          }
+          $command = str_replace('{REWARD_NUMBER}', count($votes), $this->__getConfig()->global_command_plural);
+          $this->Server->commands($command, $serverId);
         }
-        else {
-            $command = str_replace('{REWARD_NAME}',$findVote[0]['Reward']['name'], $this->__getConfig()->global_command);
-            $this->Server->commands($command, $server_id);
-        }
+
         // Set as collected
         $this->Vote->updateAll(
             array('Vote.collected' => 1),
-            array('Vote.id' => $vote_id)
+            array('Vote.id' => array_reduce($collectedVotesByServer, function ($list, $votes) {
+                return array_merge($list, array_map(function ($vote) {
+                  return $vote['Vote']['id'];
+                }, $votes));
+            }, []))
         );
 
         // Redirect
-        $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_SUCCESS'), 'default.success');
+        if (count($collectedVotesByServer) === 0)
+          $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_ERROR'), 'default.error');
+        else
+          $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_SUCCESS'), 'default.success');
         $this->redirect($this->referer());
     }
 
