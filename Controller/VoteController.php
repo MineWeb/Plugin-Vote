@@ -246,28 +246,60 @@ class VoteController extends VoteAppController {
     {
         if (!$this->Permissions->can('VOTE__COLLECT_REWARD'))
             throw new ForbiddenException();
+
         $this->loadModel('Vote.Vote');
-        $findVote = $this->Vote->find('first', ['conditions' => ['user_id' => $this->User->getKey('id'), 'collected' => 0], 'recursive' => 1]);
+        $votesList = $this->Vote->find('all', [
+          'conditions' => [
+            'user_id' => $this->User->getKey('id'),
+            'collected' => 0
+          ],
+          'recursive' => 1
+        ]);
         if (empty($findVote))
             throw new NotFoundException();
+
         // Give it
         $this->loadModel('Vote.Reward');
-        $reward = $findVote['Reward'];
-        if (!$this->Reward->collect($reward, $findVote['Website']['server_id'], $this->User->getKey('pseudo'), $this->Server, [$this->__getConfig()->global_command])) {
-            $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_ERROR'), 'default.error');
-            $this->redirect($this->referer());
-            return;
+        $this->loadModel('Vote.Website');
+        $collectedVotesByServer = [];
+        foreach ($votesList as $vote) {
+            $reward = $vote['Reward'];
+            if (!$this->Reward->collect($reward, $vote['Website']['server_id'], $this->User->getKey('pseudo'), $this->Server))
+                continue;
+            if (!$collectedVotesByServer[$vote['Website']['server_id']])
+              $collectedVotesByServer[$vote['Website']['server_id']] = [];
+            $collectedVotesByServer[$vote['Website']['server_id']][] = $vote;
+            // Add money
+            if ($reward['amount'] > 0)
+                $this->User->setKey('money', (floatval($this->User->getKey('money')) + floatval($reward['amount'])));
         }
-        // Add money
-        if ($reward['amount'] > 0)
-            $this->User->setKey('money', (floatval($this->User->getKey('money')) + floatval($reward['amount'])));
+
+        // Send 1 command per server only
+        foreach ($collectedVotesByServer as $serverId => $votes) {
+          if (count($votes) === 1) {
+            $command = str_replace('{REWARD_NAME}', $votes[0]['Reward']['name'], $this->__getConfig()->global_command);
+            $this->Server->commands($command, $serverId);
+            continue;
+          }
+          $command = str_replace('{REWARD_NUMBER}', count($votes), $this->__getConfig()->global_command_plural);
+          $this->Server->commands($command, $serverId);
+        }
+
         // Set as collected
-        $this->Vote->read(null, $findVote['Vote']['id']);
-        $this->Vote->set(['collected' => 1]);
-        $this->Vote->save();
+        $this->Vote->updateAll(
+            array('Vote.collected' => 1),
+            array('Vote.id' => array_reduce($collectedVotesByServer, function ($list, $votes) {
+                return array_merge($list, array_map(function ($vote) {
+                  return $vote['Vote']['id'];
+                }, $votes));
+            }, []))
+        );
 
         // Redirect
-        $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_SUCCESS'), 'default.success');
+        if (count($collectedVotesByServer) === 0)
+          $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_ERROR'), 'default.error');
+        else
+          $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_SUCCESS'), 'default.success');
         $this->redirect($this->referer());
     }
 
@@ -289,12 +321,13 @@ class VoteController extends VoteAppController {
         if ($this->request->is('ajax')) {
             $this->autoRender = false;
             $this->response->type('json');
-            if (!isset($this->request->data['need_register']) || !isset($this->request->data['global_command']))
+            if (!isset($this->request->data['need_register']) || !isset($this->request->data['global_command']) || !isset($this->request->data['global_command_plural']))
                 return $this->sendJSON(['statut' => false, 'msg' => $this->Lang->get('ERROR__FILL_ALL_FIELDS')]);
             $this->VoteConfiguration->read(null, 1);
             $this->VoteConfiguration->set([
                 'need_register' => $this->request->data['need_register'],
-                'global_command' => $this->request->data['global_command']
+                'global_command' => $this->request->data['global_command'],
+                'global_command_plural' => $this->request->data['global_command_plural']
             ]);
             $this->VoteConfiguration->save();
 

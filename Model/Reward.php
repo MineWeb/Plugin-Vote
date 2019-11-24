@@ -35,10 +35,8 @@ class Reward extends VoteAppModel
         foreach (array_merge($reward['commands'], $additionalsCommands) as $command) {
             $commands[] = str_replace('{PLAYER}', $username, str_replace('{REWARD_NAME}', $reward['name'], $command));
         }
-
         // Send commands
         $server->commands($commands, $server_id);
-
         return true;
     }
 }
