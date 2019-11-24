@@ -15,7 +15,6 @@ class TopController extends VoteAppController
 
         $new_month = array("Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre");
         $this->set('new_months', $new_month);
-        $date = date('Y-m-d h:i:s');
         $this->set('title_for_layout', $this->Lang->get('VOTE__ADMIN_VIEW_TOP'));
         for($i = 0; $i < 12; $i++){
             if($i < 10){
@@ -25,13 +24,13 @@ class TopController extends VoteAppController
             };
             $this_year[$i] = $this->Vote->find('all', [
                 'fields' => ['username', 'COUNT(id) AS count'],
-                'conditions' => ['created LIKE' => date('Y') . '-' . $month . '-%', 'Vote.deleted_at >=' => $date],
+                'conditions' => ['created LIKE' => date('Y') . '-' . $month . '-%', 'Vote.deleted_at' => null],
                 'order' => 'count DESC',
                 'group' => 'username'
             ]);
             $last_year[$i] = $this->Vote->find('all', [
                 'fields' => ['username', 'COUNT(id) AS count'],
-                'conditions' => ['created LIKE' => date('Y') - 1 . '-' . $month . '-%', 'Vote.deleted_at >=' => $date],
+                'conditions' => ['created LIKE' => date('Y') - 1 . '-' . $month . '-%', 'Vote.deleted_at' => null],
                 'order' => 'count DESC',
                 'group' => 'username'
             ]);
@@ -44,12 +43,12 @@ class TopController extends VoteAppController
             };
             $vote_this_year[$i] = $this->Vote->find('all', [
                 'fields' => ['COUNT(id) AS count'],
-                'conditions' => ['created LIKE' => date('Y') . '-' . $month . '-%', 'Vote.deleted_at >=' => $date],
+                'conditions' => ['created LIKE' => date('Y') . '-' . $month . '-%', 'Vote.deleted_at' => null],
                 'order' => 'count DESC'
             ]);
             $vote_last_year[$i] = $this->Vote->find('all', [
                 'fields' => ['COUNT(id) AS count'],
-                'conditions' => ['created LIKE' => date('Y') - 1 . '-' . $month . '-%', 'Vote.deleted_at >=' => $date],
+                'conditions' => ['created LIKE' => date('Y') - 1 . '-' . $month . '-%', 'Vote.deleted_at' => null],
                 'order' => 'count DESC'
             ]);
         }
@@ -108,11 +107,10 @@ class TopController extends VoteAppController
 				$this->response->type('json');
 				$this->autoRender = null;
 				$this->loadModel('Vote.Vote');
-				$date = date('Y-m-d h:i:s');
 				$this->Vote->updateAll(
-					array('Vote.deleted_at' => "'$date'"),
-					array(['Vote.created LIKE' =>  date('Y') . '-' . date('m') . '-%', 'Vote.deleted_at >=' => $date])
-				);
+          array('Vote.deleted_at' => "'" . date('Y-m-d h:i:s') . "'"),
+          array('Vote.deleted_at' => null)
+        );
 				$this->response->body(json_encode(array('statut' => true, 'msg' => $this->Lang->get('GLOBAL__SUCCESS'))));
 			} else {
                 $this->response->body(json_encode(array('statut' => false, 'msg' => $this->Lang->get('ERROR__BAD_REQUEST'))));
