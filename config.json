@@ -1,47 +1,57 @@
 {
-	"name":"Voter",
-	"admin_menus": {
-		"Vote": {
-			"icon": "external-link",
-			"index": "4",
-			"menu": {
-				"Configuration": {
-					"icon": "cog",
-					"permission": "VOTE__ADMIN_MANAGE",
-					"route": "/admin/vote/configuration"
-				},
-				"Gérer les récompenses": {
-					"icon": "gift",
-					"permission": "VOTE__ADMIN_MANAGE_REWARDS",
-					"route": "/admin/vote/rewards"
-				},
-				"Gérer les sites de votes": {
-					"icon": "sitemap",
-					"permission": "VOTE__ADMIN_MANAGE_WEBSITES",
-					"route": "/admin/vote/websites"
-				},
-				"Meilleurs voteurs": {
-				"icon": "trophy",
-				"permission": "VOTE__ADMIN_VIEW_TOP",
-				"route": "/admin/vote/top"
-				}
-			}
-		}
-	},
-	"navbar_routes": {
-		"Voter": "/vote"
-	},
-	"author":"Eywek",
-	"version":"2.4.0",
-	"useEvents":true,
-	"permissions" : {
-		"available" : ["VOTE__ADMIN_MANAGE_REWARDS", "VOTE__ADMIN_MANAGE_WEBSITES", "VOTE__ADMIN_MANAGE", "VOTE__COLLECT_REWARD", "VOTE__ADMIN_VIEW_TOP"],
-		"default" : {
-			"0" : ["VOTE__COLLECT_REWARD"],
-			"2" : ["VOTE__COLLECT_REWARD"]
-		}
-	},
-	"requirements" : {
-		"CMS" : "^1.2.0"
-	}
+  "name": "Voter",
+  "admin_menus": {
+    "Vote": {
+      "icon": "external-link",
+      "index": "4",
+      "menu": {
+        "Configuration": {
+          "icon": "cog",
+          "permission": "VOTE__ADMIN_MANAGE",
+          "route": "/admin/vote/configuration"
+        },
+        "Gérer les récompenses": {
+          "icon": "gift",
+          "permission": "VOTE__ADMIN_MANAGE_REWARDS",
+          "route": "/admin/vote/rewards"
+        },
+        "Gérer les sites de votes": {
+          "icon": "sitemap",
+          "permission": "VOTE__ADMIN_MANAGE_WEBSITES",
+          "route": "/admin/vote/websites"
+        },
+        "Meilleurs voteurs": {
+          "icon": "trophy",
+          "permission": "VOTE__ADMIN_VIEW_TOP",
+          "route": "/admin/vote/top"
+        }
+      }
+    }
+  },
+  "navbar_routes": {
+    "Voter": "/vote"
+  },
+  "author": "Eywek",
+  "version": "2.4.1",
+  "useEvents": true,
+  "permissions": {
+    "available": [
+      "VOTE__ADMIN_MANAGE_REWARDS",
+      "VOTE__ADMIN_MANAGE_WEBSITES",
+      "VOTE__ADMIN_MANAGE",
+      "VOTE__COLLECT_REWARD",
+      "VOTE__ADMIN_VIEW_TOP"
+    ],
+    "default": {
+      "0": [
+        "VOTE__COLLECT_REWARD"
+      ],
+      "2": [
+        "VOTE__COLLECT_REWARD"
+      ]
+    }
+  },
+  "requirements": {
+    "CMS": "^1.2.0"
+  }
 }
