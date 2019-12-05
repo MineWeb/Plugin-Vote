@@ -16,7 +16,7 @@ class TopController extends VoteAppController
         $new_month = array("Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre");
         $this->set('new_months', $new_month);
         $this->set('title_for_layout', $this->Lang->get('VOTE__ADMIN_VIEW_TOP'));
-        for($i = 0; $i < 12; $i++){
+        for($i = 0; $i < 13; $i++){
             if($i < 10){
                 $month = "0{$i}"; 
             } else { 
