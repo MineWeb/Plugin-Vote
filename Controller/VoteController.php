@@ -21,16 +21,21 @@ class VoteController extends VoteAppController {
             $websitesByServers[$servers[$website['Website']['server_id']]][] = $website;
         }
         $this->loadModel('User');
+        $this->loadModel('Vote.VoteConfiguration');
+        $get_config = $this->VoteConfiguration->find('first');
+        $group = "username";
+        if($get_config['VoteConfiguration']['need_register'])
+            $group = "user_id";
         $this->set('users', array_map(function ($row) {
-            return ['username' => $this->User->getUsernameByID($row['Vote']['user_id']), 'count' => $row[0]['count']];
+            return ['username' => (isset($row['Vote']['user_id'])) ? $this->User->getUsernameByID($row['Vote']['user_id']) : $row['Vote']['username'], 'count' => $row[0]['count']];
         }, $this->Vote->find('all', [
-            'fields' => ['user_id', 'COUNT(id) AS count'],
+            'fields' => ['username', 'user_id', 'COUNT(id) AS count'],
             'conditions' => [
                 'created LIKE' =>  date('Y') . '-' . date('m') . '-%',
                 'Vote.deleted_at' => null
             ],
             'order' => 'count DESC',
-            'group' => 'user_id',
+            'group' => "{$group}",
             'limit' => 15
         ])));
         if ($this->User->isConnected()) {
