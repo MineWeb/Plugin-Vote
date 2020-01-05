@@ -45,8 +45,8 @@ class TopController extends VoteAppController
 
         // GRAPH
         for ($i = 0; $i < 12; $i++) {
-            $nbr_this_year[$i] = count($this_year[$i]);
-            $nbr_last_year[$i] = count($last_year[$i]);
+            $nbr_this_year[$i] = count($this_year[$i + 1]);
+            $nbr_last_year[$i] = count($last_year[$i + 1]);
 
             $nbr_vote_this_year[$i] = $vote_this_year[$i + 1][0][0]['count'];
             $nbr_vote_last_year[$i] = $vote_last_year[$i + 1][0][0]['count'];
