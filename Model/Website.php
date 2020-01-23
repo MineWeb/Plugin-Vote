@@ -34,7 +34,7 @@ class Website extends VoteAppModel
                 if (time() - strtotime($result['lastVote']['date']) < (3 * 60 * 60)) // 3 minutes between vote and check
                     return true;
                 break;
-	     case 'SRV-MINECRAFT-FR':
+	        case 'SRV-MINECRAFT-FR':
                 // Check with API
                 $result = @file_get_contents("https://serveur-minecraft.fr/api-{$website['data']['server_id']}_$ip.json");
                 if ($result && ($result = json_decode($result, true))) {
@@ -64,9 +64,9 @@ class Website extends VoteAppModel
                 // Check with API
                 $result = @file_get_contents("https://serveur-prive.net/api/vote/json/{$website['data']['server_id']}/$ip");
                 if ($result && ($result = json_decode($result, true))) {
-			if ($result === false || intval($result['status']) == 1)
-                    		return true;
-		}
+			        if ($result === false || intval($result['status']) == 1)
+                        return true;
+		        }
                 break;
             case 'LIST-SRV-MC-ORG':
                 // Check with API
@@ -83,8 +83,13 @@ class Website extends VoteAppModel
             case 'MGS':
                 // Check with API
                 $result = json_decode(@file_get_contents("https://mygreatserver.fr/api/checkvote/{$website['data']['server_id']}/$ip"));
-
                 if ($result->success && $result->data->vote)
+                    return true;
+                break;
+            case 'LISTE-SERVEUR-FR':
+                // Check with API
+                $result = json_decode(@file_get_contents("https://www.liste-serveur.fr/api/hasVoted/{$website['data']['server_token']}/$ip"));
+                if (isset($result->hasVoted) && $result->hasVoted === true)
                     return true;
                 break;
             default:
