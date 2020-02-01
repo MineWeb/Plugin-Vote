@@ -35,7 +35,7 @@ class VoteController extends VoteAppController {
                 'Vote.deleted_at' => null
             ],
             'order' => 'count DESC',
-            'group' => "{$group}",
+            'group' => $group,
             'limit' => 15
         ])));
         if ($this->User->isConnected()) {
