@@ -29,7 +29,7 @@ class VoteController extends VoteAppController {
         $this->set('users', array_map(function ($row) {
             return ['username' => (isset($row['Vote']['user_id'])) ? $this->User->getUsernameByID($row['Vote']['user_id']) : $row['Vote']['username'], 'count' => $row[0]['count']];
         }, $this->Vote->find('all', [
-            'fields' => ['username', 'user_id', 'COUNT(id) AS count'],
+            'fields' => [$group, 'COUNT(id) AS count'],
             'conditions' => [
                 'created LIKE' =>  date('Y') . '-' . date('m') . '-%',
                 'Vote.deleted_at' => null
