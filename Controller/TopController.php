@@ -22,13 +22,13 @@ class TopController extends VoteAppController
                 'fields' => ['username', 'COUNT(id) AS count'],
                 'conditions' => ['created LIKE' => date('Y') . '-' . $month . '-%', 'Vote.deleted_at' => null],
                 'order' => 'count DESC',
-                'group' => 'user_id'
+                'group' => 'username'
             ]);
             $last_year[$i] = $this->Vote->find('all', [
                 'fields' => ['username', 'COUNT(id) AS count'],
                 'conditions' => ['created LIKE' => date('Y') - 1 . '-' . $month . '-%', 'Vote.deleted_at' => null],
                 'order' => 'count DESC',
-                'group' => 'user_id'
+                'group' => 'username'
             ]);
 
             $vote_this_year[$i] = $this->Vote->find('all', [
