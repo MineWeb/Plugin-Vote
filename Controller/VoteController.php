@@ -278,11 +278,11 @@ class VoteController extends VoteAppController {
         $collectedError = [];
         foreach ($votesList as $vote) {
             $reward = $vote['Reward'];
-            $server_id = ($vote['Website']['auto_select']) ? 0 : $vote['Website']['server_id'];
             if (!$this->Reward->collect($reward, $vote['Website'], $this->User->getKey('pseudo'), $this->Server)) {
                 array_push($collectedError, $vote['Vote']['id']);
                 continue;
             }
+            $server_id = ($vote['Website']['auto_select']) ? 0 : $vote['Website']['server_id'];
             if (!$collectedVotesByServer[$server_id])
                 $collectedVotesByServer[$server_id] = [];
             $collectedVotesByServer[$server_id][] = $vote;
@@ -296,9 +296,6 @@ class VoteController extends VoteAppController {
             if (count($votes) === 1) {
                 $command = str_replace('{REWARD_NAME}', $votes[0]['Reward']['name'], $this->__getConfig()->global_command);
             }
-            if ($votes[0]['Website']['auto_select'])
-                $server_id = $this->Components->load('Server')->getServerIdConnected($this->User->getKey('pseudo'));
-
             $this->Server->commands($command, $server_id);
 
         }
