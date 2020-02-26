@@ -264,12 +264,12 @@ class VoteController extends VoteAppController {
         ]);
         // Set as collected
         $this->Vote->updateAll(
-            array('Vote.collected' => 1),
-            array('Vote.id' =>
+            ['Vote.collected' => 1],
+            ['Vote.id' =>
                 array_map(function ($vote) {
                     return $vote['Vote']['id'];
                 }, $votesList)
-            )
+            ]
         );
         if (empty($votesList) || $this->Vote->getAffectedRows() == 0)
             throw new NotFoundException();
@@ -302,10 +302,8 @@ class VoteController extends VoteAppController {
 
         // Set as no-collected if error
         $this->Vote->updateAll(
-            array('Vote.collected' => 0),
-            array('Vote.id' => $collectedError, function ($key, $value) {
-                return $value;
-            })
+            ['Vote.collected' => 0],
+            ['Vote.id' => $collectedError]
         );
 
 
