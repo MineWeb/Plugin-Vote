@@ -277,8 +277,6 @@ class VoteController extends VoteAppController {
         $collectedVotesByServer = [];
         $collectedError = [];
         foreach ($votesList as $vote) {
-            if (!$vote['Reward']['id'])
-                $vote['Reward'] = $this->Reward->getFromWebsite($vote['Website']);
             $reward = $vote['Reward'];
             $server_id = ($vote['Website']['auto_select']) ? 0 : $vote['Website']['server_id'];
             if (!$this->Reward->collect($reward, $vote['Website'], $this->User->getKey('pseudo'), $this->Server)) {
