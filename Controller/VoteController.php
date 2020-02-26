@@ -282,7 +282,7 @@ class VoteController extends VoteAppController {
                 array_push($collectedError, $vote['Vote']['id']);
                 continue;
             }
-            $server_id = ($vote['Website']['auto_select']) ? 0 : $vote['Website']['server_id'];
+            $server_id = $vote['Website']['server_id'];
             if (!$collectedVotesByServer[$server_id])
                 $collectedVotesByServer[$server_id] = [];
             $collectedVotesByServer[$server_id][] = $vote;
@@ -303,9 +303,9 @@ class VoteController extends VoteAppController {
         // Set as no-collected if error
         $this->Vote->updateAll(
             array('Vote.collected' => 0),
-            array('Vote.id' => array_reduce($collectedError, function ($key, $value) {
+            array('Vote.id' => $collectedError, function ($key, $value) {
                 return $value;
-            }, []))
+            })
         );
 
 
