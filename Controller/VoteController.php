@@ -254,6 +254,7 @@ class VoteController extends VoteAppController {
         $this->loadModel('Vote.Vote');
         $this->loadModel('Vote.Reward');
         $this->loadModel('Vote.Website');
+
         $votesList = $this->Vote->find('all', [
             'conditions' => [
                 'user_id' => $this->User->getKey('id'),
@@ -261,17 +262,30 @@ class VoteController extends VoteAppController {
             ],
             'recursive' => 1
         ]);
-        if (empty($votesList))
+        // Set as collected
+        $this->Vote->updateAll(
+            ['Vote.collected' => 1],
+            ['Vote.id' =>
+                array_map(function ($vote) {
+                    return $vote['Vote']['id'];
+                }, $votesList)
+            ]
+        );
+        if (empty($votesList) || $this->Vote->getAffectedRows() == 0)
             throw new NotFoundException();
         // Give it
         $collectedVotesByServer = [];
+        $collectedError = [];
         foreach ($votesList as $vote) {
             $reward = $vote['Reward'];
-            if (!$this->Reward->collect($reward, $vote['Website']['server_id'], $this->User->getKey('pseudo'), $this->Server))
+            if (!$this->Reward->collect($reward, $vote['Website'], $this->User->getKey('pseudo'), $this->Server)) {
+                array_push($collectedError, $vote['Vote']['id']);
                 continue;
-            if (!$collectedVotesByServer[$vote['Website']['server_id']])
-                $collectedVotesByServer[$vote['Website']['server_id']] = [];
-            $collectedVotesByServer[$vote['Website']['server_id']][] = $vote;
+            }
+            $server_id = $vote['Website']['server_id'];
+            if (!$collectedVotesByServer[$server_id])
+                $collectedVotesByServer[$server_id] = [];
+            $collectedVotesByServer[$server_id][] = $vote;
             // Add money
             if ($reward['amount'] > 0)
                 $this->User->setKey('money', (floatval($this->User->getKey('money')) + floatval($reward['amount'])));
@@ -286,19 +300,15 @@ class VoteController extends VoteAppController {
 
         }
 
-        // Set as collected
+        // Set as no-collected if error
         $this->Vote->updateAll(
-            array('Vote.collected' => 1),
-            array('Vote.id' => array_reduce($collectedVotesByServer, function ($list, $votes) {
-                return array_merge($list, array_map(function ($vote) {
-                    return $vote['Vote']['id'];
-                }, $votes));
-            }, []))
+            ['Vote.collected' => 0],
+            ['Vote.id' => $collectedError]
         );
 
 
         // Redirect
-        if (count($collectedVotesByServer) === 0)
+        if (count($collectedError) > 0)
             $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_ERROR'), 'default.error');
         else
             $this->Session->setFlash($this->Lang->get('VOTE__COLLECT_REWARD_SUCCESS'), 'default.success');
