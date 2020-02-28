@@ -278,7 +278,7 @@ class VoteController extends VoteAppController {
         $collectedError = [];
         foreach ($votesList as $vote) {
             $reward = $vote['Reward'];
-            if (!$this->Reward->collect($reward, $vote['Website'], $this->User->getKey('pseudo'), $this->Server)) {
+            if (!$this->Reward->collect($reward, $vote['Website']['server_id'], $this->User->getKey('pseudo'), $this->Server)) {
                 array_push($collectedError, $vote['Vote']['id']);
                 continue;
             }
