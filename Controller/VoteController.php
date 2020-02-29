@@ -276,6 +276,7 @@ class VoteController extends VoteAppController {
         // Give it
         $collectedVotesByServer = [];
         $collectedError = [];
+		$oldmoney = $money = floatval($this->User->getKey('money'));
         foreach ($votesList as $vote) {
             $reward = $vote['Reward'];
             if (!$this->Reward->collect($reward, $vote['Website']['server_id'], $this->User->getKey('pseudo'), $this->Server)) {
@@ -287,9 +288,13 @@ class VoteController extends VoteAppController {
                 $collectedVotesByServer[$server_id] = [];
             $collectedVotesByServer[$server_id][] = $vote;
             // Add money
+			// It seams to bugs when a player try to retrieve his reward and there is at least two money reward so we update money later
             if ($reward['amount'] > 0)
-                $this->User->setKey('money', (floatval($this->User->getKey('money')) + floatval($reward['amount'])));
+				$money += floatval($reward['amount']);
         }
+		// Update money here (Also prevent a lot of database edit)
+		if (floatval($oldmoney) != floatval($money))
+			$this->User->setKey('money', ($money + floatval($reward['amount'])));
 
         foreach ($collectedVotesByServer as $server_id => $votes) {
             $command = str_replace('{REWARD_NUMBER}', count($votes), $this->__getConfig()->global_command_plural);
