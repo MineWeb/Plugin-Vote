@@ -276,7 +276,7 @@ class VoteController extends VoteAppController {
         // Give it
         $collectedVotesByServer = [];
         $collectedError = [];
-	$oldmoney = $money = floatval($this->User->getKey('money'));
+	$old_money = $money = floatval($this->User->getKey('money'));
         foreach ($votesList as $vote) {
             $reward = $vote['Reward'];
             if (!$this->Reward->collect($reward, $vote['Website']['server_id'], $this->User->getKey('pseudo'), $this->Server)) {
@@ -293,7 +293,7 @@ class VoteController extends VoteAppController {
                 $money += floatval($reward['amount']);
         }
         // Update money here (Also prevent a lot of database edit)
-        if (floatval($oldmoney) != floatval($money))
+        if (floatval($old_money) != floatval($money))
             $this->User->setKey('money', $money);
 
         foreach ($collectedVotesByServer as $server_id => $votes) {
