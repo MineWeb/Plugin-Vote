@@ -256,7 +256,7 @@ class VoteController extends VoteAppController {
         $this->loadModel('Vote.Website');
 
         $limit = $this->__getConfig();
-        if(!isset($limit['limit_get_not_collected']) || !$limit['limit_get_not_collected'])
+        if(!isset($limit->limit_get_not_collected) || !$limit->limit_get_not_collected)
             $limit = -1;
 
         $votesList = $this->Vote->find('all', [
