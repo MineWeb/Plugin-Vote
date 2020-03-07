@@ -170,7 +170,7 @@ class VoteController extends VoteAppController {
             if (empty($findVote))
                 throw new ForbiddenException();
             $this->loadModel('Vote.Reward');
-            if (!$this->Reward->collect($findVote['Reward'], $findVote['Website']['id'], $this->Session->read('voted'), $this->Server, [$this->__getConfig()->global_command]))
+            if (!$this->Reward->collect($findVote['Reward'], $findVote['Website']['server_id'], $this->Session->read('voted'), $this->Server, [$this->__getConfig()->global_command]))
                 return $this->sendJSON(['status' => false, 'error' => $this->Lang->get('VOTE__GET_REWARDS_NOW_ERROR_RETRY')]);
 
             $this->Vote->read(null, $findVote['Vote']['id']);
