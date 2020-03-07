@@ -16,6 +16,7 @@
   "VOTE__ADMIN_VOTE_CONFIGURATION_NEED_REGISTER": "Est-ce que le joueur doit être inscrit sur le site pour voter ?",
   "VOTE__ADMIN_VOTE_CONFIGURATION_GLOBAL_COMMAND": "Commande globale envoyé lors de la récuperation d'un vote",
   "VOTE__ADMIN_VOTE_CONFIGURATION_GLOBAL_COMMAND_PLURAL": "Commande globale envoyé lors de la récuperation de plusieurs votes en attentes",
+  "VOTE__ADMIN_VOTE_CONFIGURATION_LIMIT_GET_NOT_COLLECTED": "Limite de récupération de votes en attente (Laisser vide pour autoriser la récupération de tous les votes en attente)",
   "VOTE__ADMIN_EDIT_CONFIG_SUCCESS": "La configuration a bien été éditée !",
 
   "VOTE__ADMIN_MANAGE_REWARDS": "Gérer les récompenses",

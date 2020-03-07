@@ -20,7 +20,7 @@
                         <div class="form-group">
                             <label><?= $Lang->get('VOTE__ADMIN_VOTE_CONFIGURATION_GLOBAL_COMMAND') ?></label>
                             <input name="global_command" class="form-control" type="text"
-                                   value="<?= htmlspecialchars($configuration['global_command']) ?>"><br>
+                                   value="<?= $configuration['global_command'] ?>"><br>
                             <small>
                                 <b>{PLAYER}</b> = Pseudo du voteur <br>
                                 <b>{REWARD_NAME}</b> = Nom de la récompense (Quand il n'y a qu'une récompense) <br>
@@ -31,12 +31,18 @@
                         <div class="form-group">
                             <label><?= $Lang->get('VOTE__ADMIN_VOTE_CONFIGURATION_GLOBAL_COMMAND_PLURAL') ?></label>
                             <input name="global_command_plural" class="form-control" type="text"
-                                   value="<?= htmlspecialchars($configuration['global_command_plural']) ?>"><br>
+                                   value="<?= $configuration['global_command_plural'] ?>"><br>
                             <small>
                                 <b>{PLAYER}</b> = Pseudo du voteur <br>
                                 <b>{REWARD_NUMBER}</b> = Nombre de récompenses en attentes <br>
                                 <b><?= $Lang->get('GLOBAL__EXAMPLE') ?>:</b> <i>say {PLAYER} vient de récupèrer {REWARD_NUMBER} votes !</i>
                             </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label><?= $Lang->get('VOTE__ADMIN_VOTE_CONFIGURATION_LIMIT_GET_NOT_COLLECTED') ?></label>
+                            <input name="limit_get_not_collected" class="form-control" type="text"
+                                   value="<?= $configuration['limit_get_not_collected'] ?>"><br>
                         </div>
 
                         <div class="pull-right">

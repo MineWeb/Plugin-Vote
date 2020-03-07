@@ -16,6 +16,7 @@
 		"VOTE__ADMIN_VOTE_CONFIGURATION_NEED_REGISTER": "Should the player be registered on the site to vote?",
 		"VOTE__ADMIN_VOTE_CONFIGURATION_GLOBAL_COMMAND": "Global order sent during each vote",
 		"VOTE__ADMIN_VOTE_CONFIGURATION_GLOBAL_COMMAND_PLURAL": "Global order sent when collecting several votes in expectation",
+		"VOTE__ADMIN_VOTE_CONFIGURATION_LIMIT_GET_NOT_COLLECTED": "Pending vote retrieval limit (Leave blank to allow retrieval of all pending votes)",
 		"VOTE__ADMIN_EDIT_CONFIG_SUCCESS": "The configuration has been edited!",
 
 		"VOTE__ADMIN_MANAGE_REWARDS": "Manage rewards",

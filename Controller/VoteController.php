@@ -170,7 +170,7 @@ class VoteController extends VoteAppController {
             if (empty($findVote))
                 throw new ForbiddenException();
             $this->loadModel('Vote.Reward');
-            if (!$this->Reward->collect($findVote['Reward'], $findVote['Website']['id'], $this->Session->read('voted'), $this->Server, [$this->__getConfig()->global_command]))
+            if (!$this->Reward->collect($findVote['Reward'], $findVote['Website']['server_id'], $this->Session->read('voted'), $this->Server, [$this->__getConfig()->global_command]))
                 return $this->sendJSON(['status' => false, 'error' => $this->Lang->get('VOTE__GET_REWARDS_NOW_ERROR_RETRY')]);
 
             $this->Vote->read(null, $findVote['Vote']['id']);
@@ -255,12 +255,17 @@ class VoteController extends VoteAppController {
         $this->loadModel('Vote.Reward');
         $this->loadModel('Vote.Website');
 
+        $limit = $this->__getConfig();
+        if(!isset($limit->limit_get_not_collected) || !$limit->limit_get_not_collected)
+            $limit = -1;
+
         $votesList = $this->Vote->find('all', [
             'conditions' => [
                 'user_id' => $this->User->getKey('id'),
                 'collected' => 0
             ],
-            'recursive' => 1
+            'recursive' => 1,
+            'limit' => $limit
         ]);
         // Set as collected
         $this->Vote->updateAll(
@@ -344,7 +349,8 @@ class VoteController extends VoteAppController {
             $this->VoteConfiguration->set([
                 'need_register' => $this->request->data['need_register'],
                 'global_command' => $this->request->data['global_command'],
-                'global_command_plural' => $this->request->data['global_command_plural']
+                'global_command_plural' => $this->request->data['global_command_plural'],
+                'limit_get_not_collected' => $this->request->data['limit_get_not_collected']
             ]);
             $this->VoteConfiguration->save();
 
