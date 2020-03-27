@@ -16,7 +16,7 @@
                         <div class="form-group">
                             <label><?= $Lang->get('VOTE__ADMIN_WEBSITE_TYPE') ?></label>
                             <select class="form-control" name="type">
-                                <option value="default"><?= $Lang->get('VOTE__ADMIN_WEBSITE_TYPE_DEFAULT') ?></option>
+                                 <option value="default"><?= $Lang->get('VOTE__ADMIN_WEBSITE_TYPE_DEFAULT') ?></option>
                                 <option data-inputs="server_id" value="SRV-MC-ORG" <?= (isset($website) && $website['type'] == 'SRV-MC-ORG') ? 'selected' : '' ?>>http://www.serveurs-minecraft.org</option>
                                 <option data-inputs="server_id" value="SRVMC-ORG" <?= (isset($website) && $website['type'] == 'SRVMC-ORG') ? 'selected' : '' ?>>https://www.serveursminecraft.org</option>
                                 <option data-inputs="server_id" value="SRV-MC-COM" <?= (isset($website) && $website['type'] == 'SRV-MC-COM') ? 'selected' : '' ?>>https://serveurs-minecraft.com</option>
@@ -29,6 +29,7 @@
                             	<option data-inputs="server_id" value="SRV-MULTIGAMES" <?= (isset($website) && $website['type'] == 'SRV-MULTIGAMES') ? 'selected' : '' ?>>https://serveur-multigames.net</option>
                             	<option data-inputs="server_id" value="MGS" <?= (isset($website) && $website['type'] == 'MGS') ? 'selected' : '' ?>>https://mygreatserver.fr</option>
                                 <option data-inputs="server_token" value="LISTE-SERVEUR-FR" <?= (isset($website) && $website['type'] == 'LISTE-SERVEUR-FR') ? 'selected' : '' ?>>https://www.liste-serveur.fr/</option>
+                                <option data-inputs="server_id" value="LISTE-SERVEURS-FR" <?= (isset($website) && $website['type'] == 'LISTE-SERVEURS-FR') ? 'selected' : '' ?>>https://www.liste-serveurs.fr</option>
 				            </select>
                         </div>
 
