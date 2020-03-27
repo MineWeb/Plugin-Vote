@@ -92,6 +92,12 @@ class Website extends VoteAppModel
                 if (isset($result->hasVoted) && $result->hasVoted === true)
                     return true;
                 break;
+            case 'LISTE-SERVEURS-FR':
+                // Check with API
+                $result = json_decode(@file_get_contents("https://www.liste-serveurs.fr/api/checkVote/{$website['data']['server_id']}/$ip"));
+                if ($result->success === true)
+                    return true;
+                break;
             default:
                 return true;
         }
