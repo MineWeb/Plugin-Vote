@@ -98,6 +98,12 @@ class Website extends VoteAppModel
                 if ($result->success === true)
                     return true;
                 break;
+            case 'LISTE-MINECRAFT-SRV':
+                // Check with API
+		$result = json_decode(file_get_contents("https://www.liste-minecraft-serveurs.com/Api/Worker/id_server/{$website['data']['server_id']}/ip/$ip));
+		if($result->result == 202)
+		    return true;
+                break;	
             default:
                 return true;
         }
