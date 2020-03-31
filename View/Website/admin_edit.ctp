@@ -30,6 +30,7 @@
                             	<option data-inputs="server_id" value="MGS" <?= (isset($website) && $website['type'] == 'MGS') ? 'selected' : '' ?>>https://mygreatserver.fr</option>
                                 <option data-inputs="server_token" value="LISTE-SERVEUR-FR" <?= (isset($website) && $website['type'] == 'LISTE-SERVEUR-FR') ? 'selected' : '' ?>>https://www.liste-serveur.fr/</option>
                                 <option data-inputs="server_id" value="LISTE-SERVEURS-FR" <?= (isset($website) && $website['type'] == 'LISTE-SERVEURS-FR') ? 'selected' : '' ?>>https://www.liste-serveurs.fr</option>
+				<option data-inputs="server_id" value="LISTE-MINECRAFT-SRV" <?= (isset($website) && $website['type'] == 'LISTE-MINECRAFT-SRV') ? 'selected' : '' ?>>https://www.liste-minecraft-serveurs.com/</option>
 				            </select>
                         </div>
 
