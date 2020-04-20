@@ -14,7 +14,8 @@ class Website extends VoteAppModel
 			case 'MINECRAFT-TOP-ORG':
                 // Check with API
                 $result = @file_get_contents("https://api.minecraft-top.com/v1/vote/$ip/{$website['data']['server_id']}");
-                if($result['vote'])
+                $obj = json_decode($result);
+                if($obj->{'vote'} > 0)
                     return true;
                 break;
             case 'SRV-MC-ORG':
