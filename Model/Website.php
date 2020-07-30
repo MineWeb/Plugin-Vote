@@ -110,7 +110,13 @@ class Website extends VoteAppModel
 		$result = json_decode(file_get_contents("https://www.liste-minecraft-serveurs.com/Api/Worker/id_server/{$website['data']['server_id']}/ip/$ip"));
 		if($result->result == 202)
 		    return true;
-                break;	
+                break;
+            case 'SRV-MINECRAFT-COM':
+                // Check with API
+                $result = json_decode(file_get_contents("https://serveur-minecraft.com/api/1/vote/{$website['data']['server_id']}/$ip/json"));
+                if($result->vote > 0)
+                    return true;
+                break;
             default:
                 return true;
         }
