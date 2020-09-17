@@ -117,6 +117,12 @@ class Website extends VoteAppModel
                 if($result->vote > 0)
                     return true;
                 break;
+            case 'TOPSRVMINECRAFT-COM':
+                // Check with API
+                $result = json_decode(file_get_contents("https://topserveursminecraft.com/api/server={$website['data']['server_id']}&ip=$ip"));
+                if($result->voted == 1)
+                    return true;
+                break;
             default:
                 return true;
         }
