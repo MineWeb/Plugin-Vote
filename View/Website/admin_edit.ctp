@@ -33,7 +33,8 @@
                                 <option data-inputs="server_id" value="LISTE-SERVEURS-FR" <?= (isset($website) && $website['type'] == 'LISTE-SERVEURS-FR') ? 'selected' : '' ?>>https://www.liste-serveurs.fr</option>
 				<option data-inputs="server_id" value="LISTE-MINECRAFT-SRV" <?= (isset($website) && $website['type'] == 'LISTE-MINECRAFT-SRV') ? 'selected' : '' ?>>https://www.liste-minecraft-serveurs.com/</option>
 				<option data-inputs="server_id" value="SRV-MINECRAFT-COM" <?= (isset($website) && $website['type'] == 'SRV-MINECRAFT-COM') ? 'selected' : '' ?>>https://www.serveur-minecraft.com/</option>
-                <option data-inputs="server_id" value="TOPSRVMINECRAFT-COM" <?= (isset($website) && $website['type'] == 'TOPSRVMINECRAFT-COM') ? 'selected' : '' ?>>https://topserveursminecraft.com/</option>
+                		<option data-inputs="server_id" value="TOPSRVMINECRAFT-COM" <?= (isset($website) && $website['type'] == 'TOPSRVMINECRAFT-COM') ? 'selected' : '' ?>>https://topserveursminecraft.com/</option>
+				<option data-inputs="server_id" value="SERVEUR-TOP-FR" <?= (isset($website) && $website['type'] == 'SERVEUR-TOP-FR') ? 'selected' : '' ?>>https://serveur-top.fr/</option>
 				            </select>
                         </div>
 
