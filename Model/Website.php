@@ -123,6 +123,12 @@ class Website extends VoteAppModel
                 if($result->voted == 1)
                     return true;
                 break;
+	    case 'SERVEUR-TOP-FR':
+                // Check with API
+                $result = json_decode(@file_get_contents("https://serveur-top.fr/api/checkVote/{$website['data']['server_id']}/$ip"));
+                if ($result->success === true)
+                    return true;
+                break;
             default:
                 return true;
         }
