@@ -11,6 +11,11 @@ class Website extends VoteAppModel
             case 'RPG-PARADIZE':
                 // TODO: Check OUT
                 break;
+            case 'SERVEURS-MC':
+                // Check with API
+                $result = @file_get_contents("https://serveurs-mc.net/api/hasVote/{$website['data']['server_id']}/$ip/10");
+                $obj = json_decode($result);
+                return $obj->hasVote = "true";
 			case 'MINECRAFT-TOP-ORG':
                 // Check with API
                 $result = @file_get_contents("https://api.minecraft-top.com/v1/vote/$ip/{$website['data']['server_id']}");
