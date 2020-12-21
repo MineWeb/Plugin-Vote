@@ -22,7 +22,7 @@
                     foreach ($months as $var) {
                         $i++; ?>
                         <li class="nav-item">
-                            <a class="nav-link <?php if ($i == $thism) { ?>active<?php } ?>" href="#<?= $var ?>" data-toggle="tab"
+                            <a class="nav-link text-dark <?php if ($i == $thism) { ?>active<?php } ?>" href="#<?= $var ?>" data-toggle="tab"
                                aria-expanded="<?php if ($i == $thism) { ?>true<?php } else { ?>false<?php } ?>">
                                 <?= $new_months[$i - 1] ?>
                             </a>
@@ -43,14 +43,14 @@
                                         .</h3>
                                 <?php } ?>
                             <?php } else { ?>
-                                <div class="table-responsive">
+                                <div class="table-responsive-sm">
                                     <table class="table no-margin">
                                         <thead>
                                         <tr>
-                                            <th class="col-sm-1 col-xs-2">ID</th>
-                                            <th class="col-md-2 col-sm-3 col-xs-6">Pseudo</th>
-                                            <th class="col-md-2 col-sm-3 col-xs-4"><?= $Lang->get('VOTE__ADMIN_NUMBER_TOP') ?></th>
-                                            <th class="col-md-7 col-sm-4"></th>
+                                            <th>ID</th>
+                                            <th>Pseudo</th>
+                                            <th><?= $Lang->get('VOTE__ADMIN_NUMBER_TOP') ?></th>
+                                            <th></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -95,7 +95,7 @@
                     foreach ($months as $var) {
                         $i++; ?>
                         <li class="nav-item">
-                            <a class="nav-link <?php if ($i == "1") { ?>active<?php } ?>" href="#last-<?= $var ?>" data-toggle="tab"
+                            <a class="nav-link text-dark <?php if ($i == "1") { ?>active<?php } ?>" href="#last-<?= $var ?>" data-toggle="tab"
                                aria-expanded="<?php if ($i == "1") { ?>true<?php } else { ?>false<?php } ?>">
                                 <?= $new_months[$i - 1] ?>
                             </a>
@@ -111,14 +111,14 @@
                                 <h3 style="text-align: center; padding: 30px"><?= $Lang->get('VOTE__ADMIN_NO_VOTE_TOP') ?> <?= $var ?> <?= date('Y') - 1 ?>
                                     .</h3>
                             <?php } else { ?>
-                                <div class="table-responsive">
+                                <div class="table-responsive-sm">
                                     <table class="table no-margin">
                                         <thead>
                                         <tr>
-                                            <th class="col-sm-1 col-xs-2">ID</th>
-                                            <th class="col-md-2 col-sm-3 col-xs-6">Pseudo</th>
-                                            <th class="col-md-2 col-sm-3 col-xs-4"><?= $Lang->get('VOTE__ADMIN_NUMBER_TOP') ?></th>
-                                            <th class="col-md-7 col-sm-4"></th>
+                                            <th>ID</th>
+                                            <th>Pseudo</th>
+                                            <th><?= $Lang->get('VOTE__ADMIN_NUMBER_TOP') ?></th>
+                                            <th></th>
                                         </tr>
                                         </thead>
                                         <tbody>
