@@ -38,9 +38,10 @@ class VoteController extends VoteAppController {
             'group' => $group,
             'limit' => 15
         ])));
+        $user_info = [];
         if ($this->User->isConnected()) {
             $users_info = $this->Vote->find('all', [
-                'fields' => ['user_id', 'COUNT(id) AS count'],
+                'fields' => ['user_id', 'COUNT(*) AS count', 'RANK() OVER(ORDER BY count DESC) AS place'],
                 'conditions' => [
                     'created LIKE' => date('Y') . '-' . date('m') . '-%',
                     'Vote.deleted_at' => null,
@@ -48,16 +49,21 @@ class VoteController extends VoteAppController {
                 'order' => 'count DESC',
                 'group' => 'user_id',
             ]);
-            $i = 0;
             foreach ($users_info as $v) {
-                $i++;
                 if ($this->User->getKey('id') == $v['Vote']['user_id']) {
                     $user_info = $v;
                     $user_info['username'] = $this->User->getUsernameByID($v['Vote']['user_id']);
-                    $user_info['place'] = "#".$i;
+                    $user_info['place'] = "#" . $v[0]['place'];
+                    break;
                 }
-
             }
+            $user_info['days_number'] = $this->Vote->find('count', [
+                'conditions' => [
+                    'created LIKE' => date('Y') . '-' . date('m') . '-' . date('d') . '%',
+                    'Vote.user_id' => $this->User->getKey('id'),
+                    'Vote.deleted_at' => null,
+                ],
+            ]);
         }
         $this->set(compact('websitesByServers', 'user_info', 'rewards'));
     }
