@@ -7,7 +7,7 @@ class VoteController extends VoteAppController {
         $this->set('config', $this->__getConfig());
 
         $this->loadModel('Vote.Website');
-        $this->loadModel('Vote.Reward');        
+        $this->loadModel('Vote.Reward');
         $this->loadModel('Server');
         $websites = $this->Website->find('all');
         $servers = $this->Server->findSelectableServers();
@@ -41,7 +41,7 @@ class VoteController extends VoteAppController {
         $user_info = [];
         if ($this->User->isConnected()) {
             $users_info = $this->Vote->find('all', [
-                'fields' => ['user_id', 'COUNT(*) AS count', 'RANK() OVER(ORDER BY count DESC) AS place'],
+                'fields' => ['user_id', 'COUNT(*) AS count'],
                 'conditions' => [
                     'created LIKE' => date('Y') . '-' . date('m') . '-%',
                     'Vote.deleted_at' => null,
@@ -49,12 +49,13 @@ class VoteController extends VoteAppController {
                 'order' => 'count DESC',
                 'group' => 'user_id',
             ]);
+            $i = 0;
             foreach ($users_info as $v) {
+                $i++;
                 if ($this->User->getKey('id') == $v['Vote']['user_id']) {
                     $user_info = $v;
                     $user_info['username'] = $this->User->getUsernameByID($v['Vote']['user_id']);
-                    $user_info['place'] = "#" . $v[0]['place'];
-                    break;
+                    $user_info['place'] = "#" . $i;
                 }
             }
             $user_info['days_number'] = $this->Vote->find('count', [
@@ -287,7 +288,7 @@ class VoteController extends VoteAppController {
         // Give it
         $collectedVotesByServer = [];
         $collectedError = [];
-	$old_money = $money = floatval($this->User->getKey('money'));
+        $old_money = $money = floatval($this->User->getKey('money'));
         foreach ($votesList as $vote) {
             $reward = $vote['Reward'];
             if (!$this->Reward->collect($reward, $vote['Website']['server_id'], $this->User->getKey('pseudo'), $this->Server)) {
