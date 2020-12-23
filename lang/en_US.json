@@ -47,7 +47,7 @@
 		"VOTE__USER_GET_REWARD_PLURAL": "Retrieve my server rewards: {VOTE_SERVER}",
 		"VOTE__USER_MSG_REWARDS_WAITING": "You have {NBR_REWARDS} rewards waiting!",
 		"VOTE__REWARDS": "Rewards",
-		"VOTE__DSIPLAY_REWARDS": "Display rewards",
+		"VOTE__DISPLAY_REWARDS": "Display rewards",
 
 		"VOTE__STEP_TITLE": "Step",
 		"VOTE__STEP_SET_USER": "Identify yourself",
