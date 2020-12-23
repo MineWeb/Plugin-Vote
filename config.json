@@ -2,7 +2,7 @@
   "name": "Voter",
   "admin_menus": {
     "Vote": {
-      "icon": "external-link",
+      "icon": "fas fa-external-link-alt",
       "index": "4",
       "menu": {
         "Configuration": {
@@ -52,6 +52,6 @@
     }
   },
   "requirements": {
-    "CMS": "^1.2.0"
+    "CMS": "^1.11.0"
   }
 }
