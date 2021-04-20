@@ -1,4 +1,27 @@
 <?php
+
+function getUserIP()
+{
+    // Get real visitor IP behind CloudFlare network
+    if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+        $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+        $_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+    }
+    $client  = @$_SERVER['HTTP_CLIENT_IP'];
+    $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+    $remote  = $_SERVER['REMOTE_ADDR'];
+
+    if (filter_var($client, FILTER_VALIDATE_IP)) {
+        $ip = $client;
+    } elseif (filter_var($forward, FILTER_VALIDATE_IP)) {
+        $ip = $forward;
+    } else {
+        $ip = $remote;
+    }
+
+    return $ip;
+}
+
 class VoteController extends VoteAppController {
 
     public function index()
@@ -123,8 +146,8 @@ class VoteController extends VoteAppController {
 
         // Check if has already vote and if time isn't enough
         $this->loadModel('Vote.Vote');
-        if (!$this->Vote->can($this->Session->read('vote.user'), $this->Util->getIP(), $website['Website']))
-            return $this->sendJSON(['status' => false, 'error' => $this->Lang->get('VOTE__SET_WEBSITE_ERROR_NEED_WAIT', ['{TIME}' => $this->Util->generateStringFromTime($this->Vote->getNextVoteTime($this->Session->read('vote.user'), $this->Util->getIP(), $website['Website']))])]);
+        if (!$this->Vote->can($this->Session->read('vote.user'), getUserIP(), $website['Website']))
+            return $this->sendJSON(['status' => false, 'error' => $this->Lang->get('VOTE__SET_WEBSITE_ERROR_NEED_WAIT', ['{TIME}' => $this->Util->generateStringFromTime($this->Vote->getNextVoteTime($this->Session->read('vote.user'), getUserIP(), $website['Website']))])]);
 
         // Store it
         $this->Session->write('vote.website.id', $this->request->data['website_id']);
@@ -152,7 +175,7 @@ class VoteController extends VoteAppController {
         if (empty($website))
             throw new NotFoundException();
         $this->loadModel('Vote.Vote');
-        if (!$this->Website->valid($this->Session->read('vote.user'), $this->Util->getIP(), $website['Website']))
+        if (!$this->Website->valid($this->Session->read('vote.user'), getUserIP(), $website['Website']))
             return $this->sendJSON(['status' => false]);
 
         // Store it
@@ -173,7 +196,7 @@ class VoteController extends VoteAppController {
 
         if ($this->Session->check('voted')) { // Fail
             // Get last vote not collected
-            $findVote = $this->Vote->find('first', ['conditions' => ['collected' => 0, 'vote.ip' => $this->Util->getIP()], 'recursive' => 1]);
+            $findVote = $this->Vote->find('first', ['conditions' => ['collected' => 0, 'vote.ip' => getUserIP()], 'recursive' => 1]);
             if (empty($findVote))
                 throw new ForbiddenException();
             $this->loadModel('Vote.Reward');
@@ -206,8 +229,8 @@ class VoteController extends VoteAppController {
 
         // Check if user can vote
         $this->loadModel('Vote.Vote');
-        if (!$this->Vote->can($this->Session->read('vote.user'), $this->Util->getIP(), $website['Website']))
-            return $this->sendJSON(['status' => false, 'error' => $this->Lang->get('VOTE__SET_WEBSITE_ERROR_NEED_WAIT', ['{TIME}' => $this->Util->generateStringFromTime($this->Vote->getNextVoteTime($this->Session->read('vote.user'), $this->Util->getIP(), $website['Website']))])]);
+        if (!$this->Vote->can($this->Session->read('vote.user'), getUserIP(), $website['Website']))
+            return $this->sendJSON(['status' => false, 'error' => $this->Lang->get('VOTE__SET_WEBSITE_ERROR_NEED_WAIT', ['{TIME}' => $this->Util->generateStringFromTime($this->Vote->getNextVoteTime($this->Session->read('vote.user'), getUserIP(), $website['Website']))])]);
 
         // Generate random reward
         $this->loadModel('Vote.Reward');
@@ -222,7 +245,7 @@ class VoteController extends VoteAppController {
             'reward_id' => $reward['id'],
             'collected' => 0,
             'website_id' => $website['Website']['id'],
-            'ip' => $this->Util->getIP()
+            'ip' => getUserIP()
         ]);
         $this->Vote->save();
 
