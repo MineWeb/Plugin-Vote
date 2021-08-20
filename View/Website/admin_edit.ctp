@@ -17,6 +17,7 @@
                             <label><?= $Lang->get('VOTE__ADMIN_WEBSITE_TYPE') ?></label>
                             <select class="form-control" name="type">
                                  <option value="default"><?= $Lang->get('VOTE__ADMIN_WEBSITE_TYPE_DEFAULT') ?></option>
+                                <option data-inputs="server_id" value="SERVEUR-MINECRAFT-VOTE" <?= (isset($website) && $website['type'] == 'SERVEUR-MINECRAFT-VOTE') ? 'selected' : '' ?>>https://serveur-minecraft-vote.fr/</option>
                                 <option data-inputs="server_id" value="SERVEURS-MC" <?= (isset($website) && $website['type'] == 'SERVEURS-MC') ? 'selected' : '' ?>>https://serveurs-mc.net/</option>
                                 <option data-inputs="server_id" value="MINECRAFT-TOP-ORG" <?= (isset($website) && $website['type'] == 'MINECRAFT-TOP-ORG') ? 'selected' : '' ?>>https://minecraft-top.com/</option>
                                 <option data-inputs="server_id" value="SRV-MC-ORG" <?= (isset($website) && $website['type'] == 'SRV-MC-ORG') ? 'selected' : '' ?>>http://www.serveurs-minecraft.org</option>
