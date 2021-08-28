@@ -16,6 +16,11 @@ class Website extends VoteAppModel
                 $result = @file_get_contents("https://serveurs-mc.net/api/hasVote/{$website['data']['server_id']}/$ip/10");
                 $obj = json_decode($result);
                 return $obj->hasVote == "true";
+            case 'SERVEUR-MINECRAFT-VOTE':
+                // Check with API
+                $result = @file_get_contents("https://serveur-minecraft-vote.fr/api/v1/servers/{$website['data']['server_id']}/vote/$ip");
+                $obj = json_decode($result);
+                return $obj->canVote == "false";
 			case 'MINECRAFT-TOP-ORG':
                 // Check with API
                 $result = @file_get_contents("https://api.minecraft-top.com/v1/vote/$ip/{$website['data']['server_id']}");
