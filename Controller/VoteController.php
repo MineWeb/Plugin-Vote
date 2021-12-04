@@ -81,6 +81,8 @@ class VoteController extends VoteAppController {
         if (empty($this->request->data['username']) && !$this->User->isConnected())
             return $this->sendJSON(['statut' => false, 'msg' => $this->Lang->get('ERROR__FILL_ALL_FIELDS')]);
 
+        $this->request->data['username'] = htmlspecialchars($this->request->data["username"]);
+
         if ($this->User->isConnected()) { // If already logged
             $user = ['username' => $this->User->getKey('pseudo'), 'id' => $this->User->getKey('id')];
         } else if ($this->__getConfig()->need_register) { // If need register, check if username is valid
