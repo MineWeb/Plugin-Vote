@@ -11,6 +11,10 @@ class Website extends VoteAppModel
             case 'RPG-PARADIZE':
                 // TODO: Check OUT
                 break;
+            case 'TOPSERV-FR':
+                // Check with API
+                $result = json_decode(@file_get_contents("https://topserv.fr/api/check-ip?ip=$ip&serverId={$website['data']['server_id']}"));
+                return $result === true
             case 'SERVEURS-MC':
                 // Check with API
                 $result = @file_get_contents("https://serveurs-mc.net/api/hasVote/{$website['data']['server_id']}/$ip/10");
@@ -133,7 +137,7 @@ class Website extends VoteAppModel
                 if($result->voted == 1)
                     return true;
                 break;
-	    case 'SERVEUR-TOP-FR':
+	        case 'SERVEUR-TOP-FR':
                 // Check with API
                 $result = json_decode(@file_get_contents("https://serveur-top.fr/api/checkVote/{$website['data']['server_id']}/$ip"));
                 if ($result->success === true)

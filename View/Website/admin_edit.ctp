@@ -16,7 +16,8 @@
                         <div class="form-group">
                             <label><?= $Lang->get('VOTE__ADMIN_WEBSITE_TYPE') ?></label>
                             <select class="form-control" name="type">
-                                 <option value="default"><?= $Lang->get('VOTE__ADMIN_WEBSITE_TYPE_DEFAULT') ?></option>
+                                <option value="default"><?= $Lang->get('VOTE__ADMIN_WEBSITE_TYPE_DEFAULT') ?></option>
+                                <option data-inputs="server_id" value="TOPSERV-FR" <?= (isset($website) && $website['type'] == 'TOPSERV-FR') ? 'selected' : '' ?>>https://topserv.fr</option>
                                 <option data-inputs="server_id" value="SERVEUR-MINECRAFT-VOTE" <?= (isset($website) && $website['type'] == 'SERVEUR-MINECRAFT-VOTE') ? 'selected' : '' ?>>https://serveur-minecraft-vote.fr/</option>
                                 <option data-inputs="server_id" value="SERVEURS-MC" <?= (isset($website) && $website['type'] == 'SERVEURS-MC') ? 'selected' : '' ?>>https://serveurs-mc.net/</option>
                                 <option data-inputs="server_id" value="MINECRAFT-TOP-ORG" <?= (isset($website) && $website['type'] == 'MINECRAFT-TOP-ORG') ? 'selected' : '' ?>>https://minecraft-top.com/</option>
@@ -33,10 +34,10 @@
                             	<option data-inputs="server_id" value="MGS" <?= (isset($website) && $website['type'] == 'MGS') ? 'selected' : '' ?>>https://mygreatserver.fr</option>
                                 <option data-inputs="server_token" value="LISTE-SERVEUR-FR" <?= (isset($website) && $website['type'] == 'LISTE-SERVEUR-FR') ? 'selected' : '' ?>>https://www.liste-serveur.fr/</option>
                                 <option data-inputs="server_id" value="LISTE-SERVEURS-FR" <?= (isset($website) && $website['type'] == 'LISTE-SERVEURS-FR') ? 'selected' : '' ?>>https://www.liste-serveurs.fr</option>
-				<option data-inputs="server_id" value="LISTE-MINECRAFT-SRV" <?= (isset($website) && $website['type'] == 'LISTE-MINECRAFT-SRV') ? 'selected' : '' ?>>https://www.liste-minecraft-serveurs.com/</option>
-				<option data-inputs="server_id" value="SRV-MINECRAFT-COM" <?= (isset($website) && $website['type'] == 'SRV-MINECRAFT-COM') ? 'selected' : '' ?>>https://www.serveur-minecraft.com/</option>
-                		<option data-inputs="server_id" value="TOPSRVMINECRAFT-COM" <?= (isset($website) && $website['type'] == 'TOPSRVMINECRAFT-COM') ? 'selected' : '' ?>>https://topserveursminecraft.com/</option>
-				<option data-inputs="server_id" value="SERVEUR-TOP-FR" <?= (isset($website) && $website['type'] == 'SERVEUR-TOP-FR') ? 'selected' : '' ?>>https://serveur-top.fr/</option>
+				                <option data-inputs="server_id" value="LISTE-MINECRAFT-SRV" <?= (isset($website) && $website['type'] == 'LISTE-MINECRAFT-SRV') ? 'selected' : '' ?>>https://www.liste-minecraft-serveurs.com/</option>
+				                <option data-inputs="server_id" value="SRV-MINECRAFT-COM" <?= (isset($website) && $website['type'] == 'SRV-MINECRAFT-COM') ? 'selected' : '' ?>>https://www.serveur-minecraft.com/</option>
+                                <option data-inputs="server_id" value="TOPSRVMINECRAFT-COM" <?= (isset($website) && $website['type'] == 'TOPSRVMINECRAFT-COM') ? 'selected' : '' ?>>https://topserveursminecraft.com/</option>
+				                <option data-inputs="server_id" value="SERVEUR-TOP-FR" <?= (isset($website) && $website['type'] == 'SERVEUR-TOP-FR') ? 'selected' : '' ?>>https://serveur-top.fr/</option>
 				            </select>
                         </div>
 
