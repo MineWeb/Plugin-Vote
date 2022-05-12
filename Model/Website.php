@@ -14,7 +14,9 @@ class Website extends VoteAppModel
             case 'TOPSERV-FR':
                 // Check with API
                 $result = json_decode(@file_get_contents("https://topserv.fr/api/check-ip?ip=$ip&serverId={$website['data']['server_id']}"));
-                return $result === true
+                if (isset($result->hasVoted) && $result->hasVoted === true)
+                    return true;
+                break;
             case 'SERVEURS-MC':
                 // Check with API
                 $result = @file_get_contents("https://serveurs-mc.net/api/hasVote/{$website['data']['server_id']}/$ip/10");
