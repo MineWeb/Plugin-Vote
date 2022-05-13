@@ -27,11 +27,11 @@ class Website extends VoteAppModel
                 $result = @file_get_contents("https://serveur-minecraft-vote.fr/api/v1/servers/{$website['data']['server_id']}/vote/$ip");
                 $obj = json_decode($result);
                 return $obj->canVote == "false";
-			case 'MINECRAFT-TOP-ORG':
+            case 'MINECRAFT-TOP-ORG':
                 // Check with API
                 $result = @file_get_contents("https://api.minecraft-top.com/v1/vote/$ip/{$website['data']['server_id']}");
                 $obj = json_decode($result);
-                if($obj->{'vote'} > 0)
+                if ($obj->{'vote'} > 0)
                     return true;
                 break;
             case 'SRV-MC-ORG':
@@ -57,7 +57,7 @@ class Website extends VoteAppModel
                 if (time() - strtotime($result['lastVote']['date']) < (3 * 60 * 60)) // 3 minutes between vote and check
                     return true;
                 break;
-	        case 'SRV-MINECRAFT-FR':
+            case 'SRV-MINECRAFT-FR':
                 // Check with API
                 $result = @file_get_contents("https://serveur-minecraft.fr/api-{$website['data']['server_id']}_$ip.json");
                 if ($result && ($result = json_decode($result, true))) {
@@ -87,9 +87,9 @@ class Website extends VoteAppModel
                 // Check with API
                 $result = @file_get_contents("https://serveur-prive.net/api/vote/json/{$website['data']['server_id']}/$ip");
                 if ($result && ($result = json_decode($result, true))) {
-			        if ($result === false || intval($result['status']) == 1)
+                    if ($result === false || intval($result['status']) == 1)
                         return true;
-		        }
+                }
                 break;
             case 'LIST-SRV-MC-ORG':
                 // Check with API
@@ -123,23 +123,23 @@ class Website extends VoteAppModel
                 break;
             case 'LISTE-MINECRAFT-SRV':
                 // Check with API
-		$result = json_decode(file_get_contents("https://www.liste-minecraft-serveurs.com/Api/Worker/id_server/{$website['data']['server_id']}/ip/$ip"));
-		if($result->result == 202)
-		    return true;
+                $result = json_decode(file_get_contents("https://www.liste-minecraft-serveurs.com/Api/Worker/id_server/{$website['data']['server_id']}/ip/$ip"));
+                if ($result->result == 202)
+                    return true;
                 break;
             case 'SRV-MINECRAFT-COM':
                 // Check with API
                 $result = json_decode(file_get_contents("https://serveur-minecraft.com/api/1/vote/{$website['data']['server_id']}/$ip/json"));
-                if($result->vote > 0)
+                if ($result->vote > 0)
                     return true;
                 break;
             case 'TOPSRVMINECRAFT-COM':
                 // Check with API
                 $result = json_decode(file_get_contents("https://topserveursminecraft.com/api/server={$website['data']['server_id']}&ip=$ip"));
-                if($result->voted == 1)
+                if ($result->voted == 1)
                     return true;
                 break;
-	        case 'SERVEUR-TOP-FR':
+            case 'SERVEUR-TOP-FR':
                 // Check with API
                 $result = json_decode(@file_get_contents("https://serveur-top.fr/api/checkVote/{$website['data']['server_id']}/$ip"));
                 if ($result->success === true)
