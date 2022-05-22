@@ -85,5 +85,5 @@
 
   "HISTORY__ACTION_ADD_EDIT_REWARD": "Добавление/редактирование вознаграждения за голосование",
   "HISTORY__ACTION_EDIT_VOTE_CONFIGURATION": "Изменение конфигурации плагина Vote",
-  "HISTORY__ACTION_ADD_EDIT_WEBSITE": "Добавление/редактирование сайта для голосования",
+  "HISTORY__ACTION_ADD_EDIT_WEBSITE": "Добавление/редактирование сайта для голосования"
 }
