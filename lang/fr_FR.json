@@ -80,6 +80,10 @@
   "VOTE__ADMIN_STATS_TOP": "Statistiques",
   "VOTE__ADMIN_VOTE_NUMBER_GRAPH_TOP": "Comparaison du nombre de votes",
   "VOTE__ADMIN_VOTE_MEMBER_NUMBER_GRAPH_TOP": "Comparaison du nombre de voteurs",
-  "VOTE__ADMIN_DEL_VOTE": "Effacer visuellement les votes du mois"
+  "VOTE__ADMIN_DEL_VOTE": "Effacer visuellement les votes du mois",
+  
+  "HISTORY__ACTION_ADD_EDIT_REWARD": "Ajout/Modification d'une récompense de vote",
+  "HISTORY__ACTION_EDIT_VOTE_CONFIGURATION": "Modification de la configuration du plugin Vote",
+  "HISTORY__ACTION_ADD_EDIT_WEBSITE": "Ajout/Modification d'un site de vote"
 }
 

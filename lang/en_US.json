@@ -80,5 +80,9 @@
 		"VOTE__ADMIN_STATS_TOP": "Statistics",
 		"VOTE__ADMIN_VOTE_NUMBER_GRAPH_TOP": "Comparison of the number of votes",
 		"VOTE__ADMIN_VOTE_MEMBER_NUMBER_GRAPH_TOP": "Comparison of the number of voters",
-		"VOTE__ADMIN_DEL_VOTE": "Clear visually the votes of the month"
+		"VOTE__ADMIN_DEL_VOTE": "Clear visually the votes of the month",
+
+  "HISTORY__ACTION_ADD_EDIT_REWARD": "Add/Edit vote reward",
+  "HISTORY__ACTION_EDIT_VOTE_CONFIGURATION": "Edit Vote configuration",
+  "HISTORY__ACTION_ADD_EDIT_WEBSITE": "Add/Edit vote website"
 }
