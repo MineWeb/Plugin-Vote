@@ -11,6 +11,11 @@ class Website extends VoteAppModel
             case 'RPG-PARADIZE':
                 // TODO: Check OUT
                 break;
+            case 'YSERVEUR':
+                // Check with API
+		$result = @file_get_contents("https://yserveur.fr/api/vote/json/{$website['data']['server_id']}/$ip");
+                $obj = json_decode($result);
+                return $obj->vote == "true";
             case 'SERVEURS-MC':
                 // Check with API
                 $result = @file_get_contents("https://serveurs-mc.net/api/hasVote/{$website['data']['server_id']}/$ip/10");
