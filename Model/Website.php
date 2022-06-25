@@ -13,7 +13,7 @@ class Website extends VoteAppModel
                 break;
             case 'YSERVEUR':
                 // Check with API
-		$result = @file_get_contents("https://yserveur.fr/api/vote/{$website['data']['server_id']}/$ip");
+		            $result = @file_get_contents("https://yserveur.fr/api/vote/{$website['data']['server_id']}/$ip");
                 $obj = json_decode($result);
                 return $obj->vote == true;
             case 'SERVEURS-MC':
