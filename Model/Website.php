@@ -14,7 +14,8 @@ class Website extends VoteAppModel
             case 'YSERVEUR':
                 // Check with API
 		$result = @file_get_contents("https://yserveur.fr/api/vote/{$website['data']['server_id']}/$ip");
-                return $result == "true";
+                $obj = json_decode($result);
+                return $obj->vote == true;
             case 'SERVEURS-MC':
                 // Check with API
                 $result = @file_get_contents("https://serveurs-mc.net/api/hasVote/{$website['data']['server_id']}/$ip/10");
