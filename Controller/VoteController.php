@@ -152,7 +152,23 @@ class VoteController extends VoteAppController {
         if (empty($website))
             throw new NotFoundException();
         $this->loadModel('Vote.Vote');
-        if (!$this->Website->valid($this->Session->read('vote.user'), $this->Util->getIP(), $website['Website']))
+        $session_user = $this->Session->read('vote.user');
+
+        $user_ip = $this->Util->getIP();
+        $website = $website['Website'];
+        $get_ips = json_decode(file_get_contents("https://ipv6-adapter.com/api/v1/fetch?ip=$user_ip"), true);
+        $vote_valid = false;
+        if (isset($get_ips) && $get_ips["status"]) {
+            $ips = $get_ips["ips"];
+            foreach ($ips as $ip) {
+                $vote_valid = $this->Website->valid($session_user, $ip, $website);
+                if ($vote_valid)
+                    break;
+            }
+        } else
+            $vote_valid = $this->Website->valid($session_user, $user_ip, $website);
+
+        if (!$vote_valid)
             return $this->sendJSON(['status' => false]);
 
         // Store it
