@@ -72,6 +72,10 @@
                                     https://serveur-prive.net
                                 </option>
                                 <option data-inputs="server_id"
+                                        value="TOPMINECRAFT-IO" <?= (isset($website) && $website['type'] == 'TOPMINECRAFT-IO') ? 'selected' : '' ?>>
+                                    https://topminecraft.io/
+                                </option>
+                                <option data-inputs="server_id"
                                         value="LIST-SRV-MC-ORG" <?= (isset($website) && $website['type'] == 'LIST-SRV-MC-ORG') ? 'selected' : '' ?>>
                                     https://www.liste-serveurs-minecraft.org
                                 </option>

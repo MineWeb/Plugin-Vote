@@ -87,7 +87,15 @@ class Website extends VoteAppModel
                 // Check with API
                 $result = @file_get_contents("https://serveur-prive.net/api/vote/json/{$website['data']['server_id']}/$ip");
                 if ($result && ($result = json_decode($result, true))) {
-                    if ($result === false || intval($result['status']) == 1)
+                    if (intval($result['status']) == 1)
+                        return true;
+                }
+                break;
+            case 'TOPMINECRAFT-IO':
+                // Check with API
+                $result = @file_get_contents("https://topminecraft.io/api/vote/{$website['data']['server_id']}/$ip");
+                if ($result && ($result = json_decode($result, true))) {
+                    if (intval($result['status']) == "success")
                         return true;
                 }
                 break;
