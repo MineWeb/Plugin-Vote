@@ -95,7 +95,7 @@ class Website extends VoteAppModel
                 // Check with API
                 $result = @file_get_contents("https://topminecraft.io/api/vote/{$website['data']['server_id']}/$ip");
                 if ($result && ($result = json_decode($result, true))) {
-                    if (intval($result['status']) == "success")
+                    if ($result['status'] == "success")
                         return true;
                 }
                 break;
