@@ -32,7 +32,7 @@
     "Voter": "/vote"
   },
   "author": "Eywek",
-  "version": "2.12.2",
+  "version": "2.12.3",
   "useEvents": true,
   "permissions": {
     "available": [
