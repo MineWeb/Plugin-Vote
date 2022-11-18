@@ -76,6 +76,10 @@
                                     https://topminecraft.io/
                                 </option>
                                 <option data-inputs="server_id"
+                                        value="TOPMINECRAFT-XYZ" <?= (isset($website) && $website['type'] == 'TOPMINECRAFT-XYZ') ? 'selected' : '' ?>>
+                                    https://topminecraft.xyz
+                                </option>
+                                <option data-inputs="server_id"
                                         value="LIST-SRV-MC-ORG" <?= (isset($website) && $website['type'] == 'LIST-SRV-MC-ORG') ? 'selected' : '' ?>>
                                     https://www.liste-serveurs-minecraft.org
                                 </option>

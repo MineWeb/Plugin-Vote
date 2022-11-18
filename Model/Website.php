@@ -99,6 +99,14 @@ class Website extends VoteAppModel
                         return true;
                 }
                 break;
+            case 'TOPMINECRAFT-XYZ':
+                // Check with API
+                $result = @file_get_contents("https://topminecraft.xyz/api/vote/v1/{$website['data']['server_id']}/$ip");
+                if ($result && ($result = json_decode($result, true))) {
+                    if (intval($result['has_vote']) == true)
+                        return true;
+                }
+                break;
             case 'LIST-SRV-MC-ORG':
                 // Check with API
                 $result = @file_get_contents("https://api.liste-serveurs-minecraft.org/vote/vote_verification.php?server_id={$website['data']['server_id']}&ip=$ip&duration=180");
