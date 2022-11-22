@@ -76,8 +76,8 @@
                                     https://topminecraft.io/
                                 </option>
                                 <option data-inputs="server_id"
-                                        value="TOPMINECRAFT-XYZ" <?= (isset($website) && $website['type'] == 'TOPMINECRAFT-XYZ') ? 'selected' : '' ?>>
-                                    https://topminecraft.xyz
+                                        value="TOPMINECRAFT-CLICK" <?= (isset($website) && $website['type'] == 'TOPMINECRAFT-CLICK') ? 'selected' : '' ?>>
+                                    https://topminecraft.click
                                 </option>
                                 <option data-inputs="server_id"
                                         value="LIST-SRV-MC-ORG" <?= (isset($website) && $website['type'] == 'LIST-SRV-MC-ORG') ? 'selected' : '' ?>>
