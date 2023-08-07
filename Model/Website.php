@@ -85,9 +85,9 @@ class Website extends VoteAppModel
                 break;
             case 'SRV-PRIV':
                 // Check with API
-                $result = @file_get_contents("https://serveur-prive.net/api/vote/json/{$website['data']['server_id']}/$ip");
+                $result = @file_get_contents("https://serveur-prive.net/api/v1/servers/{$website['data']['server_id']}/votes/$ip");
                 if ($result && ($result = json_decode($result, true))) {
-                    if (intval($result['status']) == 1)
+                    if (intval($result['success']) == 1)
                         return true;
                 }
                 break;
